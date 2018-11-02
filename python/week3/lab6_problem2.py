@@ -27,7 +27,7 @@ def artify():
       setColor(p, c)
   show(pic)
 
-# Number filter
+# Number filterr
 def posterizer(n):
   if n < 64:
     return 46
