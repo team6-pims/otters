@@ -2,7 +2,7 @@ def getPic():
   return makePicture(pickAFile())
 
 # Problem 2 - Posterization
-def Artify():
+def artify():
   pic = getPic()
   
   for x in range(0, getWidth(pic)):
@@ -27,6 +27,7 @@ def Artify():
       setColor(p, c)
   show(pic)
 
+# Number filter
 def posterizer(n):
   if n < 64:
     return 46
