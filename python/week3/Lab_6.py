@@ -23,11 +23,11 @@ def redeye(getFunky = False, pickPics = True):
   threshold = 140
   pic0 = makePicture(pic0)
   pic1 = makePicture(pic1)
-  pic_list = list([ pic0, pic1 ])
+  pic_list = list([pic0, pic1])
   
   pic0_height = getHeight(pic0)
   pic1_height = getHeight(pic1)
-  height_list = list([pic0_height , pic1_height])
+  height_list = list([pic0_height, pic1_height])
   
   pic0_width = getWidth(pic0)
   pic1_width = getWidth(pic1)
@@ -47,6 +47,7 @@ def redeye(getFunky = False, pickPics = True):
           else:
             setColor(currPix, black)
     show(currpic)
+    writePictureTo(currpic, "C:\\Users\elevi\\Desktop\\otters\\python\\week3\\warmup\\red_eye_fixed" + str(idx) + ".jpg")
 
 # //////////////////
 # Problem 1 - Sepia
