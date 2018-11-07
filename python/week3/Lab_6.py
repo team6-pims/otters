@@ -1,7 +1,68 @@
+# Week 3 - Lab 6
+# TEAM PIMS
+# Matt Chan, Alejandro Caicedo, Ivan Alejandre, Randy Son
+
+
+# Modular function used in functions below
+# Choose a picture and return it
 def getPic():
   return makePicture(pickAFile())
 
+# //////////////////
+# Problem 1 - Sepia
+# /////////////////
+
+# this function changes the image to grayscale
+def betterBnW(picToBeChanged):
+  for x in range(0, getWidth(picToBeChanged)):
+      for y in range(0, getHeight(picToBeChanged)):
+        # get pixel info
+        p = getPixel(picToBeChanged, x, y)
+        
+        # find the luminance or average of rgb
+        luminance = (getRed(p) + getBlue(p) + getGreen(p)) / 3
+        
+        # change each pixel color
+        setRed(p, luminance)
+        setBlue(p, luminance)
+        setGreen(p, luminance)
+        
+  # return modified picture data to be saved.
+  return picToBeChanged
+
+# Since this function is going to be executed AFTER betterBnW does its work,
+# the R, G, and B values are equal. We only need to retrieve one value to 
+# apply the changes.
+def sepia(pic):
+  for x in range(0, getWidth(pic)):
+      for y in range(0, getHeight(pic)):
+        # get pixel info
+        p = getPixel(pic, x, y)
+        
+        # grab red
+        redColor = getRed(p)
+        if redColor < 63:
+          setRed(p, (redColor * 1.15))
+          setBlue(p, (redColor * 0.85))
+        elif redColor >= 63 and redColor <= 190:
+          setRed(p, (redColor * 1.2))
+          setBlue(p, (redColor * 0.80))
+        else:
+          if (redColor * 1.08) > 255:
+            setRed(p, 255)
+          else:
+            setRed(p, (redColor * 1.08))
+            setBlue(p, (redColor * 0.93))
+  return pic
+
+def sepiaFilter():
+  # obtain image from user
+  pic = getPic()
+  show(sepia(betterBnW(pic)))
+
+# //////////////////////////
 # Problem 2 - Posterization
+# /////////////////////////
 def artify():
   pic = getPic()
   
@@ -39,12 +100,6 @@ def posterizer(n):
     return 223
   return 0
   
-  
-  
-  
-  
-  
-  
 # //////////////////////////////
 #    Problem #3 - ChromaKey
 # //////////////////////////////
@@ -67,8 +122,6 @@ def chromakey(selectOwnPhotos = True, threshHold = 45):
     background0 = '//home//captain//CSUMB//CST205//JES_workspace//lab6//backgrounds_for_greenscreen//shark_585x390.png'
     background1 = '//home//captain//CSUMB//CST205//JES_workspace//lab6//backgrounds_for_greenscreen//cave_585x390.png'
     background2 = '//home//captain//CSUMB//CST205//JES_workspace//lab6//backgrounds_for_greenscreen//everest_hike_585x390.png'
-    
-
   
   fore0_pic = makePicture(foreground0)
   fore1_pic = makePicture(foreground1)
@@ -104,20 +157,5 @@ def chromakey(selectOwnPhotos = True, threshHold = 45):
           backPix = getPixel(currback, x, y)
           backCol = getColor(backPix)
           setColor(currPix, backCol)
-        
-    show(currfore)
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    show(currfore)
