@@ -60,9 +60,9 @@ def betterBnW(picToBeChanged):
         p = getPixel(picToBeChanged, x, y)
         
         # find colors
-        redColor = getRed(pix) * 0.299
-        blueColor = getBlue(pix) * 0.587
-        greenColor = getGreen(pix) * 0.114
+        redColor = getRed(picToBeChanged) * 0.299
+        blueColor = getBlue(picToBeChanged) * 0.587
+        greenColor = getGreen(picToBeChanged) * 0.114
         
         # find the luminance or average of rgb
         luminance = (redColor + blueColor + greenColor)
