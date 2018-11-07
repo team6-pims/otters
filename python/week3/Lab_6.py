@@ -8,6 +8,46 @@
 def getPic():
   return makePicture(pickAFile())
 
+#/////////////////////
+# warm up
+#/////////////////////
+
+def redeye(getFunky = False, pickPics = True):
+  if pickPics:
+    pic0 = pickAFile()
+    pic1 = pickAFile()
+  else:
+    pic0 = '//home//captain//CSUMB//CST205//JES_workspace//lab6//red_eye//red_eye1.png'
+    pic1 = '//home//captain//CSUMB//CST205//JES_workspace//lab6//red_eye//red_eye2.png'
+  
+  threshold = 140
+  pic0 = makePicture(pic0)
+  pic1 = makePicture(pic1)
+  pic_list = list([ pic0, pic1 ])
+  
+  pic0_height = getHeight(pic0)
+  pic1_height = getHeight(pic1)
+  height_list = list([pic0_height , pic1_height])
+  
+  pic0_width = getWidth(pic0)
+  pic1_width = getWidth(pic1)
+  width_list = list([pic0_width, pic1_width])
+  
+  pureRed = makeColor(255,0,0)
+  
+  for idx in range(0, 2):
+    currpic = pic_list[idx]
+    for x in range(0, width_list[idx] ):
+      for y in range(0, height_list[idx] ):
+        currPix = getPixel(currpic , x, y)
+        currColor = getColor(currPix)
+        if (distance(pureRed, currColor) < threshold):
+          if getFunky:
+            setColor(currPix, makeColor(60, 200, 8))
+          else:
+            setColor(currPix, black)
+    show(currpic)
+
 # //////////////////
 # Problem 1 - Sepia
 # /////////////////
