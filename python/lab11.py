@@ -5,6 +5,11 @@
 #   FUN FACT: PYTHON CANT TELL THE DIFFERENCE BETWEEN 0/false
 #             AND 1/true 
 
+# / / / / / / / / / / / / / / 
+#  Global Imports 
+# / / / / / / / / / / / / / /
+import random
+
 # / / / / / /
 # Main loop
 # / / / / / /
@@ -358,25 +363,42 @@ def quit_game():
 
 #
 # attemptJump(shoes_bool)
-#    attempts jump, if user has shoes odds increase
+# attempts jump, if user has shoes odds increase
+# returns true if success, else false
 def attemptJump(shoes_bool):
-  if playerInventory[0]:
-    return true #this is just a placeholder
-    #odds are 50/50 with shoes
-    #return true or false
-  #without shoes odds are 15 success/85 failure
-    #return true/false
+  #gets the chance of success from 1 to 100
+  chance = random.randint(1,101)
+  #with shoes - success rate 50%
+  if shoes_bool == true:
+    if chance <= 50:
+      return true
+    else:
+      return false
+  #no shoes - success rate 15%
+  if shoes_bool == false:
+    if chance <= 15:
+      return true
+    else:
+      return false
   
 #
 # fight(sword_bool)
-#    fights miniboss odds increase with sword 
+# fights miniboss odds increase with sword 
 def fight(sword_bool):
-  if playerInventory[1]:
-    return true #this is just a placeholder
-    #odds 95 success /5 failure 
-    #return true/false
-  #without odds 70/30
-    #return true/false
+  #gets the chance of success from 1 to 100
+  chance = random.randint(1,101)
+  #with sword - success rate 95%
+  if sword_bool == true:
+    if chance <= 95:
+      return true
+    else:
+      return false
+  #no sword - success rate 70%
+  if sword_bool == false:
+    if chance <= 70:
+      return true
+    else:
+      return false
   
   
 #
