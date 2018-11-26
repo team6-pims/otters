@@ -5,22 +5,110 @@
 #   FUN FACT: PYTHON CANT TELL THE DIFFERENCE BETWEEN 0/false
 #             AND 1/true 
 
-#
-# main loop function
-#
-#def main():
+# / / / / / /
+# Main loop
+# / / / / / /
 
-    #NOTE: my recommendation is you use a tuple to keep track of items
-    #there are only 2 so inv = (false, false). 
-    #inv[0] = shoes boolen
-    #inv[1] = sword boolen
-    # thats how grabItem is set up, (tuples are immutable heads up)
-    #for the trap springing, i say keep a bool outside of the loop 
+def main():
+  global win
+  global lose
+  global currentRoom
+  # Initialize player inventory
+  #                  Shoes, Sword, blank, blank, blank, blank
+  playerInventory = (False, False, False, False, False, False)
+
+  # Player introduction
+  playerName = newPlayer()
+  
+  # Output current room information
+  printNow(roomData[currentRoom])
+  
+  
+  # Prompt user for action
+  playerInput = getUserInput()
+  
+  # Start main loop
+  
+  while playerInput != "quit":
+    if currentRoom == 10:
+      printNow("With each step crunching against the slush of snow, you have successfully ventured out with your life and freedom. You WIN!!!")
+      return
+    if lose == true:
+      printNow("You have died. Sowwie")
+      return
+    else:
+      playerInput = getUserInput()
+  
 
 
+def newPlayer():
+  printNow("Heart racing and legs dragging, you narrowly avoid certain death from the Machine by falling into an abandoned mine.")
+  printNow("You may have found refuge here, but you must keep moving")
+  playerName = requestString("What is your name, lost one?")
+  while playerName == "":
+    playerName = requestString("What is your name, lost one?")
+  printMenu()
+  return playerName
 
 
+# Get user input
+def getUserInput():
+  global currentRoom
+  global hintData
+  # Request user input
+  req = requestString("What would you like to do?").lower()
+  
+  # Store old room to see if any room changes
+  oldRoom = currentRoom
+  
+  if req == "north" or req == "n":
+    printNow("You head North.")
+    currentRoom = goNorth()
+  elif req == "east" or req == "e":
+    printNow("You head East.")
+    currentRoom = goEast()
+  elif req == "south" or req == "s":
+    printNow("You head South.")
+    currentRoom = goSouth()
+  elif req == "west" or req == "w":
+    printNow("You head West.")
+    oldRoom = currentRoom
+    currentRoom = goWest()
+  elif req == "inspect" or req == "i":
+    printNow(roomData[currentRoom])
+    inspectRoom()
+  elif req == "fight" or req == "f":
+    printNow("You pull up your sleeves and prepare to fight.")
+    # fightFunction
+  elif req == "jump" or req == "j":
+    printNow("You jump")
+    # jump function
+  elif req == "hint" or req == "h":
+    printNow(hintData[currentRoom])
+  elif req == "grab" or req == "b":
+    # Grab item function
+    printNow("Grabbing...")
+  elif req == "main" or req == "m":
+    printMenu()
+             
+             
+  if oldRoom <> currentRoom:
+      printNow(roomData[currentRoom])
+  
+  return req
 
+def printMenu():
+  mainMenu = "m - List available commands" \
+             "\nh - Show hints" \
+             "\nn - Head North" \
+             "\ne - Head East" \
+             "\ns - Head South" \
+             "\nw - Head West" \
+             "\ni - Inspect Room" \
+             "\ng - Grab item" \
+             "\nf - FIGHT!" \
+             "\nj - Jump across distances"
+  printNow(mainMenu)
 # / / / / / / / / / / / / / / 
 #  Display function 
 # / / / / / / / / / / / / / / 
@@ -29,14 +117,11 @@
 # displayRoom(currentRoom, roomData ,optionsAvailable )
 #     takes in one argument, the current room(an integer), then displays the options to the user
 #     based on their current position
-def displayRoom(currentRoom, roomData ,optionsAvailable ):
-  options = optionsAvailable(currentRoom)
+def displayRoom():
   printNow(roomData[currentRoom])
-  printNow()
-  printNow("Here are your current options.")
-  printNow()
-  for i in len(optionsAvailable(currentRoom)):
-    printNow(str(i) + ") " + options[i])
+  printNow("Here are your current options:")
+  for i in range(0, len(optionsAvailable[currentRoom])):
+    printNow(options[i])
   printNow("What will you do now?")
 
 
@@ -48,7 +133,7 @@ def displayRoom(currentRoom, roomData ,optionsAvailable ):
 #
 # create room map
 #    roomMap contains tuple in form of (direction available,  room# in that direction)
-#    accessable via roomMap[room_in][0=direction, 1=roomNbr]
+#    accessable via roomMap[currentRoom][0=direction, 1=roomNbr]
 def createRoomMap():
   roomMap = list()
   roomMap.insert(0, 1 )
@@ -69,16 +154,16 @@ def createRoomMap():
 #
 def createRoomData():
   roomData = list()
-  roomData.insert(0, "the earthquake collapsed the tunel behind you, no where to go but forward" )
+  roomData.insert(0, "The earthquake collapsed the tunnel behind you, no where to go but forward" )
   roomData.insert(1, "You see a door to the North, a door to the East and a door to the South"  )
   roomData.insert(2, "You see a pair of running shoes on the floor, they look about your size"  )
   roomData.insert(3, "You see a sword on the floor, looks rusty"  )
   roomData.insert(4, "You see a crevace in front of you, looks really far..."  )
   roomData.insert(5, "Sweet cheesus that was close! you jumped and somehow made it"  )
-  roomData.insert(6, "You see a floating eye staring menicingly... it charges you!"  )
+  roomData.insert(6, "You see a floating eye staring menacingly... it charges you!"  )
   roomData.insert(7, "An empty room... WHERES THE LOOT! ... ugh i expected that thing to guard a treasure"  )
   roomData.insert(8, "All seems quiet... too quiet..."  )
-  roomData.insert(9, "What is this, Indiana Jones??! well you made it"  )
+  roomData.insert(9, "What is this, Indiana Jones??! You see the exit towards the West!"  )
   roomData.insert(10,"Congrats, you made it out. there's literally a light at the end of the tunnel"  )
   return roomData
 
@@ -92,9 +177,9 @@ def createHintData():
   hintData.insert(1, None )
   hintData.insert(2, None )
   hintData.insert(3, None )
-  hintData.insert(4, "I wish i wasnt wearing these heavy boots" )
+  hintData.insert(4, "HINT: I wish I wasn't wearing these heavy boots" )
   hintData.insert(5, None )
-  hintData.insert(6, "HINT: why fight with your bare hands?!" )
+  hintData.insert(6, "HINT: Why fight with your bare hands?!" )
   hintData.insert(7, None )
   hintData.insert(8, "HINT: This cant be this good, right?" )
   hintData.insert(9, None )
@@ -103,7 +188,7 @@ def createHintData():
 #
 # createUserChoices
 #    return full list of what actions you can take
-def createOtionsList():
+def createOptionsList():
   optionsList = list()
   optionsList.insert(0, "Quit")
   optionsList.insert(1, "Go North")
@@ -165,7 +250,7 @@ def createActionsList():
 #   rewrites optionsAvailable when miniboss is defeated
 
 def whenMiniBossIsDefeated_OA(optionsAvailable):
-  optionsAvailableList.insert(6, (0,2,3,4) )
+  optionsAvailable.insert(6, (0,2,3,4) )
   return optionsAvailable
 
 #
@@ -186,56 +271,83 @@ def whenMiniBossIsDefeated_RD(roomData):
 #
 # goNorth()
 #    moves current room when user goes north
-def goNorth(room_in):
-  if room_in == 1:
+def goNorth():
+  if currentRoom == 1:
     return 2
-  elif room_in == 4:
+  elif currentRoom == 4:
     return 1
-  elif room_in == 5:
+  elif currentRoom == 5:
     return 4
-  elif room_in == 8:
+  elif currentRoom == 8:
     return 6
-  elif room_in == 9:
+  elif currentRoom == 9:
     return 8
+  else:
+    printNow("The jagged cavern walls prevent you from moving in that direction")
+    return currentRoom
     
 #
 # goSouth()
 #    returns what room user is in when goes south
-def goSouth(room_in):
-  if room_in == 2:
+def goSouth():
+  global lose
+  global trapEnabled
+  if currentRoom == 2:
     return 1
-  elif room_in == 4:
-    return 5
-  elif room_in == 6:
+  elif currentRoom == 1:
+    return 4
+  elif currentRoom == 4:
+    # do jump function here
+    printNow("Walking South won't work here...")
+    return currentRoom
+  elif currentRoom == 6:
     return 8
-  elif room_in == 8:  
+  elif currentRoom == 8 and trapEnabled == false:
     return 9
-  
+  elif currentRoom == 8 and trapEnabled == true:  
+    printNow("You hear a sudden click of a trap activating and whooshing of arrows surging across the distance, skewering your body. \nMaybe you should've inspectdd your surroundings...")
+    lose = true
+    return 8
+  else:
+    printNow("The jagged cavern walls prevent you from moving in that direction")
+    return currentRoom
+    
   
 #
 # goEast()
 #    returns what room user is in when goes south
-def goEast(room_in):  
-  if room_in == 0:
+def goEast():  
+  if currentRoom == 0:
     return 1
-  elif room_in == 1:
+  elif currentRoom == 1:
     return 3
-  elif room_in == 5:
+  elif currentRoom == 5:
     return 6
-  elif room_in == 6:
+  elif currentRoom == 6:
     return 7
+  else:
+    printNow("The jagged cavern walls prevent you from moving in that direction")
+    return currentRoom
   
 
 #
 # goWest()
 #
-def goWest(room_in):
-  if room_in == 3:
+def goWest():
+  global win
+  
+  if currentRoom == 3:
     return 1
-  elif room_in == 6:
+  elif currentRoom == 6:
     return 5
-  elif room_in == 9:
+  elif currentRoom == 7:
+    return 6
+  elif currentRoom == 9:
+    win == true
     return 10
+  else:
+    printNow("The jagged cavern walls prevent you from moving in that direction")
+    return currentRoom
 
 #
 # quit()
@@ -248,7 +360,7 @@ def quit_game():
 # attemptJump(shoes_bool)
 #    attempts jump, if user has shoes odds increase
 def attemptJump(shoes_bool):
-  if shoes_bool:
+  if playerInventory[0]:
     return true #this is just a placeholder
     #odds are 50/50 with shoes
     #return true or false
@@ -259,32 +371,50 @@ def attemptJump(shoes_bool):
 # fight(sword_bool)
 #    fights miniboss odds increase with sword 
 def fight(sword_bool):
-  if sword_bool:
+  if playerInventory[1]:
     return true #this is just a placeholder
     #odds 95 success /5 failure 
     #return true/false
   #without odds 70/30
-  #return true/false
+    #return true/false
   
   
 #
 # grabItem
 #    returns your new inventory tuple
 
-def grabItem(room_in, inventory_tuple):
-  if room_in == 2:
-    inventory_tuple = ( true , inventory_tuple[1] )
-  elif room_in == 3:
-    inventory_tuple = ( inventory_tuple[0], true )
-  return inventory_tuple
-
+def grabItem():
+  if currentRoom == 2:
+    playerInventory = (True, playerInventory[1])
+  elif currentRoom == 3:
+    playerInventory = (playerInventory[0], True)
 
 #
 # inspectRoom
 #    returns false. set the trap boolean to false
 def inspectRoom():
-  return false
+  global currentRoom
+  global trapEnabled
+  
+  if currentRoom == 8:
+    printNow("You inspect the seemingly quiet room and toss a rock into the distance infront of you.\n The trap triggers as you witness arrows snapping their behind them.")
+    trapEnabled = False
 
+# / / / / / / / / /
+# Global variables
+# / / / / / / / / /
+
+currentRoom                                 = 0
+roomMap                       = createRoomMap()
+roomData                     = createRoomData()
+hintData                     = createHintData()
+options                   = createOptionsList()
+optionsAvailable = createOptionsAvailableList()
+playerName                                 = ""
+trapEnabled                              = True
+win                                     = False
+lose                                    = False
+main()
 
 
 
