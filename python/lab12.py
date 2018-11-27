@@ -32,10 +32,11 @@ def main():
   
   # Start main loop
   
-  while playerInput != "quit":
+  while win != true:
     if currentRoom == 10:
       printNow("With each step crunching against the slush of snow, you have successfully ventured out with your life and freedom. You WIN!!!")
       return
+    
     if lose == true:
       printNow("You have died. Sowwie")
       return
@@ -83,7 +84,7 @@ def getUserInput():
     inspectRoom()
   elif req == "fight" or req == "f":
     printNow("You pull up your sleeves and prepare to fight.")
-    # fightFunction
+    fight(playerInventory[1], playerInventory[2]) # fightFunction
   elif req == "jump" or req == "j":
     printNow("You jump")
     # jump function
@@ -225,7 +226,7 @@ def createOptionsAvailableList():
   optionsAvailable.insert(3, (0,4,7) )
   optionsAvailable.insert(4, (0,1,2,5) )
   optionsAvailable.insert(5, (0,1,3,7) )
-  optionsAvailable.insert(6, (0,4,5) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
+  optionsAvailable.insert(6, (0,6) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
   optionsAvailable.insert(7, (0,4) )
   optionsAvailable.insert(8, (0,1,2,8) )
   optionsAvailable.insert(9, (0,1,4) )
@@ -252,17 +253,12 @@ def createActionsList():
 
 #
 # Initialize player inventory
-#                  Shoes, Sword, blank, blank, blank, blank
+#                      0,     1,      2
+#                  Shoes, Sword, Shield
 def createInventory():
-  playerInventory = [false] * 6
+  playerInventory = [false] * 3
   return playerInventory
-#  playerInventory = list()
-#  playerInventory.insert(0, (0))
-#  playerInventory.insert(1, (0))
-#  playerInventory.insert(2, (0))
-#  playerInventory.insert(3, (0))
- # playerInventory.insert(4, (0))
-  #playerInventory.insert(5, (0))
+
   
 #
 # 
@@ -368,7 +364,7 @@ def goWest():
   elif currentRoom == 7:
     return 6
   elif currentRoom == 9:
-    win == true
+    win = true
     return 10
   else:
     printNow("The jagged cavern walls prevent you from moving in that direction")
@@ -411,17 +407,23 @@ def fight(sword_bool, shield_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
   #with sword - success rate 95%
-  if sword_bool and shield_bool == true:
+  if sword_bool and shield_bool :
     if chance <= 95:
-      return true
+      printNow("You killed that weird eye thing! I can keep exploring now..")
+      return 
     else:
-      return false
+      lose = true
   #no sword - success rate 70%
-  if sword_bool == false:
+  elif sword_bool or shield_bool:
     if chance <= 70:
-      return true
+      printNow("You killed that weird eye thing! I can keep exploring now..")
     else:
-      return false
+      lose = true
+  else:
+    if chance <= 30:
+      printNow("You killed that weird eye thing! I can keep exploring now..")
+    else:
+      lose = true
   
   
 #
@@ -466,9 +468,9 @@ optionsList               = createOptionsList()
 optionsAvailable = createOptionsAvailableList()
 playerInventory             = createInventory()
 playerName                                 = ""
-trapEnabled                              = True
-win                                     = False
-lose                                    = False
+trapEnabled                              = true
+win                                     = false
+lose                                    = false
 main()
 
 
