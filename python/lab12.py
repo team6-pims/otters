@@ -105,35 +105,22 @@ def getUserInput():
   return req
 
 def printMenu():
-  mainMenu = "m - List available commands" \
-             "\nh - Show hints" \
-             "\nn - Head North" \
-             "\ne - Head East" \
-             "\ns - Head South" \
-             "\nw - Head West" \
-             "\ni - Inspect Room" \
-             "\ng - Grab item" \
-             "\nf - FIGHT!" \
-             "\nj - Jump" \
-             "\nb - Show inventory"
-  printNow(mainMenu)
+  for i in optionsAvailable[currentRoom]:
+      printNow(options[i])
 # / / / / / / / / / / / / / / 
 #  Display function 
 # / / / / / / / / / / / / / / 
 
 
-# displayRoom(currentRoom, roomData ,optionsAvailable )
+# displayRoom()
 #     takes in one argument, the current room(an integer), then displays the options to the user
 #     based on their current position
-def displayRoom():
-  
+def displayRoom():  
   printNow(currentRoom)
   printNow("Here are your possible actions:")
-
-  printNow(optionsAvailable[currentRoom])
-  for j in optionsAvailable[currentRoom]:
-    printNow(optionsList[j])
+  printMenu()  
   printNow("What will you do now?\n")
+
 
 
 
