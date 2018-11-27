@@ -43,6 +43,7 @@ def main():
     else:
       displayRoom()
       playerInput = getUserInput()
+      
   
 
 
@@ -94,7 +95,6 @@ def getUserInput():
   elif req == "grab" or req == "g":
    # printNow("Grabbing...")
     grabItem()
-   
   elif req == "main" or req == "m":
     printMenu()
              
@@ -105,8 +105,9 @@ def getUserInput():
   return req
 
 def printMenu():
+  printNow(optionsAvailable[currentRoom])
   for i in optionsAvailable[currentRoom]:
-      printNow(options[i])
+      printNow(optionsList[i])
 # / / / / / / / / / / / / / / 
 #  Display function 
 # / / / / / / / / / / / / / / 
@@ -188,15 +189,15 @@ def createHintData():
 #    return full list of what actions you can take
 def createOptionsList():
   optionsList = list()
-  optionsList.insert(0, "Quit")
-  optionsList.insert(1, "Go North")
-  optionsList.insert(2, "Go South")
-  optionsList.insert(3, "Go East")
-  optionsList.insert(4, "Go West")
-  optionsList.insert(5, "Try and Jump")
-  optionsList.insert(6, "FIGHT!")
-  optionsList.insert(7, "Grab Item")
-  optionsList.insert(8, "Inspect Room")
+  optionsList.insert(0, "q - Quit")
+  optionsList.insert(1, "n - Go North")
+  optionsList.insert(2, "s - Go South")
+  optionsList.insert(3, "e - Go East")
+  optionsList.insert(4, "w - Go West")
+  optionsList.insert(5, "j - Try and Jump")
+  optionsList.insert(6, "f - FIGHT!")
+  optionsList.insert(7, "g - Grab Item")
+  optionsList.insert(8, "i - Inspect Room")
   return optionsList
 
 
@@ -212,7 +213,7 @@ def createOptionsAvailableList():
   optionsAvailable.insert(2, (0,2,7) )
   optionsAvailable.insert(3, (0,4,7) )
   optionsAvailable.insert(4, (0,1,2,5) )
-  optionsAvailable.insert(5, (0,1,3,7) )
+  optionsAvailable.insert(5, (0,3,7) )
   optionsAvailable.insert(6, (0,6) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
   optionsAvailable.insert(7, (0,4) )
   optionsAvailable.insert(8, (0,1,2,8) )
@@ -371,6 +372,7 @@ def quit_game():
 def jump(shoes_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
+  printNow(chance)
   #with shoes - success rate 50%
   if shoes_bool == true and currentRoom == 4:
     if chance <= 50:
@@ -393,22 +395,23 @@ def jump(shoes_bool):
 def fight(sword_bool, shield_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
+  printNow(chance)
   #with sword - success rate 95%
   if sword_bool and shield_bool :
     if chance <= 95:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+      printNow("I killed that weird eye thing! I can keep exploring now..")
       return 
     else:
       lose = true
   #no sword - success rate 70%
   elif sword_bool or shield_bool:
-    if chance <= 70:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+    if chance <= 50:
+      printNow("I killed that weird eye thing! I can keep exploring now..")
     else:
       lose = true
   else:
     if chance <= 30:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+      printNow("I killed that weird eye thing! I can keep exploring now..")
     else:
       lose = true
   
