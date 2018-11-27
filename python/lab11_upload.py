@@ -15,7 +15,7 @@ def main():
   global currentRoom
   # Initialize player inventory
   #                  Shoes, Sword, blank, blank, blank, blank
-  playerInventory = (False, False, False, False, False, False)
+  #playerInventory = (False, False)#, False, False, False, False)
 
   # Player introduction
   playerName = newPlayer()
@@ -29,7 +29,7 @@ def main():
   
   # Start main loop
   
-  while playerInput != "quit":
+  while currentRoom != -1:
     if currentRoom == 10:
       printNow("With each step crunching against the slush of snow, you have successfully ventured out with your life and freedom. You WIN!!!")
       return
@@ -37,7 +37,7 @@ def main():
       printNow("You have died. Sowwie")
       return
     else:
-      playerInput = getUserInput()
+      currentRoom = getUserInput()
   
 
 
@@ -47,7 +47,8 @@ def newPlayer():
   playerName = requestString("What is your name, lost one?")
   while playerName == "":
     playerName = requestString("What is your name, lost one?")
-  printMenu()
+  for i in optionsAvailable[0]:
+      printNow(options[i])
   return playerName
 
 
@@ -85,17 +86,23 @@ def getUserInput():
     # jump function
   elif req == "hint" or req == "h":
     printNow(hintData[currentRoom])
-  elif req == "grab" or req == "b":
+  elif req == "grab" or req == "g":
     # Grab item function
     printNow("Grabbing...")
   elif req == "main" or req == "m":
     printMenu()
-             
+  elif req == "quit" or req == "q":
+    currentRoom = -1;         
              
   if oldRoom <> currentRoom:
       printNow(roomData[currentRoom])
   
-  return req
+  if currentRoom != -1 and currentRoom != 10:
+    for i in optionsAvailable[currentRoom]:
+      printNow(options[i])
+  
+  
+  return currentRoom
 
 def printMenu():
   mainMenu = "m - List available commands" \
@@ -158,9 +165,9 @@ def createRoomData():
   roomData.insert(1, "You see a door to the North, a door to the East and a door to the South"  )
   roomData.insert(2, "You see a pair of running shoes on the floor, they look about your size"  )
   roomData.insert(3, "You see a sword on the floor, looks rusty"  )
-  roomData.insert(4, "You see a crevace in front of you, looks really far..."  )
-  roomData.insert(5, "Sweet cheesus that was close! you jumped and somehow made it"  )
-  roomData.insert(6, "You see a floating eye staring menacingly... it charges you!"  )
+  roomData.insert(4, "You see a dark dim hallway in front of you"  )
+  roomData.insert(5, "It seems like this goes on forever"  )
+  roomData.insert(6, "You see the remains of a dead floating eye... lifeless"  )
   roomData.insert(7, "An empty room... WHERES THE LOOT! ... ugh i expected that thing to guard a treasure"  )
   roomData.insert(8, "All seems quiet... too quiet..."  )
   roomData.insert(9, "What is this, Indiana Jones??! You see the exit towards the West!"  )
@@ -190,15 +197,15 @@ def createHintData():
 #    return full list of what actions you can take
 def createOptionsList():
   optionsList = list()
-  optionsList.insert(0, "Quit")
-  optionsList.insert(1, "Go North")
-  optionsList.insert(2, "Go South")
-  optionsList.insert(3, "Go East")
-  optionsList.insert(4, "Go West")
-  optionsList.insert(5, "Try and Jump")
-  optionsList.insert(6, "FIGHT!")
-  optionsList.insert(7, "Grab Item")
-  optionsList.insert(8, "Inspect Room")
+  optionsList.insert(0, "q - Quit")
+  optionsList.insert(1, "n - Go North")
+  optionsList.insert(2, "s - Go South")
+  optionsList.insert(3, "e - Go East")
+  optionsList.insert(4, "w - Go West")
+  optionsList.insert(5, "j - Try and Jump")
+  optionsList.insert(6, "f  - FIGHT!")
+  optionsList.insert(7, "g - Grab Item")
+  optionsList.insert(8, "i - Inspect Room")
   return optionsList
 
 
@@ -215,7 +222,7 @@ def createOptionsAvailableList():
   optionsAvailable.insert(3, (0,4, 7) )
   optionsAvailable.insert(4, (0,1,2,5) )
   optionsAvailable.insert(5, (0,1,3) )
-  optionsAvailable.insert(6, (0,4,5) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
+  optionsAvailable.insert(6, (0,2,3,4) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
   optionsAvailable.insert(7, (0,4) )
   optionsAvailable.insert(8, (0,1,2,8) )
   optionsAvailable.insert(9, (0,1,4) )
@@ -360,7 +367,7 @@ def quit_game():
 # attemptJump(shoes_bool)
 #    attempts jump, if user has shoes odds increase
 def attemptJump(shoes_bool):
-  if playerInventory[0]:
+  if shoes_bool:
     return true #this is just a placeholder
     #odds are 50/50 with shoes
     #return true or false
@@ -371,7 +378,7 @@ def attemptJump(shoes_bool):
 # fight(sword_bool)
 #    fights miniboss odds increase with sword 
 def fight(sword_bool):
-  if playerInventory[1]:
+  if sword_bool:
     return true #this is just a placeholder
     #odds 95 success /5 failure 
     #return true/false
@@ -414,4 +421,5 @@ playerName                                 = ""
 trapEnabled                              = True
 win                                     = False
 lose                                    = False
+playerInventory                = (False, False)
 main()
