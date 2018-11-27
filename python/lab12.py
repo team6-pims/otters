@@ -1,5 +1,5 @@
 #
-# Lab 11:
+# Lab 12:
 # 
 # CREATION NOTES:
 #   FUN FACT: PYTHON CANT TELL THE DIFFERENCE BETWEEN 0/false
@@ -43,8 +43,11 @@ def main():
     else:
       displayRoom()
       playerInput = getUserInput()
-      
-  
+      if playerInput == "q": #user quit
+        printNow(" ")
+        printNow("- - - You Quit, shame on you - - -")
+        printNow(" ")
+        break
 
 
 def newPlayer():
@@ -61,6 +64,7 @@ def newPlayer():
 def getUserInput():
   global currentRoom
   global hintData
+  global lose
   # Request user input
   req = requestString("What would you like to do?").lower()
   
@@ -94,18 +98,22 @@ def getUserInput():
     printNow(hintData[currentRoom])
   elif req == "grab" or req == "g":
    # printNow("Grabbing...")
-    grabItem()
+    grabItem()   
   elif req == "main" or req == "m":
     printMenu()
-             
-             
+  elif req == "quit" or req == "q":           
+    req = "q" 
+  
+  if currentRoom == -2:           
+    lose = true
+    return
+                                     
   if oldRoom <> currentRoom:
       printNow(roomData[currentRoom])
   
   return req
 
 def printMenu():
-  printNow(optionsAvailable[currentRoom])
   for i in optionsAvailable[currentRoom]:
       printNow(optionsList[i])
 # / / / / / / / / / / / / / / 
@@ -117,11 +125,12 @@ def printMenu():
 #     takes in one argument, the current room(an integer), then displays the options to the user
 #     based on their current position
 def displayRoom():  
-  printNow(currentRoom)
+  printNow(" ")
+  printNow("currentRoom = " + str(currentRoom))
   printNow("Here are your possible actions:")
   printMenu()  
-  printNow("What will you do now?\n")
-
+  printNow("What will you do now?")
+  printNow(" ")
 
 
 
@@ -172,17 +181,17 @@ def createRoomData():
 #    if there are hints, they'll be shown in this list
 def createHintData():
   hintData = list()
-  hintData.insert(0, None )
-  hintData.insert(1, None )
-  hintData.insert(2, None )
-  hintData.insert(3, None )
+  hintData.insert(0, "No Hint" )
+  hintData.insert(1, "No Hint" )
+  hintData.insert(2, "No Hint" )
+  hintData.insert(3, "No Hint" )
   hintData.insert(4, "HINT: I wish I wasn't wearing these heavy boots" )
-  hintData.insert(5, None )
+  hintData.insert(5, "No Hint" )
   hintData.insert(6, "HINT: Why fight with your bare hands?!" )
-  hintData.insert(7, None )
+  hintData.insert(7, "No Hint" )
   hintData.insert(8, "HINT: This cant be this good, right?" )
-  hintData.insert(9, None )
-  hintData.insert(9, "HINT: YOU WON" )      
+  hintData.insert(9, "No Hint" )
+  hintData.insert(9, "HINT: GO WEST!!!" )      
   return hintData
 #
 # createUserChoices
@@ -195,9 +204,10 @@ def createOptionsList():
   optionsList.insert(3, "e - Go East")
   optionsList.insert(4, "w - Go West")
   optionsList.insert(5, "j - Try and Jump")
-  optionsList.insert(6, "f - FIGHT!")
+  optionsList.insert(6, "f  - FIGHT!")
   optionsList.insert(7, "g - Grab Item")
   optionsList.insert(8, "i - Inspect Room")
+  optionsList.insert(9, "h - Hint")  
   return optionsList
 
 
@@ -208,17 +218,17 @@ def createOptionsList():
 
 def createOptionsAvailableList():
   optionsAvailable = list()
-  optionsAvailable.insert(0, (0,3) )
-  optionsAvailable.insert(1, (0,1,2,3,4) )
-  optionsAvailable.insert(2, (0,2,7) )
-  optionsAvailable.insert(3, (0,4,7) )
-  optionsAvailable.insert(4, (0,1,2,5) )
-  optionsAvailable.insert(5, (0,3,7) )
-  optionsAvailable.insert(6, (0,6) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
-  optionsAvailable.insert(7, (0,4) )
-  optionsAvailable.insert(8, (0,1,2,8) )
-  optionsAvailable.insert(9, (0,1,4) )
-  optionsAvailable.insert(10,(0) )
+  optionsAvailable.insert(0, (0,3 ,9) )
+  optionsAvailable.insert(1, (0,1,2,3,4 ,9) )
+  optionsAvailable.insert(2, (0,2,7 ,9) )
+  optionsAvailable.insert(3, (0,4,7 ,9) )
+  optionsAvailable.insert(4, (0,1,2,5 ,9) )
+  optionsAvailable.insert(5, (0,1,3,7 ,9) )
+  optionsAvailable.insert(6, (0,6 ,9) ) #when miniboss is beat this gets rewritten to (0,2,3,4)
+  optionsAvailable.insert(7, (0,4 ,9) )
+  optionsAvailable.insert(8, (0,1,2,8 ,9) )
+  optionsAvailable.insert(9, (0,1,4 ,9) )
+  optionsAvailable.insert(10,(0 ,9) )
   return optionsAvailable
 
 
@@ -372,19 +382,18 @@ def quit_game():
 def jump(shoes_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
-  printNow(chance)
   #with shoes - success rate 50%
   if shoes_bool == true and currentRoom == 4:
     if chance <= 50:
       return 5
     else:
-      lose = false
+      return -2
   #no shoes - success rate 15%
   elif shoes_bool == false and currentRoom == 4:
     if chance <= 15:
       return 5
     else:
-      lose = false
+      return -2
   # anywhere else, shame the user!
   else:
     printNow("You jump around the room. This isn't the time nor place to jump around willy-nilly!")
@@ -395,23 +404,22 @@ def jump(shoes_bool):
 def fight(sword_bool, shield_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
-  printNow(chance)
   #with sword - success rate 95%
   if sword_bool and shield_bool :
     if chance <= 95:
-      printNow("I killed that weird eye thing! I can keep exploring now..")
+      printNow("You killed that weird eye thing! I can keep exploring now..")
       return 
     else:
       lose = true
   #no sword - success rate 70%
   elif sword_bool or shield_bool:
-    if chance <= 50:
-      printNow("I killed that weird eye thing! I can keep exploring now..")
+    if chance <= 70:
+      printNow("You killed that weird eye thing! I can keep exploring now..")
     else:
       lose = true
   else:
     if chance <= 30:
-      printNow("I killed that weird eye thing! I can keep exploring now..")
+      printNow("You killed that weird eye thing! I can keep exploring now..")
     else:
       lose = true
   
@@ -424,16 +432,16 @@ def grabItem():
  # global playerInventory
   if currentRoom == 2:
     printNow("These new shoes fit your feet perfectly.")
-    playerInventory.insert(0, true)
-    optionsAvailable.insert(2, (0,2) )
+    playerInventory[0] =  true
+    optionsAvailable[2] = (0,2) 
   elif currentRoom == 3:
     printNow("This sword is light enough to use with one hand!")
-    playerInventory.insert(1, true)
-    optionsAvailable.insert(3, (0,4) )
+    playerInventory[1] = true
+    optionsAvailable[3] = (0,4) 
   elif currentRoom == 5:
     printNow("What's my other hand supposed to? Just hang there?")
-    playerInventory.insert(2, true)
-    optionsAvailable.insert(5, (0,3) )
+    playerInventory[2] = true
+    optionsAvailable[5] = (0,3) 
 
 #
 # inspectRoom
