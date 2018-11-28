@@ -72,26 +72,44 @@ def getUserInput():
   oldRoom = currentRoom
   
   if req == "north" or req == "n":
-    printNow("You head North.")
+    text = "--- " \ 
+    "\nYou head North." \
+    "\n--- "
+    printNow(text)
     currentRoom = goNorth()
   elif req == "east" or req == "e":
-    printNow("You head East.")
+    text = "--- " \ 
+    "\nYou head East." \
+    "\n--- "
+    printNow(text)
     currentRoom = goEast()
   elif req == "south" or req == "s":
-    printNow("You head South.")
+    text = "--- " \ 
+    "\nYou head South." \
+    "\n--- "
+    printNow(text)
     currentRoom = goSouth()
   elif req == "west" or req == "w":
-    printNow("You head West.")
+    text = "--- " \ 
+    "\nYou head West." \
+    "\n--- "
+    printNow(text)
     oldRoom = currentRoom
     currentRoom = goWest()
   elif req == "inspect" or req == "i":
     printNow(roomData[currentRoom])
     inspectRoom()
   elif req == "fight" or req == "f":
-    printNow("You pull up your sleeves and prepare to fight.")
+    text = "--- " \
+    "\nYou pull up your sleeves and prepare to fight." \
+    "\n---"
+    printNow(text)
     fight(playerInventory[1], playerInventory[2]) # fightFunction
   elif req == "jump" or req == "j":
-    printNow("You jump")
+    text = "--- " \
+    "\nYou jump" \
+    "\n---"
+    printNow(text)
     # jump function
     currentRoom = jump(playerInventory[0])
   elif req == "hint" or req == "h":
@@ -127,6 +145,7 @@ def printMenu():
 def displayRoom():  
   printNow(" ")
   printNow("currentRoom = " + str(currentRoom))
+  printNow(displayInventory(playerInventory))
   printNow("Here are your possible actions:")
   printMenu()  
   printNow("What will you do now?")
@@ -259,6 +278,32 @@ def createInventory():
 
   
 #
+# display inventory 
+
+def displayInventory(playerInventory):
+  
+  if playerInventory[0] and playerInventory[1] and playerInventory[2]:
+    return "Inventory: Shoes. Sword. Shield. Clothes."
+    
+  if playerInventory[0] and playerInventory[1]:
+    return "Inventory: Shoes. Sword. Clothes."
+    
+  if playerInventory[1] and playerInventory[2]:
+    return "Inventory: Sword. Shield. Clothes."
+    
+  if playerInventory[0] and playerInventory[2]:
+    return "Inventory: Sword. Shield. Clothes."
+    
+  if playerInventory[0]:
+    return "Inventory: Shoes. Clothes."
+  
+  if playerInventory[1]:
+    return "Inventory: Sword. Clothes."
+    
+  if playerInventory[2]:
+    return "Inventory: Shield. Clothes."
+    
+  print
 # 
 # / / / / / / / / / / / / / / / / / / / / /
 # Mini-boss is defeated functions
@@ -407,19 +452,26 @@ def fight(sword_bool, shield_bool):
   #with sword - success rate 95%
   if sword_bool and shield_bool :
     if chance <= 95:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+      printNow("I killed that weird eye thing! I can keep exploring now..")
+      whenMiniBossIsDefeated_RD(roomData)
+      whenMiniBossIsDefeated_OA(optionsAvailable)
       return 
     else:
       lose = true
   #no sword - success rate 70%
   elif sword_bool or shield_bool:
     if chance <= 70:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+      printNow("I killed that weird eye thing! I can keep exploring now..")
+      whenMiniBossIsDefeated_OA(optionsAvailable)
+      whenMiniBossIsDefeated_RD(roomData)
+      
     else:
       lose = true
   else:
     if chance <= 30:
-      printNow("You killed that weird eye thing! I can keep exploring now..")
+      printNow("I killed that weird eye thing! I can keep exploring now..")
+      whenMiniBossIsDefeated_OA(optionsAvailable)
+      whenMiniBossIsDefeated_RD(roomData)
     else:
       lose = true
   
@@ -470,7 +522,6 @@ trapEnabled                              = true
 win                                     = false
 lose                                    = false
 main()
-
 
 
 
