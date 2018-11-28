@@ -305,6 +305,7 @@ def whenMiniBossIsDefeated_OA(optionsAvailable):
 #   rewrites roomData when miniboss is defeated
 
 def whenMiniBossIsDefeated_RD(roomData):
+  roomData[5] = "Just the landing where I found that shield and that bottomless pit from before"
   roomData[6] = "You see the grotesque remains of the Eye, laying lifeless"
   return roomData
   
