@@ -35,11 +35,11 @@ def main():
   while win != true:
     if currentRoom == 10:
       printNow("With each step crunching against the slush of snow, you have successfully ventured out with your life and freedom. You WIN!!!")
-      return
+      break
     
     if lose == true:
       printNow("You have died. Sowwie")
-      return
+      break
     else:
       displayRoom()
       playerInput = getUserInput()
@@ -48,7 +48,7 @@ def main():
         printNow("- - - You Quit, shame on you - - -")
         printNow(" ")
         break
-
+  return
 
 def newPlayer():
   printNow("Heart racing and legs dragging, you narrowly avoid certain death from the Machine by falling into an abandoned mine.")
@@ -132,7 +132,6 @@ def printMenu():
 #     based on their current position
 def displayRoom():  
   printNow(" ")
-  printNow("currentRoom = " + str(currentRoom))
   printNow(displayInventory(playerInventory))
   printNow("Here are your possible actions:")
   printMenu()  
@@ -346,8 +345,8 @@ def goSouth():
   elif currentRoom == 1:
     return 4
   elif currentRoom == 4:
-    # don't need this here: attemptJump()
     printNow("Walking South won't work here...")
+    optionsAvailable[4] = (0,1,5 ,9)
     return currentRoom
   elif currentRoom == 6:
     return 8
@@ -392,7 +391,6 @@ def goWest():
   elif currentRoom == 7:
     return 6
   elif currentRoom == 9:
-    win = true
     return 10
   else:
     printNow("The jagged cavern walls prevent you from moving in that direction")
@@ -412,7 +410,6 @@ def quit_game():
 def jump(shoes_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
-  printNow(chance)
   #with shoes - success rate 80%
   if shoes_bool and currentRoom == 4:
     if chance <= 80:
@@ -492,6 +489,7 @@ def inspectRoom():
   
   if currentRoom == 8:
     printNow("You inspect the seemingly quiet room and toss a rock into the distance infront of you.\n The trap triggers as you witness arrows snapping their behind them.")
+    optionsAvailable[8] = (0,1,2,9)
     trapEnabled = False
 
 # / / / / / / / / /
