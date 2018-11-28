@@ -72,27 +72,19 @@ def getUserInput():
   oldRoom = currentRoom
   
   if req == "north" or req == "n":
-    text = "--- " \ 
-    "\nYou head North." \
-    "\n--- "
+    text = "---\nYou head North.\n--- "
     printNow(text)
     currentRoom = goNorth()
   elif req == "east" or req == "e":
-    text = "--- " \ 
-    "\nYou head East." \
-    "\n--- "
+    text = "---\nYou head East.\n--- "
     printNow(text)
     currentRoom = goEast()
   elif req == "south" or req == "s":
-    text = "--- " \ 
-    "\nYou head South." \
-    "\n--- "
+    text = "---\nYou head South.\n--- "
     printNow(text)
     currentRoom = goSouth()
   elif req == "west" or req == "w":
-    text = "--- " \ 
-    "\nYou head West." \
-    "\n--- "
+    text = "---\nYou head West.\n--- "
     printNow(text)
     oldRoom = currentRoom
     currentRoom = goWest()
@@ -100,22 +92,18 @@ def getUserInput():
     printNow(roomData[currentRoom])
     inspectRoom()
   elif req == "fight" or req == "f":
-    text = "--- " \
-    "\nYou pull up your sleeves and prepare to fight." \
-    "\n---"
+    text = "---\nYou pull up your sleeves and prepare to fight.\n---"
     printNow(text)
     fight(playerInventory[1], playerInventory[2]) # fightFunction
   elif req == "jump" or req == "j":
-    text = "--- " \
-    "\nYou jump" \
-    "\n---"
+    text = "---\nYou jump!\n---"
     printNow(text)
     # jump function
     currentRoom = jump(playerInventory[0])
   elif req == "hint" or req == "h":
     printNow(hintData[currentRoom])
   elif req == "grab" or req == "g":
-   # printNow("Grabbing...")
+    printNow("---\nGrabbing item...\n---")
     grabItem()   
   elif req == "main" or req == "m":
     printMenu()
@@ -284,26 +272,21 @@ def displayInventory(playerInventory):
   
   if playerInventory[0] and playerInventory[1] and playerInventory[2]:
     return "Inventory: Shoes. Sword. Shield. Clothes."
-    
-  if playerInventory[0] and playerInventory[1]:
+  elif playerInventory[0] and playerInventory[1]:
     return "Inventory: Shoes. Sword. Clothes."
-    
-  if playerInventory[1] and playerInventory[2]:
-    return "Inventory: Sword. Shield. Clothes."
-    
-  if playerInventory[0] and playerInventory[2]:
-    return "Inventory: Sword. Shield. Clothes."
-    
-  if playerInventory[0]:
+  elif playerInventory[1] and playerInventory[2]:
+    return "Inventory: Sword. Shield. Heavy Boots. Clothes."
+  elif playerInventory[0] and playerInventory[2]:
+    return "Inventory: Shoes. Shield. Clothes."
+  elif playerInventory[0]:
     return "Inventory: Shoes. Clothes."
-  
-  if playerInventory[1]:
-    return "Inventory: Sword. Clothes."
+  elif playerInventory[1]:
+    return "Inventory: Sword. Heavy Boots. Clothes."
+  elif playerInventory[2]:
+    return "Inventory: Shield. Heavy Boots.Clothes." 
+  else:
+    return "Inventory: Heavy Boots. Clothes."
     
-  if playerInventory[2]:
-    return "Inventory: Shield. Clothes."
-    
-  print
 # 
 # / / / / / / / / / / / / / / / / / / / / /
 # Mini-boss is defeated functions
@@ -314,7 +297,7 @@ def displayInventory(playerInventory):
 #   rewrites optionsAvailable when miniboss is defeated
 
 def whenMiniBossIsDefeated_OA(optionsAvailable):
-  optionsAvailable.insert(6, (0,2,3,4) )
+  optionsAvailable[6]= (0,2,3,4) 
   return optionsAvailable
 
 #
@@ -322,7 +305,7 @@ def whenMiniBossIsDefeated_OA(optionsAvailable):
 #   rewrites roomData when miniboss is defeated
 
 def whenMiniBossIsDefeated_RD(roomData):
-  roomData.insert(6, "You see the grotesque remains of the Eye, laying lifeless")
+  roomData[6] = "You see the grotesque remains of the Eye, laying lifeless"
   return roomData
   
  
@@ -341,7 +324,9 @@ def goNorth():
   elif currentRoom == 4:
     return 1
   elif currentRoom == 5:
-    return 4
+    printNow("I barely made that jump, why would I want to do that again?")
+    optionsAvailable[5] = (0,3,7,9)
+    return currentRoom
   elif currentRoom == 8:
     return 6
   elif currentRoom == 9:
@@ -427,17 +412,20 @@ def quit_game():
 def jump(shoes_bool):
   #gets the chance of success from 1 to 100
   chance = random.randint(1,101)
-  #with shoes - success rate 50%
-  if shoes_bool == true and currentRoom == 4:
-    if chance <= 50:
+  printNow(chance)
+  #with shoes - success rate 80%
+  if shoes_bool and currentRoom == 4:
+    if chance <= 80:
       return 5
     else:
+      printNow("You slip at the edge and fall down the crevace.")
       return -2
   #no shoes - success rate 15%
   elif shoes_bool == false and currentRoom == 4:
     if chance <= 15:
       return 5
     else:
+      printNow("You slip at the edge and fall down the crevace.")
       return -2
   # anywhere else, shame the user!
   else:
