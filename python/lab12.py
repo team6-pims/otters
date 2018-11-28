@@ -1,3 +1,4 @@
+# Ivan Alejandre, Alejandro Caicedo, Matthew Chan, Randy Son
 #
 # Lab 12:
 # 
