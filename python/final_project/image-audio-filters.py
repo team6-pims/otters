@@ -1,0 +1,1 @@
+# Image and Audio filters placeholder
