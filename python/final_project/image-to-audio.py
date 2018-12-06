@@ -15,7 +15,7 @@ def pixelToNotes(picture)
   maxArea = 5000
   
   # resize the picture if need be.
-  pictureToSize = shrinkPictureToSize(picture, maxArea)
+  factor = findShrinkFactor(picture, maxArea, 1)
   
   # collect all the pixels in a list
   allPixels = getPixels(pictureToSize)
@@ -25,36 +25,38 @@ def pixelToNotes(picture)
   # represent (0,0,0). The resulting number that distance returns is saved in rawNote
   # Then we take that variable and use modulus to get a number 0-6 and append that
   # number to a list.
-  for pixel in allPixels:
-    rawNote = distance(getColor(pixel), black)
-    note = rawNote%7
-    allNotes.append(note)
+  for x in range(0, getWidth(picture), factor):
+    for y in range(0, getHeight(picture), factor):
+      pixel = getPixel(picture, x, y) 
+      rawNote = distance(getColor(pixel), black)
+      note = rawNote%7
+      allNotes.append(note)
   
   # return the list of numbers
   return allNotes
   
-#     shrinkPictureTosize(picture, maxArea)
+#     shrinkPictureTosize(picture, maxArea, factor)
 #
-# This function requires two arguments, a variable containing raw picture data
-# and an integer for the maximum picture area. 
-# If the current picture area is greater than the threshold, we'll call a previously
-# written function shrink() to reduce the size of the picture by half. Then in the
-# same conditional, have shrinkPictureToSize() call itself to check if the shrunk 
-# picture is within tolerances. If not, it'll call itself continuously until the
-# picture is small enough. Then it'll return the final shrunk picture all the way
-# back up to the parent function.
+# This function requires three arguments, a variable containing raw picture data
+# an integer for the maximum picture area and an integer that represents how many
+# pixels are to be skipped for each loop iteration. 
+# If the current picture area after being divided by the initial factor 1,
+# is greater than the threshold, we'll increase the factor by 1, and have the function
+# call itself with the updated value. It'll continue until the picture is 'shrunk'
+# to size. 
+# Returns: one integer to be used in parent function
 
-def shrinkPictureToSize(picture, maxArea):
+def findShrinkFactor(picture, maxArea, factor):
   # obtain dimensions
-  picHeight = getHeight(picture)
-  picWidth = getWidth(picture)
+  picHeight = getHeight(picture) / factor
+  picWidth = getWidth(picture) / factor
   
   # obtain current area
   picArea = picHeight * picWidth
   
   # compare to threshold and either shrink, or return current image
   if picArea > maxArea:
-    workingPicture = shrink(picture)
-    shrinkPictureToSize(workingPicture, maxArea)
+    factor += 1
+    findShrinkFactor(workingPicture, maxArea, factor)
 
-  return picture
+  return factor
