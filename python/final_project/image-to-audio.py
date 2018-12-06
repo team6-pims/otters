@@ -5,7 +5,7 @@
 # takes in one argument, a variable that has been assigned the contents of makePicture()
 # processes the pixel data to create an array containing integers ranging from 0-6,
 # representing musical tones ranging from middle C to B in a Cmajor scale.
-# This function calls shrinkPictureToSize() to shrink the image if need be. This is 
+# This function calls findShrinkFactor() to 'shrink' the image if need be. This is 
 # done to ensure the resulting "song" is not too long.
 
 def pixelToNotes(picture)
@@ -14,11 +14,9 @@ def pixelToNotes(picture)
   # threshold for picture size to be passed as an argument
   maxArea = 5000
   
-  # resize the picture if need be.
+  # find the factor which is how big a step we're going to iterate through in the following
+  # nested loops
   factor = findShrinkFactor(picture, maxArea, 1)
-  
-  # collect all the pixels in a list
-  allPixels = getPixels(pictureToSize)
   
   # distance() works by calculating the distance between two colors as if they were
   # mapped on a 3 dimensional cartesian graph. We'll use the keyword 'black' to 
@@ -47,14 +45,20 @@ def pixelToNotes(picture)
 # Returns: one integer to be used in parent function
 
 def findShrinkFactor(picture, maxArea, factor):
-  # obtain dimensions
+  # obtain dimensions, then consider odd lengthed pictures
   picHeight = getHeight(picture) / factor
   picWidth = getWidth(picture) / factor
+  
+  if picWidth%2 == 1:
+    picWidth -= 1
+  if picHeight%2 == 1:
+    picHeight -= 1
   
   # obtain current area
   picArea = picHeight * picWidth
   
-  # compare to threshold and either shrink, or return current image
+  # compare to threshold and either 'shrink' if the conditional evaluates true
+  # if not, pass back current value for factor
   if picArea > maxArea:
     factor += 1
     findShrinkFactor(workingPicture, maxArea, factor)
