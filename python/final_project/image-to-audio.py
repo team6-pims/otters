@@ -56,5 +56,5 @@ def shrinkPictureToSize(picture, maxArea):
   if picArea > maxArea:
     workingPicture = shrink(picture)
     shrinkPictureToSize(workingPicture, maxArea)
-  else:
-    return picture
+
+  return picture
