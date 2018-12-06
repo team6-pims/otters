@@ -1,4 +1,23 @@
 # Image to audio algorithm placeholder
+import os
+
+def RENAMETOWHATEVER(picture):
+  # MAKE TONE SOUNDS FROM DISK. should have 7 different variables
+  # gonna need to research how we can dynamically change directory to where ever files are extracted to
+  os.chdir('FILEPATH')
+  
+  # call my function
+  allNotes = pixelToNotes(picture)
+  
+  pixelSong = list()
+  # loop through
+  for note in allNotes:
+    # YOUR CONDITIONALS. REMEMBER THE RANGE IS 0-6
+      # in each if/elif, append whatever tone to pixelSong
+  
+  explore(pixelSong)
+  
+  return pixelSong
 
 #     pixelToNotes(picture)
 #
@@ -64,3 +83,4 @@ def findShrinkFactor(picture, maxArea, factor):
     findShrinkFactor(workingPicture, maxArea, factor)
 
   return factor
+
