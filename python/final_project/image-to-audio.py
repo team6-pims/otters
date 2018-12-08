@@ -1,23 +1,90 @@
-# Image to audio algorithm placeholder
-import os
+#
+# convert_pic2audio
+#    enterance fcn to picture -> audio 
+#    conversion. takes in a filePath
+#
+# NOTE: get_correctSound fcn should be updated
+#       so basePath points to correct audio path
+#
+def convert_pic2audio(filePath):
+  import os
+  if not os.path.exists(filePath):
+    return -1
+  
+  try:
+    picIn = makePicture(filePath)
+  except:
+    return -1
+  
+  sndIdxArray = pixelToNotes(picIn)
+   
+  #all sound clips of same length
+  outputSong = makeEmptySound( len(sndIdxArray) * get_numSmpls() , get_clipSampleRate() )  
+  return assemble_ouputSong(sndIdxArray, outputSong)
+  
+  
+#
+# get_correctSound(sndIdx)
+#    returns sound clip corresponding to sndIdx
+#    should be updated to reflect your local machine
+#    path to sounds
+def get_correctSound(sndIdx):
+  basePath = r"/home/captain/CSUMB/CST205/Final/Rawmusicnotes/"
+  a = basePath + "clipped_A.wav"
+  b = basePath + "clipped_B.wav"
+  c = basePath + "clipped_C.wav"
+  d = basePath + "clipped_D.wav" 
+  e = basePath + "clipped_E.wav"
+  f = basePath + "clipped_F.wav"
+  g = basePath + "clipped_G.wav" 
+  if sndIdx == 0:
+    tmp = a
+  if sndIdx == 1:
+    tmp = b
+  if sndIdx == 2:
+    tmp =  c
+  if sndIdx == 3:
+    tmp =  d
+  if sndIdx == 4:
+    tmp =  e
+  if sndIdx == 5:
+    tmp =  f
+  if sndIdx == 6:
+    tmp =  g
+  return makeSound(tmp)
 
-def RENAMETOWHATEVER(picture):
-  # MAKE TONE SOUNDS FROM DISK. should have 7 different variables
-  # gonna need to research how we can dynamically change directory to where ever files are extracted to
-  os.chdir('FILEPATH')
-  
-  # call my function
-  allNotes = pixelToNotes(picture)
-  
-  pixelSong = list()
-  # loop through
-  for note in allNotes:
-    # YOUR CONDITIONALS. REMEMBER THE RANGE IS 0-6
-      # in each if/elif, append whatever tone to pixelSong
-  
-  explore(pixelSong)
-  
-  return pixelSong
+#
+# assemble_ouputSong()
+#     take in clip index list and output-empty-song obj
+#     returns assembled song
+def assemble_ouputSong(clpIdxLst, outputSong ):
+  for i in clpIdxLst:
+    currClp = get_correctSound(i)
+    outputSong = copy(currClp, outputSong)
+  return outputSong 
+
+#
+# get_clipSampleRate()
+#      returns sampling rate
+def get_clipSampleRate():    
+  return getSamplingRate( makeSound(get_correctSound(0)))
+
+#
+# get_numSmpls()
+#      get nbr of samples in a music clip
+def get_numSmpls():
+  return getLength( makeSound(get_correctSound(0) ) )
+#
+#  copy()
+#    Source is the source sound (the short clip)
+#    Target is the target sound
+def copy(source , target, start = 0):  
+  sourLen = getLength(source)
+  for i in range(0 , sourLen ):
+    setSampleValueAt(target, start + i, getSampleValueAt(source, i))    
+  return target
+
+
 
 #     pixelToNotes(picture)
 #
