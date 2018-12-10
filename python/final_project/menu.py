@@ -4,7 +4,7 @@ def mainMenu():
   openingStr = "Welcome to Manipulating Your Image.\nPlease enter your choice of option:\n"
   openingStr1 = "1: Applying your choice of filter to an image\n"
   openingStr2 = "2: Applying your choice of filter to images in a directory\n"
-  openingStr3 "3: Converting an image to sound\n"
+  openingStr3 = "3: Converting an image to sound\n"
   exitStr = "Type in exit to quit the program"
   stringTotal = openingStr + openingStr1 + openingStr2+ openingStr3 + exitStr
   
