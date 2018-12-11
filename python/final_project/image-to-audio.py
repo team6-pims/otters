@@ -19,7 +19,10 @@ def convert_pic2audio(filePath):
   soundValues = pixelToNotes(picIn)
    
   #all sound clips of same length
-  outputSong = makeEmptySound( len(soundValues) * get_numSamples() , get_clipSampleRate() )  
+  numSamples = len(soundValues) #* get_numSamples()
+  sampleRate = get_clipSampleRate()
+  print numSamples, int(sampleRate)
+  outputSong = makeEmptySound( numSamples , int(sampleRate) ) 
   return assemble_ouputSong(soundValues, outputSong)
   
   
@@ -29,7 +32,7 @@ def convert_pic2audio(filePath):
 #    should be updated to reflect your local machine
 #    path to sounds
 def get_correctSound(soundIndex):
-  basePath = r"/home/captain/CSUMB/CST205/Final/Rawmusicnotes/"
+  basePath = "D:\\Users\\Ivan\\Documents\\school\\CST 205\\CST-205\\clippedAudio\\"
   a = basePath + "clipped_A.wav"
   b = basePath + "clipped_B.wav"
   c = basePath + "clipped_C.wav"
@@ -67,19 +70,19 @@ def assemble_ouputSong(clipIndexList, outputSong):
 # get_clipSampleRate()
 #      returns sampling rate
 def get_clipSampleRate():    
-  return getSamplingRate( makeSound(get_correctSound(0)))
+  return getSamplingRate( (get_correctSound(0)))
 
 #
 # get_numSmpls()
 #      get nbr of samples in a music clip
 def get_numSamples():
-  return getLength( makeSound(get_correctSound(0) ) )
+  return getLength( (get_correctSound(0) ) )
 #
 #  copy()
 #    Source is the source sound (the short clip)
 #    Target is the target sound
 def copy(source , target, start = 0):  
-  sourceLength = getLength(source)
+  sourceLength = getLength(source) - 1
   for i in range(0, sourceLength):
     setSampleValueAt(target, start + i, getSampleValueAt(source, i))    
   return target
@@ -99,7 +102,7 @@ def pixelToNotes(picture):
   allNotes = list()
   
   # threshold for picture size to be passed as an argument
-  maxArea = 5000
+  maxArea = 3000
   
   # obtain dimensions of picture, and if odd, make even
   picWidth = getWidth(picture)
