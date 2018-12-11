@@ -3,61 +3,8 @@
 import sys
 import os
 
-######################
-# Driver
-######################
-def main():
-  # Declare file variables
-    batchDir = getBatchDir()
-    filePathNames = getFilePaths(batchDir)
-    
-    # Loop through every file in directory
-    for i in range(0, len(filePathNames)):
-        # Change to whatever filter
-        #roseColoredGlasses(makePicture(filePathNames[i]), filePathNames[i])
-        copyWrite(makePicture(filePathNames[i]), filePathNames[i], 'Team PIMS')
-        #negative(makePicture(filePathNames[i]), filePathNames[i])
-        #blackAndWhite(makePicture(filePathNames[i]), filePathNames[i])
-        #redEyeReduction(makePicture(filePathNames[i]), filePathNames[i])
-        #artify(makePicture(filePathNames[i]), filePathNames[i])
-
-############################
-# Driver helper functions   
-############################
-def getBatchDir():
-    # Get batch directory
-    return requestString("Please enter the directory that contains the files you wish to manipulate")
-
-def getFileList(batchDir):
-    # File list
-    fileList = []
-    
-    # Determine which files in the directory are actually files and not folders
-    for f in os.listdir(os.path.normcase(batchDir)):
-        filePath = os.path.join(batchDir, f)
-        if os.path.isfile(filePath):
-            fileList.append(f)
-    
-    # Output
-    return fileList
-def getPic():
-  return makePicture(pickAFile())
-
-def getFilePaths(batchDir):
-    # File path list
-    filePathList = []
-    
-    # Determine which files in the directory are actually files and not folders
-    for f in os.listdir(os.path.normcase(batchDir)):
-        filePath = os.path.join(batchDir, f)
-        if os.path.isfile(filePath):
-            filePathList.append(filePath)
-    
-    # Output
-    return filePathList
-
 ###################################################################################
-# Most image filters take 2 arguments
+# Most image filters take 2 arguments, 3 arguments if it requires an input value
 # Picture object, and file path (batch folder path + file name)
 ###################################################################################
 
