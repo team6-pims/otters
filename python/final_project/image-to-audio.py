@@ -1,3 +1,5 @@
+import os
+basePath = os.path.dirname(os.path.abspath(__file__))
 #
 # convert_pic2audio
 #    enterance fcn to picture -> audio 
@@ -7,7 +9,6 @@
 #       so basePath points to correct audio path
 #
 def convert_pic2audio(filePath):
-  import os
   if not os.path.exists(filePath):
     return -1
   
@@ -32,29 +33,31 @@ def convert_pic2audio(filePath):
 #    should be updated to reflect your local machine
 #    path to sounds
 def get_correctSound(soundIndex):
-  basePath = r'/home/captain/CSUMB/CST205/Final/Rawmusicnotes/'
-  a = basePath + "clipped_A.wav"
-  b = basePath + "clipped_B.wav"
-  c = basePath + "clipped_C.wav"
-  d = basePath + "clipped_D.wav" 
-  e = basePath + "clipped_E.wav"
-  f = basePath + "clipped_F.wav"
-  g = basePath + "clipped_G.wav" 
+  global basePath
+ 
+  a = os.path.join(basePath, 'clippedAudio', 'clipped_A.wav')
+  b = os.path.join(basePath, 'clippedAudio', 'clipped_B.wav')
+  c = os.path.join(basePath, 'clippedAudio', 'clipped_C.wav')
+  d = os.path.join(basePath, 'clippedAudio', 'clipped_D.wav') 
+  e = os.path.join(basePath, 'clippedAudio', 'clipped_E.wav')
+  f = os.path.join(basePath, 'clippedAudio', 'clipped_F.wav')
+  g = os.path.join(basePath, 'clippedAudio', 'clipped_G.wav')
+   
   if soundIndex == 0:
-    temp = a
+    return makeSound(a)
   if soundIndex == 1:
-    temp = b
+    return makeSound(b)
   if soundIndex == 2:
-    temp =  c
+    return makeSound(c)
   if soundIndex == 3:
-    temp =  d
+    return makeSound(d)
   if soundIndex == 4:
-    temp =  e
+    return makeSound(e)
   if soundIndex == 5:
-    temp =  f
+    return makeSound(f)
   if soundIndex == 6:
-    temp =  g
-  return makeSound(temp)
+    return makeSound(g)
+  
 
 #
 # assemble_ouputSong()
@@ -70,13 +73,13 @@ def assemble_ouputSong(clipIndexList, outputSong):
 # get_clipSampleRate()
 #      returns sampling rate
 def get_clipSampleRate():    
-  return getSamplingRate( (get_correctSound(0)))
+  return getSamplingRate( get_correctSound(0) )
 
 #
 # get_numSmpls()
 #      get nbr of samples in a music clip
 def get_numSamples():
-  return getLength( (get_correctSound(0) ) )
+  return getLength( get_correctSound(0) )
 #
 #  copy()
 #    Source is the source sound (the short clip)
