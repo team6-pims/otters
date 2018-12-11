@@ -19,7 +19,7 @@ def convert_pic2audio(filePath):
   soundValues = pixelToNotes(picIn)
    
   #all sound clips of same length
-  numSamples = len(soundValues) #* get_numSamples()
+  numSamples = len(soundValues) * get_numSamples()
   sampleRate = get_clipSampleRate()
   print numSamples, int(sampleRate)
   outputSong = makeEmptySound( numSamples , int(sampleRate) ) 
@@ -32,7 +32,7 @@ def convert_pic2audio(filePath):
 #    should be updated to reflect your local machine
 #    path to sounds
 def get_correctSound(soundIndex):
-  basePath = "D:\\Users\\Ivan\\Documents\\school\\CST 205\\CST-205\\clippedAudio\\"
+  basePath = r'/home/captain/CSUMB/CST205/Final/Rawmusicnotes/'
   a = basePath + "clipped_A.wav"
   b = basePath + "clipped_B.wav"
   c = basePath + "clipped_C.wav"
@@ -61,9 +61,9 @@ def get_correctSound(soundIndex):
 #     take in clip index list and output-empty-song obj
 #     returns assembled song
 def assemble_ouputSong(clipIndexList, outputSong):
-  for i in clipIndexList:
-    currentClip = get_correctSound(i)
-    outputSong = copy(currentClip, outputSong)
+  for i in range(0,len(clipIndexList)):
+    currentClip = get_correctSound(clipIndexList[i])
+    outputSong = copy(currentClip, outputSong, i*get_numSamples() )
   return outputSong 
 
 #
@@ -102,7 +102,7 @@ def pixelToNotes(picture):
   allNotes = list()
   
   # threshold for picture size to be passed as an argument
-  maxArea = 3000
+  maxArea = 2000
   
   # obtain dimensions of picture, and if odd, make even
   picWidth = getWidth(picture)
