@@ -309,9 +309,10 @@ def mainMenu():
       else:
         printNow("Please wait, converting your image.")
         explore(convert_pic2audio(picturePath))
-        printNow("Your new song has been saved in the same directory as the image.")
+        printNow("\nDone.\nYour new song has been saved in the same directory as the image.")
         printNow("Going back to the main menu.")
         currentMenu = mainMenu
+        selection = "0"
       
     # quit option. Breaks the outer loop and ends the program.
     elif selection == "4":
@@ -321,7 +322,8 @@ def mainMenu():
     # invalid entries fault to here. Prompts user again for entry
     else:
       selection = raw_input("Invalid selection, try again: ")
-      
+
+
 #
 # helper function for mainMenu()
 #    Accepts: list of strings
@@ -333,6 +335,13 @@ def printMenu(menu):
   for line in menu:
     printNow(line)
     
+#
+# helper functions for mainMenu()
+# the following two functions check for user selected file types
+# for the appropiate type
+#    Accepts: a file path
+#    Returns: boolean
+#
 
 def checkPicturePath(path):
   splitPath = os.path.split(path)
@@ -363,7 +372,7 @@ def checkSoundPath(path):
 
 
 #
-# convert_pic2audio
+# convert_pic2audio(filePath)
 #    Accepts: a file path pointing to an image
 #    Returns: a completed song
 #
@@ -383,10 +392,25 @@ def convert_pic2audio(filePath):
   printNow("Initialized song length...")
   outputSong = makeEmptySound( numSamples , int(sampleRate) )
   printNow("Creating song.\nPlease wait, this will take some time...")
+  completedSong = assemble_ouputSong(soundValues, outputSong)
+  
   # return the completed song back to mainMenu()
-  return assemble_ouputSong(soundValues, outputSong)
+  writeSoundTo(completedSong, getFileNamePathForSound(filePath))
+  return completedSong
   
-  
+#
+# getFileNamePathForSound(path)
+#    Accepts: a file path
+#    Returns: the file path for the completed song for the image2audio converter
+#
+
+def getFileNamePathForSound(path):
+  splitPath = os.path.split(path)
+  filename = splitPath[1]
+  name = filename.split('.')
+  finalName = name[0] + '_sound.wav'
+  finalPath = os.path.join(splitPath[0], finalName)
+  return finalPath
 #
 # get_correctSound(soundIndex)
 #    Accepts: a list of ints ranging in value 0-6
