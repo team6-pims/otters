@@ -29,7 +29,7 @@ def mainMenu():
               "4 - Decrease Volume",
               "5 - Go back"]
   
-  audioSubText = ["",
+  audioSubText = ["Normalizes the volume!",
                  "Reverses your audio file!",
                  "Increases the volume of your audio file",
                  "Decreases the volume of your audio file"]
@@ -42,7 +42,6 @@ def mainMenu():
   audioFinished = "\nDone.\nYour new sound has been saved in the same directory as the original.\nGoing back to the audio menu.\n"
   
   printNow(welcomeMessage)
- # printMenu(mainMenu)
   currentMenu = mainMenu
   selection = "0"
   while true:
@@ -57,86 +56,100 @@ def mainMenu():
       printMenu(currentMenu)
       imageSelection = raw_input("\nYour selection please: ")
       
-      if imageSelection == "1":
-        printNow(imageSubText[0])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(roseColoredGlasses(pictureObject, picturePath))
-          printNow(imageFinished)
+      while true:
+        if imageSelection == "1":
+          printNow(imageSubText[0])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(roseColoredGlasses(pictureObject, picturePath))
+            printNow(imageFinished)
           
-      elif imageSelection == "2":
-        printNow(imageSubText[1])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(negative(pictureObject, picturePath))
-          printNow(imageFinished)
+        elif imageSelection == "2":
+          printNow(imageSubText[1])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(negative(pictureObject, picturePath))
+            printNow(imageFinished)
           
-      elif imageSelection == "3":
-        printNow(imageSubText[2])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(blackAndWhite(pictureObject, picturePath))
-          printNow(imageFinished)
+        elif imageSelection == "3":
+          printNow(imageSubText[2])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(blackAndWhite(pictureObject, picturePath))
+            printNow(imageFinished)
           
-      elif imageSelection == "4":
-        printNow(imageSubText[3])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(redEyeReduction(pictureObject, picturePath))
-          printNow(imageFinished)
+        elif imageSelection == "4":
+          printNow(imageSubText[3])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(redEyeReduction(pictureObject, picturePath))
+            printNow(imageFinished)
           
-      elif imageSelection == "5":
-        printNow(imageSubText[4])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(artify(pictureObject, picturePath))
-          printNow(imageFinished)
+        elif imageSelection == "5":
+          printNow(imageSubText[4])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(artify(pictureObject, picturePath))
+            printNow(imageFinished)
           
-      elif imageSelection == "6":
-        printNow(imageSubText[5])
-        showInformation("In the following dialog box, please select your image of choice.")
-        picturePath = pickAFile()
-        if not os.path.exists(picturePath):
-          printNow("No picture selected. Going back to image menu.")
-        else:
-          text = requestString("Please enter the text you want to add as a watermark:")
-          printNow("\nPlease wait...\n")
-          pictureObject = makePicture(picturePath)
-          explore(copyWrite(pictureObject, picturePath, text))
-          printNow(imageFinished)
+        elif imageSelection == "6":
+          printNow(imageSubText[5])
+          showInformation("In the following dialog box, please select your image of choice.")
+          picturePath = pickAFile()
+          if not os.path.exists(picturePath):
+            printNow("\nNo picture selected. Going back to image menu.\n")
+            selection = "1"
+            break
+          else:
+            text = requestString("Please enter the text you want to add as a watermark:")
+            printNow("\nPlease wait...\n")
+            pictureObject = makePicture(picturePath)
+            explore(copyWrite(pictureObject, picturePath, text))
+            printNow(imageFinished)
           
-      elif imageSelection == "7":
-        printNow("\nGoing back to main menu.\n")
-        currentMenu = mainMenu
-        selection = "0"
-        
-      else:
-        imageSelection = raw_input("Invalid selection, try again: ")
+        elif imageSelection == "7":
+          printNow("\nGoing back to main menu.\n")
+          currentMenu = mainMenu
+          selection = "0"
+          break
+          
+        else:
+          imageSelection = raw_input("Invalid selection, try again: ")
       
     elif selection == "2":
       printNow("Welcome to the audio manipulation menu!\n")
@@ -144,70 +157,81 @@ def mainMenu():
       printMenu(currentMenu)
       audioSelection = raw_input("\nYour selection please: ")
       
-      if audioSelection == "1":
-        printNow(audioSubText[0])
-        showInformation("In the following dialog box, please select your sound file of choice.")
-        soundPath = pickAFile()
-        if not os.path.exists(soundPath):
-          printNow("No sound selected. Going back to audio menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          soundObject = makeSound(soundPath)
-          explore(normalize(soundObject, soundPath))
-          printNow(audioFinished)
+      while true:
+        if audioSelection == "1":
+          printNow(audioSubText[0])
+          showInformation("In the following dialog box, please select your sound file of choice.")
+          soundPath = pickAFile()
+          if not os.path.exists(soundPath):
+            printNow("No sound selected. Going back to audio menu.")
+            selection = "2"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            soundObject = makeSound(soundPath)
+            explore(normalize(soundObject, soundPath))
+            printNow(audioFinished)
           
-      elif audioSelection == "2":
-        printNow(audioSubText[1])
-        showInformation("In the following dialog box, please select your sound file of choice.")
-        soundPath = pickAFile()
-        if not os.path.exists(soundPath):
-          printNow("No sound selected. Going back to audio menu.")
-        else:
-          printNow("\nPlease wait...\n")
-          soundObject = makeSound(soundPath)
-          explore(reverse(soundObject, soundPath))
-          printNow(audioFinished)
+        elif audioSelection == "2":
+          printNow(audioSubText[1])
+          showInformation("In the following dialog box, please select your sound file of choice.")
+          soundPath = pickAFile()
+          if not os.path.exists(soundPath):
+            printNow("No sound selected. Going back to audio menu.")
+            selection = "2"
+            break
+          else:
+            printNow("\nPlease wait...\n")
+            soundObject = makeSound(soundPath)
+            explore(reverse(soundObject, soundPath))
+            printNow(audioFinished)
           
-      elif audioSelection == "3":
-        printNow(audioSubText[2])
-        showInformation("In the following dialog box, please select your sound file of choice.")
-        soundPath = pickAFile()
-        if not os.path.exists(soundPath):
-          printNow("No sound selected. Going back to audio menu.")
-        else:
-          value = float(raw_input("Please enter the value(0-100) that you want to increase the volume by: "))
-          printNow("\nPlease wait...\n")
-          soundObject = makeSound(soundPath)
-          explore(increaseVolume(soundObject, soundPath, value))
-          printNow(audioFinished)
+        elif audioSelection == "3":
+          printNow(audioSubText[2])
+          showInformation("In the following dialog box, please select your sound file of choice.")
+          soundPath = pickAFile()
+          if not os.path.exists(soundPath):
+            printNow("No sound selected. Going back to audio menu.")
+            selection = "2"
+            break
+          else:
+            value = float(raw_input("Please enter the value(0-100) that you want to increase the volume by: "))
+            printNow("\nPlease wait...\n")
+            soundObject = makeSound(soundPath)
+            explore(increaseVolume(soundObject, soundPath, value))
+            printNow(audioFinished)
       
-      elif audioSelection == "4":
-        printNow(audioSubText[3])
-        showInformation("In the following dialog box, please select your sound file of choice.")
-        soundPath = pickAFile()
-        if not os.path.exists(soundPath):
-          printNow("No sound selected. Going back to audio menu.")
-        else:
-          value = float(raw_input("Please enter the value(0-100) that you want to decrease the volume by: "))
-          printNow("\nPlease wait...\n")
-          soundObject = makeSound(soundPath)
-          explore(decreaseVolume(soundObject, soundPath, value))
-          printNow(audioFinished)
+        elif audioSelection == "4":
+          printNow(audioSubText[3])
+          showInformation("In the following dialog box, please select your sound file of choice.")
+          soundPath = pickAFile()
+          if not os.path.exists(soundPath):
+            printNow("No sound selected. Going back to audio menu.")
+            selection = "2"
+            break
+          else:
+            value = float(raw_input("Please enter the value(0-100) that you want to decrease the volume by: "))
+            printNow("\nPlease wait...\n")
+            soundObject = makeSound(soundPath)
+            explore(decreaseVolume(soundObject, soundPath, value))
+            printNow(audioFinished)
           
-      elif audioSelection == "5":
-        printNow("\nGoing back to main menu.\n")
-        currentMenu = mainMenu
-        selection = "0"
-        
-      else:
-        selection = raw_input("Invalid selection, try again: ")
+        elif audioSelection == "5":
+          printNow("\nGoing back to main menu.\n")
+          currentMenu = mainMenu
+          selection = "0"
+          break
+    
+        else:
+          selection = raw_input("Invalid selection, try again: ")
         
     elif selection == "3":
       printNow(imageToAudioMessage)
       showInformation("In the following dialog box, please select your image of choice.")
       picturePath = pickAFile()
       if not os.path.exists(picturePath):
-        printNow("No picture selected. Going back to main menu.")
+        printNow("\nNo picture selected. Going back to main menu.\n")
+        selection = "0"
       else:
         printNow("Please wait, converting your image.")
         explore(convert_pic2audio(picturePath))
