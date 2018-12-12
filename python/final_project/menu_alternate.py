@@ -51,7 +51,7 @@ def mainMenu():
                 5 : artify
   }
   sndFilters = {1 : normalize,
-                2 : negative
+                2 : reverse
   }
   volFilters = {3 : increaseVolume, 
                 4 : decreaseVolume
@@ -229,79 +229,82 @@ def mainMenu():
       batchSelection = raw_input("\nYour selection please: ")
 
       while true:
-        if selection == "1":
+        if batchSelection == "1":
           #printNow("Welcome to the image manipulation menu!\n")
           currentMenu = imageMenu
           printMenu(currentMenu)
           imageSelection = raw_input("\nYour selection please: ")
 
-          while true:
-
-            # Options 1-5
-            if int(imageSelection) >= 1 and int(imageSelection) < 6:
-              printNow(imageSubText[int(imageSelection) - 1])
-              showInformation("In the following dialog box, please select a folder containing your pictures")
-              batchDir = getBatchDir()
-              filePathNames = getFilePaths(batchDir)
-              printNow("\nPlease wait...\n")
-              for i in range(0, len(filePathNames)):
-                imgFilters[int(imageSelection)](filePathNames[i]), filePathNames[i]
-                printNow(imageFinished)
-                break
+          # Options 1-5
+          if int(imageSelection) >= 1 and int(imageSelection) < 6:
+            printNow(imageSubText[int(imageSelection) - 1])
+            batchDir = getBatchDir()
+            filePathNames = getFilePaths(batchDir)
+            printNow("\nPlease wait...\n")
+            for i in range(0, len(filePathNames)):
+              imgFilters[int(imageSelection)](makePicture(filePathNames[i]), filePathNames[i])
+            printNow(imageFinished)
+            break
+          
+          # Option 6
+          elif imageSelection == "6":
+            printNow(imageSubText[int(imageSelection) - 1])
+            batchDir = getBatchDir()
+            filePathNames = getFilePaths(batchDir)
+            printNow("\nPlease wait...\n")
+            for i in range(0, len(filePathNames)):
+              copyWrite(makePicture(filePathNames[i]), filePathNames[i])
+            printNow(imageFinished)
+            break
             
-            # Option 6
-            elif imageSelection == "6":
-              printNow(imageSubText[int(imageSelection) - 1])
-              showInformation("In the following dialog box, please select a folder containing your pictures")
-              batchDir = getBatchDir()
-              filePathNames = getFilePaths(batchDir)
-              printNow("\nPlease wait...\n")
-              for i in range(0, len(filePathNames)):
-                copyWrite(filePathNames[i]), filePathNames[i]
-                printNow(imageFinished)
-                break
-              
-            # go back to main menu
-            elif imageSelection == "7":
-              printNow("\nGoing back to main menu.")
-              currentMenu = mainMenu
-              selection = "0"
-              break
-            elif selection == "2":
-              #printNow("Welcome to the audio manipulation menu!\n")
-              currentMenu = audioMenu
-              printMenu(currentMenu)
-              audioSelection = raw_input("\nYour selection please: ")
-      
-      # Batch sound
-      while true:
-        # Options 1 and 2
-        if int(audioSelection) == 1 or int(audioSelection) == 2:
-          printNow(audioSubText[int(audioSelection) - 1])
-          showInformation("In the following dialog box, please select your folder of sound files")
-          printNow("\nPlease wait...\n")
+          # go back to main menu
+          elif imageSelection == "7":
+            printNow("\nGoing back to main menu.")
+            currentMenu = mainMenu
+            selection = "0"
+            break
+          else:
+            imageSelection = raw_input("Invalid selection, try again: ")
+            print(imageSelection)
+        elif batchSelection == "2":
+          currentMenu = audioMenu
+          printMenu(currentMenu)
+          audioSelection = raw_input("\nYour selection please: ")
+          # Batch sound
+          # Options 1 and 2
+          if int(audioSelection) == 1 or int(audioSelection) == 2:
+            printNow(audioSubText[int(audioSelection) - 1])
+            batchDir = getBatchDir()
+            filePathNames = getFilePaths(batchDir)
+            printNow("\nPlease wait...\n")
 
-          # Loop through every file in directory
-          for i in range(0, len(filePathNames)):
-            sndFilters[audioSelection](makeSound(filePathNames[i]), filePathNames[i])
+            # Loop through every file in directory
+            for i in range(0, len(filePathNames)):
+              sndFilters[int(audioSelection)](makeSound(filePathNames[i]), filePathNames[i])
             printNow(audioFinished)
-          break
+            break
 
-        # increase volume option
-        elif int(audioSelection) == 3 or int(audioSelection) == 4:
-          printNow(audioSubText[int(audioSelection) - 1])
-          showInformation("In the following dialog box, please select your folder of sound files")
-          printNow("\nPlease wait...\n")
+          # increase volume option
+          elif int(audioSelection) == 3 or int(audioSelection) == 4:
+            printNow(audioSubText[int(audioSelection) - 1])
+            batchDir = getBatchDir()
+            filePathNames = getFilePaths(batchDir)
+            value = float(raw_input("Please enter the value(0-100) that you want to increase/decrease the volume by: "))
+            printNow("\nPlease wait...\n")
 
-          # Loop through every file in directory
-          for i in range(0, len(filePathNames)):
-            volFilters[audioSelection](makeSound(filePathNames[i]), filePathNames[i])
+            # Loop through every file in directory
+            for i in range(0, len(filePathNames)):
+              volFilters[int(audioSelection)](makeSound(filePathNames[i]), filePathNames[i], value)
             printNow(audioFinished)
-          break
-          # all invalid entries fault to here. Prompt user again for selection
-        else:
-          imageSelection = raw_input("Invalid selection, try again: ")
-
+            break
+            # all invalid entries fault to here. Prompt user again for selection
+          else:
+            audioSelection = raw_input("Invalid selection, try again: ")
+            print(audioSelection)
+        elif batchSelection == "3":
+          printNow("\nGoing back to main menu.")
+          currentMenu = mainMenu
+          selection = "0"
     # quit option. Breaks the outer loop and ends the program.
     elif selection == "5":
       printNow("\nThank you, come again!")
