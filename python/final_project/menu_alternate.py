@@ -501,7 +501,7 @@ def pixelToNotes(picture):
   allNotes = list()
   
   # threshold for picture size to be passed as an argument
-  maxArea = 2000
+  maxArea = 1000
   
   # obtain dimensions of picture, and if odd, make even
   picWidth = getWidth(picture)
