@@ -1,38 +1,16 @@
-#########################################################################
-# CST 205 FINAL PROJECT
-# Authors:
-#   Ivan Alejandre
-#   Alejandro Caicedo
-#   Randy Son
-#
-# Title:
-#   JES Swiss Army Knife
-#
-# Description:
-#   This is a text based program using the JES command line.
-#   The program contains select image and audio functions produced
-#   throughout the class as well as one extra, unique function.
-#   The unique function creates a song based from a selected image.
-#
-# THIS PROGRAM REQUIRES NO MODIFICATIONS TO VARIABLES BEFORE EXECUTION
-#
-# Developed on JES version 5.01
-#
-#########################################################################
-
-# Import extra libraries needed for filepath manipulation
 import sys
 import os
 
-# main function
 def mainMenu():
   # define our menu lists
-  mainMenu = ["1 - Image manipulation",
+  mainMenu = ["\nMain Menu:",
+             "1 - Image manipulation",
              "2 - Audio manipulation",
              "3 - Image to Sound converter",
              "4 - Quit this program"]
   
-  imageMenu = ["1 - Rose Colored Glasses",
+  imageMenu = ["\nImage Manipulation Menu:",
+              "1 - Rose Colored Glasses",
               "2 - Negative",
               "3 - Black and White",
               "4 - Reduce red eyes",
@@ -47,7 +25,8 @@ def mainMenu():
                  "Converts your picture into an artsy poster!",
                  "Adds a text watermark to your image in the lower right corner!"]
                  
-  audioMenu = ["1 - Normalize Sound",
+  audioMenu = ["\nAudio Manipulation Menu:",
+              "1 - Normalize Sound",
               "2 - Reverse Sound",
               "3 - Increase Volume",
               "4 - Decrease Volume",
@@ -60,9 +39,11 @@ def mainMenu():
   
   # define some strings to minimize text in conditionals
   imageToAudioMessage = "This feature converts a picture of your choice into a song!"
-  welcomeMessage = "Welcome to JES Swiss Army Knife!\nPlease make your selection:\n"
-  imageFinished = "\nDone.\nYour new image has been saved in the same directory as the original.\nGoing back to the image menu.\n"
-  audioFinished = "\nDone.\nYour new sound has been saved in the same directory as the original.\nGoing back to the audio menu.\n"
+  welcomeMessage = "Welcome to JES Swiss Army Knife!\nPlease make your selection:"
+  imageFinished = "Done.\nYour new image has been saved in the same directory as the original.\nGoing back to the image menu."
+  audioFinished = "Done.\nYour new sound has been saved in the same directory as the original.\nGoing back to the audio menu."
+  errorImage1 = "\nNo picture selected. Going back to image menu."
+  errorSound1 = "\nNo sound selected. Going back to audio menu."
   
   # initialize program and greet the user. set currentMenu to mainMenu list
   printNow(welcomeMessage)
@@ -79,7 +60,7 @@ def mainMenu():
     
     # prints out imageMenu list then enters a sub loop.
     elif selection == "1":
-      printNow("Welcome to the image manipulation menu!\n")
+      #printNow("Welcome to the image manipulation menu!\n")
       currentMenu = imageMenu
       printMenu(currentMenu)
       imageSelection = raw_input("\nYour selection please: ")
@@ -96,7 +77,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -104,6 +85,7 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(roseColoredGlasses(pictureObject, picturePath))
             printNow(imageFinished)
+            break
         
         # negative option
         elif imageSelection == "2":
@@ -111,7 +93,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -119,6 +101,7 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(negative(pictureObject, picturePath))
             printNow(imageFinished)
+            break
         
         # black and white option
         elif imageSelection == "3":
@@ -126,7 +109,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -134,6 +117,7 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(blackAndWhite(pictureObject, picturePath))
             printNow(imageFinished)
+            break
         
         # red eye reduction option
         elif imageSelection == "4":
@@ -141,7 +125,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -149,6 +133,7 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(redEyeReduction(pictureObject, picturePath))
             printNow(imageFinished)
+            break
           
         # artify option
         elif imageSelection == "5":
@@ -156,7 +141,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -164,6 +149,7 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(artify(pictureObject, picturePath))
             printNow(imageFinished)
+            break
         
         # add watermark function
         elif imageSelection == "6":
@@ -171,7 +157,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
-            printNow("\nNo picture selected. Going back to image menu.\n")
+            printNow(errorImage1)
             selection = "1"
             break
           else:
@@ -180,10 +166,11 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(copyWrite(pictureObject, picturePath, text))
             printNow(imageFinished)
+            break
           
         # go back to main menu
         elif imageSelection == "7":
-          printNow("\nGoing back to main menu.\n")
+          printNow("\nGoing back to main menu.")
           currentMenu = mainMenu
           selection = "0"
           break
@@ -194,7 +181,7 @@ def mainMenu():
     
     # prints out audioMenu list and enters sub loop  
     elif selection == "2":
-      printNow("Welcome to the audio manipulation menu!\n")
+      #printNow("Welcome to the audio manipulation menu!\n")
       currentMenu = audioMenu
       printMenu(currentMenu)
       audioSelection = raw_input("\nYour selection please: ")
@@ -207,7 +194,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
-            printNow("No sound selected. Going back to audio menu.")
+            printNow(errorSound1)
             selection = "2"
             break
           else:
@@ -215,6 +202,7 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(normalize(soundObject, soundPath))
             printNow(audioFinished)
+            break
         
         # reverse option
         elif audioSelection == "2":
@@ -222,7 +210,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
-            printNow("No sound selected. Going back to audio menu.")
+            printNow(errorSound1)
             selection = "2"
             break
           else:
@@ -230,6 +218,7 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(reverse(soundObject, soundPath))
             printNow(audioFinished)
+            break
         
         # increase volume option
         elif audioSelection == "3":
@@ -237,7 +226,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
-            printNow("No sound selected. Going back to audio menu.")
+            printNow(errorSound1)
             selection = "2"
             break
           else:
@@ -246,6 +235,7 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(increaseVolume(soundObject, soundPath, value))
             printNow(audioFinished)
+            break
         
         # decrease volume option
         elif audioSelection == "4":
@@ -253,7 +243,7 @@ def mainMenu():
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
-            printNow("No sound selected. Going back to audio menu.")
+            printNow(errorSound1)
             selection = "2"
             break
           else:
@@ -262,10 +252,11 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(decreaseVolume(soundObject, soundPath, value))
             printNow(audioFinished)
+            break
         
         # go back to main menu
         elif audioSelection == "5":
-          printNow("\nGoing back to main menu.\n")
+          printNow("\nGoing back to main menu.")
           currentMenu = mainMenu
           selection = "0"
           break
@@ -330,14 +321,14 @@ def convert_pic2audio(filePath):
   # convert the image into an list of ints, print to user where we are
   # in the process
   soundValues = pixelToNotes(picIn)
-  printNow("Completed picture deconstruction...")
+  printNow("\nCompleted picture deconstruction...")
   
   # using the above list, construct a new sound file.
   numSamples = len(soundValues) * get_numSamples()
   sampleRate = get_clipSampleRate()
   printNow("Initialized song length...")
   outputSong = makeEmptySound( numSamples , int(sampleRate) )
-
+  printNow("Creating song.\nPlease wait, this will take some time...")
   # return the completed song back to mainMenu()
   return assemble_ouputSong(soundValues, outputSong)
   
