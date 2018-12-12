@@ -251,9 +251,10 @@ def mainMenu():
             printNow(imageSubText[int(imageSelection) - 1])
             batchDir = getBatchDir()
             filePathNames = getFilePaths(batchDir)
+            text = requestString("Please enter the text you want to add as a watermark:")
             printNow("\nPlease wait...\n")
             for i in range(0, len(filePathNames)):
-              copyWrite(makePicture(filePathNames[i]), filePathNames[i])
+              copyWrite(makePicture(filePathNames[i]), filePathNames[i], text)
             printNow(imageFinished)
             break
             
