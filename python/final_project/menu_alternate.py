@@ -263,7 +263,7 @@ def mainMenu():
         
         # all erroneous entries fault to here. Prompt user to choose option again
         else:
-          selection = raw_input("Invalid selection, try again: ")
+          audioSelection = raw_input("Invalid selection, try again: ")
     
     # this option does not have a sub menu. Instead it will prompt the user for an image to be converted
     # into a song
