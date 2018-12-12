@@ -730,7 +730,7 @@ def reverse(sndObj, filePath):
   
   # Output
   writeSoundTo(revSound, filePath.replace('.wav', '_reverse.wav'))
-  return sndObj
+  return revSound
 
 def increaseVolume(sndObj, filePath, value):
     # Loop through applying value factor
