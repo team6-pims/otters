@@ -305,6 +305,7 @@ def mainMenu():
           printNow("\nGoing back to main menu.")
           currentMenu = mainMenu
           selection = "0"
+          break
     # quit option. Breaks the outer loop and ends the program.
     elif selection == "5":
       printNow("\nThank you, come again!")
