@@ -301,11 +301,11 @@ def mainMenu():
       showInformation("In the following dialog box, please select your image of choice.")
       picturePath = pickAFile()
       if not os.path.exists(picturePath):
-        printNow("\nNo picture selected. Going back to main menu.\n")
+        printNow(errorImage1)
         selection = "0"
       elif not checkPicturePath(picturePath):
         printNow(errorImage2)
-        break
+        selection = "0"
       else:
         printNow("Please wait, converting your image.")
         explore(convert_pic2audio(picturePath))
@@ -333,12 +333,6 @@ def printMenu(menu):
   for line in menu:
     printNow(line)
     
-#
-# helper function for mainMenu()
-#   Accepts: file path
-#   Filters for acceptable file types for makePicture()
-#   Returns: boolean
-#
 
 def checkPicturePath(path):
   splitPath = os.path.split(path)
@@ -352,14 +346,7 @@ def checkPicturePath(path):
     return true
   else:
     return false
-
-#
-# helper function for mainMenu()
-#   Accepts: filepath
-#   Filters for acceptable file types for makeSound()
-#   Returns: boolean
-#
-
+    
 def checkSoundPath(path):
   splitPath = os.path.split(path)
   filename = splitPath[1]
