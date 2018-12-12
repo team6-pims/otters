@@ -43,7 +43,9 @@ def mainMenu():
   imageFinished = "Done.\nYour new image has been saved in the same directory as the original.\nGoing back to the image menu."
   audioFinished = "Done.\nYour new sound has been saved in the same directory as the original.\nGoing back to the audio menu."
   errorImage1 = "\nNo picture selected. Going back to image menu."
+  errorImage2 = "\nNot a valid picture file type. Must be .jpg, .jpeg, or .png. Going back to image menu."
   errorSound1 = "\nNo sound selected. Going back to audio menu."
+  errorSound2 = "\nNot a valid sound file type. Must be a .wav file. Going back to audio menu."
   
   # initialize program and greet the user. set currentMenu to mainMenu list
   printNow(welcomeMessage)
@@ -80,6 +82,9 @@ def mainMenu():
             printNow(errorImage1)
             selection = "1"
             break
+          elif not checkPicturePath(picturePath):
+            printNow(errorImage2)
+            break
           else:
             printNow("\nPlease wait...\n")
             pictureObject = makePicture(picturePath)
@@ -95,6 +100,9 @@ def mainMenu():
           if not os.path.exists(picturePath):
             printNow(errorImage1)
             selection = "1"
+            break
+          elif not checkPicturePath(picturePath):
+            printNow(errorImage2)
             break
           else:
             printNow("\nPlease wait...\n")
@@ -112,6 +120,9 @@ def mainMenu():
             printNow(errorImage1)
             selection = "1"
             break
+          elif not checkPicturePath(picturePath):
+            printNow(errorImage2)
+            break
           else:
             printNow("\nPlease wait...\n")
             pictureObject = makePicture(picturePath)
@@ -127,6 +138,9 @@ def mainMenu():
           if not os.path.exists(picturePath):
             printNow(errorImage1)
             selection = "1"
+            break
+          elif not checkPicturePath(picturePath):
+            printNow(errorImage2)
             break
           else:
             printNow("\nPlease wait...\n")
@@ -159,6 +173,9 @@ def mainMenu():
           if not os.path.exists(picturePath):
             printNow(errorImage1)
             selection = "1"
+            break
+          elif not checkPicturePath(picturePath):
+            printNow(errorImage2)
             break
           else:
             text = requestString("Please enter the text you want to add as a watermark:")
@@ -197,6 +214,9 @@ def mainMenu():
             printNow(errorSound1)
             selection = "2"
             break
+          elif not checkSoundPath(soundPath):
+            printNow(errorSound2)
+            break
           else:
             printNow("\nPlease wait...\n")
             soundObject = makeSound(soundPath)
@@ -212,6 +232,9 @@ def mainMenu():
           if not os.path.exists(soundPath):
             printNow(errorSound1)
             selection = "2"
+            break
+          elif not checkSoundPath(soundPath):
+            printNow(errorSound2)
             break
           else:
             printNow("\nPlease wait...\n")
@@ -229,6 +252,9 @@ def mainMenu():
             printNow(errorSound1)
             selection = "2"
             break
+          elif not checkSoundPath(soundPath):
+            printNow(errorSound2)
+            break
           else:
             value = float(raw_input("Please enter the value(0-100) that you want to increase the volume by: "))
             printNow("\nPlease wait...\n")
@@ -245,6 +271,9 @@ def mainMenu():
           if not os.path.exists(soundPath):
             printNow(errorSound1)
             selection = "2"
+            break
+          elif not checkSoundPath(soundPath):
+            printNow(errorSound2)
             break
           else:
             value = float(raw_input("Please enter the value(0-100) that you want to decrease the volume by: "))
@@ -301,6 +330,28 @@ def printMenu(menu):
   for line in menu:
     printNow(line)
     
+
+def checkPicturePath(path):
+  splitPath = os.path.split(path)
+  filename = splitPath[1]
+
+  if filename.find('.jpg') > 0:
+    return true
+  elif filename.find('.jpeg') > 0:
+    return true
+  elif filename.find('.png') > 0:
+    return true
+  else:
+    return false
+    
+def checkSoundPath(path):
+  splitPath = os.path.split(path)
+  filename = splitPath[1]
+
+  if filename.find('.wav') > 0:
+    return true
+  else:
+    return false
     
 ###################################################################################
 # Unique function created for this final project.
