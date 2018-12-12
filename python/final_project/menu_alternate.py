@@ -1,6 +1,30 @@
+#########################################################################
+# CST 205 FINAL PROJECT
+# Authors:
+#   Ivan Alejandre
+#   Alejandro Caicedo
+#   Randy Son
+#
+# Title:
+#   JES Swiss Army Knife
+#
+# Description:
+#   This is a text based program using the JES command line.
+#   The program contains select image and audio functions produced
+#   throughout the class as well as one extra, unique function.
+#   The unique function creates a song based from a selected image.
+#
+# THIS PROGRAM REQUIRES NO MODIFICATIONS TO VARIABLES BEFORE EXECUTION
+#
+# Developed on JES version 5.01
+#
+#########################################################################
+
+# Import extra libraries needed for filepath manipulation
 import sys
 import os
 
+# main function
 def mainMenu():
   # define our menu lists
   mainMenu = ["1 - Image manipulation",
@@ -34,29 +58,39 @@ def mainMenu():
                  "Increases the volume of your audio file",
                  "Decreases the volume of your audio file"]
   
+  # define some strings to minimize text in conditionals
   imageToAudioMessage = "This feature converts a picture of your choice into a song!"
-                        
   welcomeMessage = "Welcome to JES Swiss Army Knife!\nPlease make your selection:\n"
-  
   imageFinished = "\nDone.\nYour new image has been saved in the same directory as the original.\nGoing back to the image menu.\n"
   audioFinished = "\nDone.\nYour new sound has been saved in the same directory as the original.\nGoing back to the audio menu.\n"
   
+  # initialize program and greet the user. set currentMenu to mainMenu list
   printNow(welcomeMessage)
   currentMenu = mainMenu
   selection = "0"
+  
+  
   while true:
-    
+    # 'go back' selections in sub menues fault back to this conditional
+    # also prints the main menu upon initialization
     if selection == "0":
       printMenu(currentMenu)
       selection = raw_input("\nYour selection please: ")
     
-    if selection == "1":
+    # prints out imageMenu list then enters a sub loop.
+    elif selection == "1":
       printNow("Welcome to the image manipulation menu!\n")
       currentMenu = imageMenu
       printMenu(currentMenu)
       imageSelection = raw_input("\nYour selection please: ")
       
+      # while in this loop, the user is on the image sub menu, will break only when user
+      # chooses to. In each sub option conditional, has failsafes if user does not select 
+      # image (returning back to image menu). Otherwise passes the path to each specific function
+      # then displays the final product to the user using explore() and is saved within the 
+      # function procedure to the original directory.
       while true:
+        # rose colored glasses option
         if imageSelection == "1":
           printNow(imageSubText[0])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -70,7 +104,8 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(roseColoredGlasses(pictureObject, picturePath))
             printNow(imageFinished)
-          
+        
+        # negative option
         elif imageSelection == "2":
           printNow(imageSubText[1])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -84,7 +119,8 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(negative(pictureObject, picturePath))
             printNow(imageFinished)
-          
+        
+        # black and white option
         elif imageSelection == "3":
           printNow(imageSubText[2])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -98,7 +134,8 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(blackAndWhite(pictureObject, picturePath))
             printNow(imageFinished)
-          
+        
+        # red eye reduction option
         elif imageSelection == "4":
           printNow(imageSubText[3])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -113,6 +150,7 @@ def mainMenu():
             explore(redEyeReduction(pictureObject, picturePath))
             printNow(imageFinished)
           
+        # artify option
         elif imageSelection == "5":
           printNow(imageSubText[4])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -126,7 +164,8 @@ def mainMenu():
             pictureObject = makePicture(picturePath)
             explore(artify(pictureObject, picturePath))
             printNow(imageFinished)
-          
+        
+        # add watermark function
         elif imageSelection == "6":
           printNow(imageSubText[5])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -142,22 +181,27 @@ def mainMenu():
             explore(copyWrite(pictureObject, picturePath, text))
             printNow(imageFinished)
           
+        # go back to main menu
         elif imageSelection == "7":
           printNow("\nGoing back to main menu.\n")
           currentMenu = mainMenu
           selection = "0"
           break
           
+        # all invalid entries fault to here. Prompt user again for selection
         else:
           imageSelection = raw_input("Invalid selection, try again: ")
-      
+    
+    # prints out audioMenu list and enters sub loop  
     elif selection == "2":
       printNow("Welcome to the audio manipulation menu!\n")
       currentMenu = audioMenu
       printMenu(currentMenu)
       audioSelection = raw_input("\nYour selection please: ")
       
+      # works exactly like the image sub loop but with sound functions. 
       while true:
+        # normalize option
         if audioSelection == "1":
           printNow(audioSubText[0])
           showInformation("In the following dialog box, please select your sound file of choice.")
@@ -171,7 +215,8 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(normalize(soundObject, soundPath))
             printNow(audioFinished)
-          
+        
+        # reverse option
         elif audioSelection == "2":
           printNow(audioSubText[1])
           showInformation("In the following dialog box, please select your sound file of choice.")
@@ -185,7 +230,8 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(reverse(soundObject, soundPath))
             printNow(audioFinished)
-          
+        
+        # increase volume option
         elif audioSelection == "3":
           printNow(audioSubText[2])
           showInformation("In the following dialog box, please select your sound file of choice.")
@@ -200,7 +246,8 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(increaseVolume(soundObject, soundPath, value))
             printNow(audioFinished)
-      
+        
+        # decrease volume option
         elif audioSelection == "4":
           printNow(audioSubText[3])
           showInformation("In the following dialog box, please select your sound file of choice.")
@@ -215,16 +262,20 @@ def mainMenu():
             soundObject = makeSound(soundPath)
             explore(decreaseVolume(soundObject, soundPath, value))
             printNow(audioFinished)
-          
+        
+        # go back to main menu
         elif audioSelection == "5":
           printNow("\nGoing back to main menu.\n")
           currentMenu = mainMenu
           selection = "0"
           break
-    
+        
+        # all erroneous entries fault to here. Prompt user to choose option again
         else:
           selection = raw_input("Invalid selection, try again: ")
-        
+    
+    # this option does not have a sub menu. Instead it will prompt the user for an image to be converted
+    # into a song
     elif selection == "3":
       printNow(imageToAudioMessage)
       showInformation("In the following dialog box, please select your image of choice.")
@@ -239,62 +290,65 @@ def mainMenu():
         printNow("Going back to the main menu.")
         currentMenu = mainMenu
       
+    # quit option. Breaks the outer loop and ends the program.
     elif selection == "4":
       printNow("\nThank you, come again!")
       break
+      
+    # invalid entries fault to here. Prompts user again for entry
     else:
       selection = raw_input("Invalid selection, try again: ")
       
-  
+#
+# helper function for mainMenu()
+#    Accepts: list of strings
+#    Prints out the menu list to console
+#    Returns: nothing
+#
+
 def printMenu(menu):
   for line in menu:
     printNow(line)
     
     
-    
-    
-    
-    
-    
-    
+###################################################################################
+# Unique function created for this final project.
+# Converts an image into a song 
+###################################################################################
 
 
 #
 # convert_pic2audio
-#    enterance fcn to picture -> audio 
-#    conversion. takes in a filePath
+#    Accepts: a file path pointing to an image
+#    Returns: a completed song
 #
-# NOTE: get_correctSound fcn should be updated
-#       so basePath points to correct audio path
-#
+
 def convert_pic2audio(filePath):
-  if not os.path.exists(filePath):
-    print 'not found'
-    return -1
-  
-  try:
-    picIn = makePicture(filePath)
-  except:
-    print 'not found'
-    return -1
-  
+  # create our picture object
+  picIn = makePicture(filePath)
+
+  # convert the image into an list of ints, print to user where we are
+  # in the process
   soundValues = pixelToNotes(picIn)
-   
-  #all sound clips of same length
+  printNow("Completed picture deconstruction...")
+  
+  # using the above list, construct a new sound file.
   numSamples = len(soundValues) * get_numSamples()
   sampleRate = get_clipSampleRate()
-  print numSamples, int(sampleRate)
-  outputSong = makeEmptySound( numSamples , int(sampleRate) ) 
+  printNow("Initialized song length...")
+  outputSong = makeEmptySound( numSamples , int(sampleRate) )
+
+  # return the completed song back to mainMenu()
   return assemble_ouputSong(soundValues, outputSong)
   
   
 #
 # get_correctSound(soundIndex)
-#    returns sound clip corresponding to sndIdx
-#    should be updated to reflect your local machine
-#    path to sounds
+#    Accepts: a list of ints ranging in value 0-6
+#    Returns: sound object representing a pitch based on soundIndex
+#
+
 def get_correctSound(soundIndex):
-  import os
   basePath = os.path.dirname(os.path.abspath(__file__))
  
   a = os.path.join(basePath, 'clippedAudio', 'clipped_A.wav')
@@ -323,8 +377,10 @@ def get_correctSound(soundIndex):
 
 #
 # assemble_ouputSong()
-#     take in clip index list and output-empty-song obj
-#     returns assembled song
+#     Accepts: sound object list of ints
+#     Returns: assembled song
+#
+
 def assemble_ouputSong(clipIndexList, outputSong):
   for i in range(0,len(clipIndexList)):
     currentClip = get_correctSound(clipIndexList[i])
@@ -334,33 +390,42 @@ def assemble_ouputSong(clipIndexList, outputSong):
 #
 # get_clipSampleRate()
 #      returns sampling rate
+#
+
 def get_clipSampleRate():    
   return getSamplingRate( get_correctSound(0) )
 
 #
 # get_numSmpls()
-#      get nbr of samples in a music clip
+#      Returns: number of samples in a sound clip
+#      All sound clips are the same length, use
+#      clip representing middle C
+#
+
 def get_numSamples():
   return getLength( get_correctSound(0) )
+  
 #
 #  copy()
-#    Source is the source sound (the short clip)
-#    Target is the target sound
+#    Accepts: Source is the source sound (the short clip)
+#    Target is the target sound (empty sound object)
+#    Start is the index of target where source is copied to
+#    Returns: modified sound object
+#
+
 def copy(source , target, start = 0):  
   sourceLength = getLength(source) - 1
   for i in range(0, sourceLength):
     setSampleValueAt(target, start + i, getSampleValueAt(source, i))    
   return target
 
-
-
-#     pixelToNotes(picture)
 #
-# takes in one argument, a variable that has been assigned the contents of makePicture()
-# processes the pixel data to create an array containing integers ranging from 0-6,
-# representing musical tones ranging from middle C to B in a Cmajor scale.
-# This function calls findShrinkFactor() to 'shrink' the image if need be. This is 
-# done to ensure the resulting "song" is not too long.
+#  pixelToNotes(picture)
+#
+#    Accepts: a picture object
+#    Returns: a list containing integers ranging from 0-6,
+#    representing tones on the C major scale
+#
 
 def pixelToNotes(picture):
   # declare list to contain all note integers
@@ -378,7 +443,7 @@ def pixelToNotes(picture):
     picHeight -= 1
   
   # find the factor which is how big a step we're going to iterate through in the following
-  # recursion
+  # nested loops
   factor = findShrinkFactor(picWidth, picHeight, maxArea, 1)
   
   # distance() works by calculating the distance between two colors as if they were
@@ -396,16 +461,16 @@ def pixelToNotes(picture):
   # return the list of numbers
   return allNotes
   
-#     findShrinkFactor(picWidth, picHeight, maxArea, factor)
+#  findShrinkFactor(picWidth, picHeight, maxArea, factor)
 #
-# This function requires four arguments, height and width of a picture,
-# an integer for the maximum picture area and an integer that represents how many
-# pixels are to be skipped for each loop iteration. 
-# If the current picture area after being divided by the initial factor 1,
-# is greater than the threshold, we'll increase the factor by 1, and have the function
-# call itself with the updated value. It'll continue until the picture is 'shrunk'
-# to size. 
-# Returns: one integer to be used in parent function
+#    Accepts: requires four arguments, height and width of a picture,
+#    an integer for the maximum picture area and an integer that represents how many
+#    pixels are to be skipped for each loop iteration. 
+#    If the current picture area after being divided by the initial factor 1,
+#    is greater than the threshold, we'll increase the factor by 1, and have the function
+#    call itself with the updated value. It'll continue until the picture is 'shrunk'
+#    to size. 
+#    Returns: one integer to be used in parent function
 
 def findShrinkFactor(picWidth, picHeight, maxArea, factor):
   # obtain dimensions, then consider odd lengthed pictures
@@ -424,8 +489,11 @@ def findShrinkFactor(picWidth, picHeight, maxArea, factor):
 
 
 ###################################################################################
+# The following functions are selected image functions from earlier in the class
+# modified to work in this program.
 # Most image filters take 2 arguments, 3 arguments if it requires an input value
 # Picture object, and file path (batch folder path + file name)
+# Each function returns a picture object to be used in mainMenu()
 ###################################################################################
 
 def roseColoredGlasses(picObj, filePath):
@@ -547,15 +615,12 @@ def copyWrite(picObj, filePath, text):
   return picObj
 
 
-
-# Audio filters
-
-import sys
-import os
-
 ###################################################################################
+# The following functions are selected audio functions from earlier in the class
+# modified to work in this program.
 # Most audio filters take 2 arguments, 3 arguments if it requires an input value
 # Audio object, and file path (batch folder path + file name)
+# Each function returns a sound object to be used in mainMenu()
 ###################################################################################
 
 def normalize(sndObj, filePath):
