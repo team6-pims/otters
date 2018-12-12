@@ -7,7 +7,13 @@ def mainMenu():
              "1 - Image manipulation",
              "2 - Audio manipulation",
              "3 - Image to Sound converter",
-             "4 - Quit this program"]
+             "4 - Batch Operations",
+             "5 - Quit this program"]
+
+  batchMenu = ["\Batch Menu:",
+             "1 - Image manipulation",
+             "2 - Audio manipulation",
+             "3 - Go back"]
   
   imageMenu = ["\nImage Manipulation Menu:",
               "1 - Rose Colored Glasses",
@@ -37,6 +43,19 @@ def mainMenu():
                  "Increases the volume of your audio file",
                  "Decreases the volume of your audio file"]
   
+  # Create a list of available filters
+  imgFilters = {1 : roseColoredGlasses,
+                2 : negative,
+                3 : blackAndWhite,
+                4 : redEyeReduction,
+                5 : artify
+  }
+  sndFilters = {1 : normalize,
+                2 : negative
+  }
+  volFilters = {3 : increaseVolume, 
+                4 : decreaseVolume
+  }
   # define some strings to minimize text in conditionals
   imageToAudioMessage = "This feature converts a picture of your choice into a song!"
   welcomeMessage = "Welcome to JES Swiss Army Knife!\nPlease make your selection:"
@@ -73,9 +92,10 @@ def mainMenu():
       # then displays the final product to the user using explore() and is saved within the 
       # function procedure to the original directory.
       while true:
-        # rose colored glasses option
-        if imageSelection == "1":
-          printNow(imageSubText[0])
+
+        # Options 1-5
+        if int(imageSelection) >= 1 and int(imageSelection) < 6:
+          printNow(imageSubText[int(imageSelection) - 1])
           showInformation("In the following dialog box, please select your image of choice.")
           picturePath = pickAFile()
           if not os.path.exists(picturePath):
@@ -88,84 +108,11 @@ def mainMenu():
           else:
             printNow("\nPlease wait...\n")
             pictureObject = makePicture(picturePath)
-            explore(roseColoredGlasses(pictureObject, picturePath))
+            explore(imgFilters[int(imageSelection)](pictureObject, picturePath))
             printNow(imageFinished)
             break
         
-        # negative option
-        elif imageSelection == "2":
-          printNow(imageSubText[1])
-          showInformation("In the following dialog box, please select your image of choice.")
-          picturePath = pickAFile()
-          if not os.path.exists(picturePath):
-            printNow(errorImage1)
-            selection = "1"
-            break
-          elif not checkPicturePath(picturePath):
-            printNow(errorImage2)
-            break
-          else:
-            printNow("\nPlease wait...\n")
-            pictureObject = makePicture(picturePath)
-            explore(negative(pictureObject, picturePath))
-            printNow(imageFinished)
-            break
-        
-        # black and white option
-        elif imageSelection == "3":
-          printNow(imageSubText[2])
-          showInformation("In the following dialog box, please select your image of choice.")
-          picturePath = pickAFile()
-          if not os.path.exists(picturePath):
-            printNow(errorImage1)
-            selection = "1"
-            break
-          elif not checkPicturePath(picturePath):
-            printNow(errorImage2)
-            break
-          else:
-            printNow("\nPlease wait...\n")
-            pictureObject = makePicture(picturePath)
-            explore(blackAndWhite(pictureObject, picturePath))
-            printNow(imageFinished)
-            break
-        
-        # red eye reduction option
-        elif imageSelection == "4":
-          printNow(imageSubText[3])
-          showInformation("In the following dialog box, please select your image of choice.")
-          picturePath = pickAFile()
-          if not os.path.exists(picturePath):
-            printNow(errorImage1)
-            selection = "1"
-            break
-          elif not checkPicturePath(picturePath):
-            printNow(errorImage2)
-            break
-          else:
-            printNow("\nPlease wait...\n")
-            pictureObject = makePicture(picturePath)
-            explore(redEyeReduction(pictureObject, picturePath))
-            printNow(imageFinished)
-            break
-          
-        # artify option
-        elif imageSelection == "5":
-          printNow(imageSubText[4])
-          showInformation("In the following dialog box, please select your image of choice.")
-          picturePath = pickAFile()
-          if not os.path.exists(picturePath):
-            printNow(errorImage1)
-            selection = "1"
-            break
-          else:
-            printNow("\nPlease wait...\n")
-            pictureObject = makePicture(picturePath)
-            explore(artify(pictureObject, picturePath))
-            printNow(imageFinished)
-            break
-        
-        # add watermark function
+        # Option 6
         elif imageSelection == "6":
           printNow(imageSubText[5])
           showInformation("In the following dialog box, please select your image of choice.")
@@ -205,9 +152,9 @@ def mainMenu():
       
       # works exactly like the image sub loop but with sound functions. 
       while true:
-        # normalize option
-        if audioSelection == "1":
-          printNow(audioSubText[0])
+        # Options 1 and 2
+        if int(audioSelection) == 1 or int(audioSelection) == 2:
+          printNow(audioSubText[int(audioSelection) - 1])
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
@@ -220,32 +167,13 @@ def mainMenu():
           else:
             printNow("\nPlease wait...\n")
             soundObject = makeSound(soundPath)
-            explore(normalize(soundObject, soundPath))
+            explore(sndFilters[audioSelection](soundObject, soundPath))
             printNow(audioFinished)
             break
-        
-        # reverse option
-        elif audioSelection == "2":
-          printNow(audioSubText[1])
-          showInformation("In the following dialog box, please select your sound file of choice.")
-          soundPath = pickAFile()
-          if not os.path.exists(soundPath):
-            printNow(errorSound1)
-            selection = "2"
-            break
-          elif not checkSoundPath(soundPath):
-            printNow(errorSound2)
-            break
-          else:
-            printNow("\nPlease wait...\n")
-            soundObject = makeSound(soundPath)
-            explore(reverse(soundObject, soundPath))
-            printNow(audioFinished)
-            break
-        
+
         # increase volume option
-        elif audioSelection == "3":
-          printNow(audioSubText[2])
+        elif int(audioSelection) == 3 or int(audioSelection) == 4:
+          printNow(audioSubText[int(audioSelection) - 1])
           showInformation("In the following dialog box, please select your sound file of choice.")
           soundPath = pickAFile()
           if not os.path.exists(soundPath):
@@ -256,30 +184,10 @@ def mainMenu():
             printNow(errorSound2)
             break
           else:
-            value = float(raw_input("Please enter the value(0-100) that you want to increase the volume by: "))
+            value = float(raw_input("Please enter the value(0-100) that you want to increase/decrease the volume by: "))
             printNow("\nPlease wait...\n")
             soundObject = makeSound(soundPath)
-            explore(increaseVolume(soundObject, soundPath, value))
-            printNow(audioFinished)
-            break
-        
-        # decrease volume option
-        elif audioSelection == "4":
-          printNow(audioSubText[3])
-          showInformation("In the following dialog box, please select your sound file of choice.")
-          soundPath = pickAFile()
-          if not os.path.exists(soundPath):
-            printNow(errorSound1)
-            selection = "2"
-            break
-          elif not checkSoundPath(soundPath):
-            printNow(errorSound2)
-            break
-          else:
-            value = float(raw_input("Please enter the value(0-100) that you want to decrease the volume by: "))
-            printNow("\nPlease wait...\n")
-            soundObject = makeSound(soundPath)
-            explore(decreaseVolume(soundObject, soundPath, value))
+            explore(volFilters[audioSelection](soundObject, soundPath, value))
             printNow(audioFinished)
             break
         
@@ -313,9 +221,89 @@ def mainMenu():
         printNow("Going back to the main menu.")
         currentMenu = mainMenu
         selection = "0"
-      
-    # quit option. Breaks the outer loop and ends the program.
+    
     elif selection == "4":
+      #printNow("Welcome to the image manipulation menu!\n")
+      currentMenu = batchMenu
+      printMenu(currentMenu)
+      batchSelection = raw_input("\nYour selection please: ")
+
+      while true:
+        if selection == "1":
+          #printNow("Welcome to the image manipulation menu!\n")
+          currentMenu = imageMenu
+          printMenu(currentMenu)
+          imageSelection = raw_input("\nYour selection please: ")
+
+          while true:
+
+            # Options 1-5
+            if int(imageSelection) >= 1 and int(imageSelection) < 6:
+              printNow(imageSubText[int(imageSelection) - 1])
+              showInformation("In the following dialog box, please select a folder containing your pictures")
+              batchDir = getBatchDir()
+              filePathNames = getFilePaths(batchDir)
+              printNow("\nPlease wait...\n")
+              for i in range(0, len(filePathNames)):
+                imgFilters[int(imageSelection)](filePathNames[i]), filePathNames[i]
+                printNow(imageFinished)
+                break
+            
+            # Option 6
+            elif imageSelection == "6":
+              printNow(imageSubText[int(imageSelection) - 1])
+              showInformation("In the following dialog box, please select a folder containing your pictures")
+              batchDir = getBatchDir()
+              filePathNames = getFilePaths(batchDir)
+              printNow("\nPlease wait...\n")
+              for i in range(0, len(filePathNames)):
+                copyWrite(filePathNames[i]), filePathNames[i]
+                printNow(imageFinished)
+                break
+              
+            # go back to main menu
+            elif imageSelection == "7":
+              printNow("\nGoing back to main menu.")
+              currentMenu = mainMenu
+              selection = "0"
+              break
+            elif selection == "2":
+              #printNow("Welcome to the audio manipulation menu!\n")
+              currentMenu = audioMenu
+              printMenu(currentMenu)
+              audioSelection = raw_input("\nYour selection please: ")
+      
+      # Batch sound
+      while true:
+        # Options 1 and 2
+        if int(audioSelection) == 1 or int(audioSelection) == 2:
+          printNow(audioSubText[int(audioSelection) - 1])
+          showInformation("In the following dialog box, please select your folder of sound files")
+          printNow("\nPlease wait...\n")
+
+          # Loop through every file in directory
+          for i in range(0, len(filePathNames)):
+            sndFilters[audioSelection](makeSound(filePathNames[i]), filePathNames[i])
+            printNow(audioFinished)
+          break
+
+        # increase volume option
+        elif int(audioSelection) == 3 or int(audioSelection) == 4:
+          printNow(audioSubText[int(audioSelection) - 1])
+          showInformation("In the following dialog box, please select your folder of sound files")
+          printNow("\nPlease wait...\n")
+
+          # Loop through every file in directory
+          for i in range(0, len(filePathNames)):
+            volFilters[audioSelection](makeSound(filePathNames[i]), filePathNames[i])
+            printNow(audioFinished)
+          break
+          # all invalid entries fault to here. Prompt user again for selection
+        else:
+          imageSelection = raw_input("Invalid selection, try again: ")
+
+    # quit option. Breaks the outer loop and ends the program.
+    elif selection == "5":
       printNow("\nThank you, come again!")
       break
       
@@ -749,3 +737,36 @@ def decreaseVolume(sndObj, filePath, value):
     # Output
     writeSoundTo(sndObj, filePath.replace('.wav', '_decreaseVolume.wav'))
     return sndObj
+
+############################
+# Batch driver helper functions   
+############################
+def getBatchDir():
+    # Get batch directory
+    return requestString("Please enter the directory that contains the files you wish to manipulate")
+
+def getFileList(batchDir):
+    # File list
+    fileList = []
+    
+    # Determine which files in the directory are actually files and not folders
+    for f in os.listdir(os.path.normcase(batchDir)):
+        filePath = os.path.join(batchDir, f)
+        if os.path.isfile(filePath):
+            fileList.append(f)
+    
+    # Output
+    return fileList
+
+def getFilePaths(batchDir):
+    # File path list
+    filePathList = []
+    
+    # Determine which files in the directory are actually files and not folders
+    for f in os.listdir(os.path.normcase(batchDir)):
+        filePath = os.path.join(batchDir, f)
+        if os.path.isfile(filePath):
+            filePathList.append(filePath)
+    
+    # Output
+    return filePathList
