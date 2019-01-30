@@ -1,18 +1,22 @@
-CREATE TABLE `login` (
-  `userid` varchar(50) NOT NULL DEFAULT '',
-  `password` varchar(50) DEFAULT NULL,
-  `visits` int(11) DEFAULT NULL,
-  `complete_classes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-    
-CREATE TABLE `cc_area_description` (
-  `course_area` varchar(255) NOT NULL DEFAULT '',
-  `area_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`course_area`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP SCHEMA IF EXISTS `cst363`;
 
-INSERT INTO cc_area_description VALUES
+CREATE SCHEMA `cst363` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+CREATE TABLE cst363.`login` (
+	`userid` VARCHAR(50),
+	`password` varchar(50),
+	`visits` int(11),
+	`complete_classes` varchar(255),
+	primary key (`userid`)
+	);
+	
+CREATE TABLE cst363.`cc_area_description` (
+	`course_area` VARCHAR(255),
+	`area_description` VARCHAR(255),
+	primary key (`course_area`)
+);
+
+INSERT INTO cst363.cc_area_description VALUES
 ('A', 'English Communication: 9 semester units'),
 ('A1', 'Oral Communication'),
 ('A2', 'Written Communication'),
@@ -20,8 +24,8 @@ INSERT INTO cc_area_description VALUES
 ('B', 'Scientific Inquiry and Quantitative Reasoning: 12 semester units, with 3 units taken at the upper-division level'),
 ('B1', 'Physical Science'),
 ('B2', 'Life Science'),
-('B3', 'Laboratory Activity(taken in conjunction with B1 or B2)'),
-('B4', 'Mathematics/Quantitative Reasoning'),
+('B3', 'Laboratory Activity(taken in conjunction with B1 or B2'),
+('B4', 'Mathematics/Quatitative Reasoning'),
 ('C', 'Arts and Humanities: 12 semester units, with 3 units taken at the upper-division level'),
 ('C1', 'Arts: Arts, Cinema, Dance, Music, Theater'),
 ('C2', 'Humanities: Literature, Philosophy, Languanges Other than English'),
@@ -38,19 +42,17 @@ INSERT INTO cc_area_description VALUES
 ('D9', 'Psychology'),
 ('E', 'Lifelong Learning and Self-Development: 3 semester units');
 
-CREATE TABLE `cc_courses` (
+CREATE TABLE cst363.`cc_courses` (
   `course_id` int(11) NOT NULL AUTO_INCREMENT,
   `college` varchar(5) NOT NULL,
   `course_code` varchar(8) NOT NULL,
   `course_title` varchar(255) NOT NULL,
   `course_units` int(11) NOT NULL,
   `course_area` varchar(3) NOT NULL,
-  PRIMARY KEY (`course_id`),
-  KEY `course_area_idx` (`course_area`),
-  CONSTRAINT `course_area` FOREIGN KEY (`course_area`) REFERENCES `cc_area_description` (`course_area`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-INSERT INTO cc_courses VALUES
+INSERT INTO cst363.cc_courses VALUES
 (NULL,"RCC","ADJ 1","Introduction to the Administration of Justice",3,"D0"),
 (NULL,"RCC","ADJ 3","Concepts of Criminal Law",3,"D8"),
 (NULL,"RCC","ADJ 9","Law in American Society",3,"D0"),

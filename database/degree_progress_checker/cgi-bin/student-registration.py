@@ -42,10 +42,10 @@ def main():
 
 	# connect to database
 	try:
-		cnx = mysql.connector.connect(user='csumb_dev_rw',
-										password='hahaottershaha',
-										database='csumb_dev',
-										host='csumb-dev.cz9b0xhrnfv1.us-east-1.rds.amazonaws.com')
+		cnx = mysql.connector.connect(user='root',
+										password='password',
+										database='cst363',
+										host='127.0.0.1')
 
 		categoryCursor = cnx.cursor()
 		categoryCursor.execute(grabAllCategories)
