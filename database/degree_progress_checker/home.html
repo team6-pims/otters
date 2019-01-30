@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>College Degree Road Map</title>
+</head>
+<body>
+	<h1> Degree Progress Checker </h1>
+	<p> If you are a new student, please select the 'register' function after selecting your userID and password.<br>
+		Passwords are 4-12 characters in length.<br>
+		<br>
+		If you are a returning student, simply enter your credentials and select 'login'.<br>
+		If you are an admin, an userID and password has been given to you. Enter them and login.</p>
+	
+	<h3> Student Access </h3>
+	
+	<form action="./cgi-bin/home.py" method="post">
+	 UserID:   <input type="text" name="userID" placeholder="S0"/> <br/>
+	 Password: <input type="password" name="password" 
+					  minlength="4" maxlength="12"/> <br/>
+ 	<input type="submit" name="login" value="login"/>
+ 	<input type="submit" name="register" value="register"/>
+	</form>
+	
+</body>
+</html>
