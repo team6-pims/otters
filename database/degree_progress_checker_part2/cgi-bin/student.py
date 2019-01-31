@@ -86,55 +86,15 @@ def main():
 			# second section
 			for section in fullCourseInfo:
 				if section == 'A':
-					print('<b>Section A courses completed: </b>')
-					if sectionA:
-						sumA = enterTableRows(sectionA)
-						print('<br>Total units completed: <b>%d/9</b><br>' % sumA)
-						remainingSubCredits(sectionA, section)
-					else:
-						print('<br><i>No courses completed in this section. </i>')
-						sumA = 0
-						print('<br>Remaining units: %d<br>' % (9 - sumA))
+					listSubs(sectionA, section, 9)
 				elif section == 'B':
-					print('<br><b>Section B courses completed: </b>')
-					if sectionB:
-						sumB = enterTableRows(sectionB)
-						print('<br>Total units: <b>%d/12</b><br>' % sumB)
-						remainingSubCredits(sectionB, section)
-					else:
-						print('<br><i>No courses completed in this section. </i>')
-						sumB = 0
-						print('<br>Remaining units: %d<br>' % (12 - sumB))
+					listSubs(sectionB, section, 12)
 				elif section == 'C':
-					print('<br><b>Section C courses completed: </b>')
-					if sectionC:
-						sumC = enterTableRows(sectionC)
-						print('<br>Total units: <b>%d/12</b><br>' % sumC)
-						remainingSubCredits(sectionC, section)
-					else:
-						print('<br><i>No courses completed in this section. </i>')
-						sumC = 0
-						print('<br>Remaining units: %d<br>' % (12 - sumC))
+					listSubs(sectionC, section, 12)
 				elif section == 'D':
-					print('<br><b>Section D courses completed: </b>')
-					if sectionD:
-						sumD = enterTableRows(sectionD)
-						print('<br>Total units: <b>%d/12</b><br>' % sumD)
-						remainingSubCredits(sectionD, section)
-					else:
-						print('<br><i>No courses completed in this section. </i>')
-						sumD = 0
-						print('<br>Remaining units: %d<br>' % (12 - sumD))
+					listSubs(sectionD, section, 12)
 				elif section == 'E':
-					print('<br><b>Section E courses completed: </b>')
-					if sectionE:
-						sumE = enterTableRows(sectionE)
-						print('<br>Total units: <b>%d/3</b><br>' % sumE)
-						remainingSubCredits(sectionE, section)
-					else:
-						print('<br><i>No courses completed in this section. </i>')
-						sumE = 0
-						print('<br>Remaining units: %d' % (1 - sumE))
+					listSubs(sectionE, section, 3)
 
 		else:
 			print("<p><b>You haven't registered any classes. Please follow the link below to select your classes. \
@@ -151,6 +111,18 @@ def main():
 
 	finally:
 		cnx.close()  # close the connection
+
+def listSubs(section, type, unitTotal):
+	print('<b>Section %s courses completed: </b>' % type)
+	if section:
+		sum = enterTableRows(section)
+		print('<br>Total units completed: <b>%d/9</b><br>' % sum)
+		remainingSubCredits(section, type)
+	else:
+		print('<br><i>No courses completed in this section. </i>')
+		sum = 0
+		print('<br>Remaining units: %d<br>' % (unitTotal - sum))
+	print('<br>')
 
 
 def remainingSubCredits(section, category):
