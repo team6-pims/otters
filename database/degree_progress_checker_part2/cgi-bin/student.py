@@ -129,7 +129,7 @@ def main():
 					print('<br><b>Section E courses completed: </b>')
 					if sectionE:
 						sumE = enterTableRows(sectionE)
-						print('<br>Remaining units: <b>%d</b><br>' % sumE)
+						print('<br>Total units: <b>%d/3</b><br>' % sumE)
 						remainingSubCredits(sectionE, section)
 					else:
 						print('<br><i>No courses completed in this section. </i>')
@@ -197,20 +197,25 @@ def remainingSubCredits(section, category):
 			print('<b>Division under unit requirement! Take another class to exceed 12 units</b><br>')
 	elif category == 'D':
 		allTags = sum.keys()
-		if len(allTags) >= 3:
-			print('<i>Sub-division %s has been satisfied.</i><br>' % tags[0])
-		elif len(allTags) == 2:
+		if len(allTags) >= 4:
+			print('<i>Division %s has been satisfied.</i><br>' % 'D')
+		elif len(allTags) == 3:
 			print('<i>Missing one sub-division satisfactory class from any section other than')
 			for tag in sum:
-				print(' %' % tag)
+				print(' %s' % tag)
 			print('.</i><br>')
-		elif len(allTags) == 1:
+		elif len(allTags) == 2:
 			print('Missing two sub-division satisfactory classes from any section other than')
 			for tag in sum:
-				print(' %' % tag)
+				print(' %s' % tag)
+			print('.</i><br>')
+		elif len(allTags) == 1:
+			print('Missing three sub-division satisfactory classes from any section other than')
+			for tag in sum:
+				print(' %s' % tag)
 			print('.</i><br>')
 		elif tags not in categories:
-			print('<i>Sub-division %s has not been satisfied.</i><br>' % tags)
+			print('<i>Division %s has not been satisfied.</i><br>' % 'D')
 	elif category == 'E':
 		if 'E' in sum and sum['E'] >= 3:
 			print('<i>Division has been satisfied.</i><br>')
