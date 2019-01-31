@@ -91,7 +91,7 @@ def main():
 				redirectTo(URL, user_id)
 				return
 			elif not completedClasses:  # new user, commit all first choices
-				for course_id in seletedClasses:
+				for course_id in selectedClasses:
 					setClasses.execute(insertClassesSQL, (user_id, int(course_id)))
 				cnx.commit()
 				redirectTo(URL, user_id)
