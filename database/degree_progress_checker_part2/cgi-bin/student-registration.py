@@ -26,21 +26,19 @@ def main():
 	
 	print('Content-Type: text/html')    # HTML is following
 	print()                             # blank line, end of headers
-	print()
 	print('<html><head>')
-	print('<TITLE>Degree Progress</TITLE>')
-	print('<body>')
+	print('<TITLE>Update Classes</TITLE>')
+	print('<body><h3>Important!</h3>')
 	print('<p>If this is your first time visiting this page, you must select the classes \
-	you have taken so far. If you are returning, the classes you have taken are in bold. \
-	Once you are finished, click submit to be taken to the default \
-	home page.<br><br>If you have not taken a class for the category, do not select a class.</p>')
+	you have taken so far. If you are returning, the classes you have taken are already selected. \
+	Once you are finished, click submit to be taken to the summary page.<br><i>If you have not \
+	taken a class for the category, do not select a class.</i></p>')
 
 	grabAllCategories = 'select course_area from cc_area_description'
 	grabClassesByType = 'select course_code, course_title, course_id from cc_courses where course_area = %s group by \
 						course_code, course_title, course_id'
 	grabCatDescription = 'select course_area, area_description from cc_area_description where course_area = %s'
-	getClassesSQL = 'select course_id from course_history where userid = %s'
-
+	getCompletedClasses = 'select course_id from course_history where userid = %s'
 
 	# connect to database
 	try:
@@ -69,8 +67,9 @@ def main():
 		# create cursor to grab saved completed classes that a returning user has saved
 		# if a new user, cursor query will return an empty list
 		allComplete = cnx.cursor(buffered=True)
-		allComplete.execute(getClassesSQL, (user_id,))
+		allComplete.execute(getCompletedClasses, (user_id,))
 		allClasses = allComplete.fetchall()
+
 		# allClasses is a list of single value tuples. Need to covert to list of strings
 		completedClasses = []
 		for unit in allClasses:
@@ -90,13 +89,16 @@ def main():
 			if not selectedClasses:  # no selected classes, nothing to commit, go to next page
 				redirectTo(URL, user_id)
 				return
-			elif not completedClasses:  # new user, commit all first choices
+			elif len(selectedClasses) > len(completedClasses):  # adding to class list, returning user
 				for course_id in selectedClasses:
-					setClasses.execute(insertClassesSQL, (user_id, int(course_id)))
+					if course_id in completedClasses:
+						continue
+					else:
+						setClasses.execute(insertClassesSQL, (user_id, int(course_id)))
 				cnx.commit()
 				redirectTo(URL, user_id)
 				return
-			if len(completedClasses) > len(selectedClasses):  # removing a class from list
+			elif len(completedClasses) > len(selectedClasses):  # removing a class from list
 				print(selectedClasses, completedClasses)
 				# convert saved data into list
 				for course_id in selectedClasses:
@@ -108,21 +110,18 @@ def main():
 				cnx.commit()
 				redirectTo(URL, user_id)
 				return
-			else:						  # adding to class list, returning user
+			else:			  # new user, commit all first choices
 				for course_id in selectedClasses:
-					if course_id in completedClasses:
-						continue
-					else:
-						setClasses.execute(insertClassesSQL, (user_id, int(course_id)))
+					setClasses.execute(insertClassesSQL, (user_id, int(course_id)))
 				cnx.commit()
 				redirectTo(URL, user_id)
 				return
 
 		# populate the class list. Returning users previous selected classes are in bold
 		for category in allCategories:
-			# fetch three class IDs at a time
+			# fetch all class info in category
 			classNames.execute(grabClassesByType, category)
-			threeClasses = classNames.fetchmany(size=3)
+			allClasses = classNames.fetchall()
 
 			# fetch the category descriptions which contain headers and sub division descriptions.
 			categoryDescriptions.execute(grabCatDescription, category)
@@ -133,24 +132,23 @@ def main():
 				continue
 			elif category[0] == 'E':  # special requirements, no sub divisions.
 				print('<h2>%s</h2>' % catDesc[1])
-				print('<fieldset>')
-				print('<table>')
-				print('<h4>%s: %s</h4>' % (catDesc[0], catDesc[1]))
-				while len(threeClasses) > 0:
-					createMenuRow(threeClasses, completedClasses)  # write all rows as check list
-					threeClasses = classNames.fetchmany(size=3)  # grab the next row
-				print('</table>')
-				print('</fieldset>')
+				print('<div><b>%s: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, False)  # write all rows as check list
+			elif category[0] == 'C1':  # 4 classes out of two sub divisions
+				print('<div><h4>%sA: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, False)
+				print('<div><b>%sB: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, True)
+			elif category[0] == 'C2':  # 4 classes out of two sub divisions
+				print('<div><b>%sA: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, False)
+				print('<div><b>%sB: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, True)
 			else:
-				print('<fieldset>')
-				print('<table>')
-				print('<h4>%s: %s</h4>' % (catDesc[0], catDesc[1]))
-				while len(threeClasses) > 0:
-					createMenuRow(threeClasses, completedClasses)  # write all rows as check list
-					threeClasses = classNames.fetchmany(size=3)  # grab the next row
-				print('</table>')
-				print('</fieldset>')
-		
+				print('<div><b>%s: %s</b><br>' % (catDesc[0], catDesc[1]))
+				createPulldownMenu(allClasses, completedClasses, False)
+
+		# submit button
 		print('<div><br>')
 		print('<input type="submit" name="submit" value="Finish"/>')
 		print('</div></form>')
@@ -162,43 +160,26 @@ def main():
 		cnx.close()  # close the connection
 
 
-def createMenuRow(cla, all):
-	# convert list of single value tuples to simple list
-
-	print('<tr>')
-	print('<div>')
+def createPulldownMenu(cla, allC, override):
+	print('<select name="classid[]">')
+	print('<option value="">--Select a class--</option>')
 	for oneClass in cla:
-		if oneClass is not None:
-			if str(oneClass[2]) in all:
-				label = oneClass[0] + ", " + oneClass[1]
-				print('<td><b>')
-				print('<input type="checkbox" name="classid[]" id="%s" value="%s" checked>' % (oneClass[1], oneClass[2]))
-				print('<label for="%s">%s</label></b>' % (oneClass[1], label))
-			else:
-				label = oneClass[0] + ", " + oneClass[1]
-				print('<td>')
-				print('<input type="checkbox" name="classid[]" id="%s" value="%s">' % (oneClass[1], oneClass[2]))
-				print('<label for="%s">%s</label>' % (oneClass[1], label))
+		if (str(oneClass[2]) in allC) and (not override):
+			print('<option value = "%s" selected>%s: %s</option>' % (oneClass[2], oneClass[0], oneClass[1]))
 		else:
-			return
-	print('</tr>')
-	print('</div>')
-
+			print('<option value = "%s">%s: %s</option>' % (oneClass[2], oneClass[0], oneClass[1]))
+	print('</select></div><br>')
 
 def redirectTo(redirectURL,cookie):
 	print("Set-Cookie:userid = "+cookie+";")
 	print("Content-type: text/html")
-	#print("Location: %s" % redirectURL)
 	print()
-	print("<html>")
-	print("<head>")
+	print("<html><head>")
 	print('<meta http-equiv="refresh" content="0;url=%s" />' % redirectURL)
 	print("<title>You are going to be redirected</title>")
-	print("</head>")
-	print("<body>")
+	print("</head><body>")
 	print('Redirecting...<a href="%s">Click here if you are not redirected</a>' % redirectURL)
-	print("</body>")
-	print("</html>")
+	print("</body></html>")
 
 
 main()
