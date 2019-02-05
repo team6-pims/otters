@@ -171,7 +171,7 @@ def createPulldownMenu(cla, allC, override):
 	print('</select></div><br>')
 
 def redirectTo(redirectURL,cookie):
-	print("Set-Cookie:userid = "+cookie+";")
+	print("Set-Cookie:userid="+cookie+";")
 	print("Content-type: text/html")
 	print()
 	print("<html><head>")
