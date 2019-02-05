@@ -92,8 +92,8 @@ def main():
 		insert = cnx.cursor()
 		insert.execute(insert_sql, (user_id, user_pw))
 		redirectTo(studentURL, user_id)
+		cnx.commit()
 		return
-	cnx.commit()
 	cnx.close()
 
 def errorMSG(msg):
@@ -104,18 +104,15 @@ def errorMSG(msg):
 	print("</html></body>")
 	
 def redirectTo(redirectURL,cookie):
-	print("Set-Cookie:userid = " + cookie + ";")
+	print("Set-Cookie:userid=" + cookie + ";")
 	print("Content-type: text/html")
-	#print("Location: %s" % redirectURL)
 	print()
-	print("<html>")
-	print("<head>")
+	print("<html><head>")
 	print('<meta http-equiv="refresh" content="0;url=%s" />' % redirectURL)
 	print("<title>You are going to be redirected</title>")
-	print("</head>")
-	print("<body>")
+	print("</head><body>")
 	print('Redirecting...<a href="%s">Click here if you are not redirected</a>' % redirectURL)
-	print("</body>")
-	print("</html>")
-	
+	print("</body></html>")
+
+
 main()
