@@ -1245,5 +1245,5 @@ SELECT
     , ccad.area_description
 FROM cst363.login l
 NATURAL JOIN cst363.course_history ch
-NATURAL JOIN cc_courses ccc
-NATURAL JOIN cc_area_description ccad;
+NATURAL JOIN cst363.cc_courses ccc
+NATURAL JOIN cst363.cc_area_description ccad;
