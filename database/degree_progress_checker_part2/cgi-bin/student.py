@@ -96,12 +96,12 @@ def main():
 				elif section == 'E':
 					listSubs(sectionE, section, 3)
 
+			print('<p>If you wish to enter new classes that you have completed, please push the button below. \
+							Otherwise, you may select "logoff" to leave this page.</p>')
+
 		else:
 			print("<p><b>You haven't registered any classes. Please follow the link below to select your classes. \
 			</b></p>")
-
-		print('<p>If you wish to enter new classes that you have completed, please push the button below. \
-				Otherwise, you may select "logoff" to leave this page.</p>')
 
 		print('<a href="/update-classes.html">Update Classes</a>')
 		#print('<input type="submit" name="logoff" value="Log Off"/>')
@@ -116,12 +116,12 @@ def listSubs(section, type, unitTotal):
 	print('<b>Section %s courses completed: </b>' % type)
 	if section:
 		sum = enterTableRows(section)
-		print('<br>Total units completed: <b>%d/9</b><br>' % sum)
+		print('<br>Total units completed: <b>%d/%d</b><br>' % (sum, unitTotal))
 		remainingSubCredits(section, type)
 	else:
 		print('<br><i>No courses completed in this section. </i>')
 		sum = 0
-		print('<br>Remaining units: %d<br>' % (unitTotal - sum))
+		print('<br>Remaining units: %d/%d<br>' % ((unitTotal - sum), unitTotal))
 	print('<br>')
 
 
@@ -139,6 +139,7 @@ def remainingSubCredits(section, category):
 		else:
 			sum[areaTag] = course[3]
 
+	# print out summary of division.
 	if category == 'A':
 		for sub in A:
 			if sub in sum and sum[sub] >= 3:
@@ -207,19 +208,15 @@ def enterTableRows(courseInfo):
 
 
 def redirectTo(redirectURL, cookie):
-	print("Set-Cookie:userid = "+cookie+";")
+	print("Set-Cookie:userid=" + cookie + ";")
 	print("Content-type: text/html")
-	print("Location: %s" % redirectURL)
 	print()
-	print("<html>")
-	print("<head>")
+	print("<html><head>")
 	print('<meta http-equiv="refresh" content="0;url=%s" />' % redirectURL)
 	print("<title>You are going to be redirected</title>")
-	print("</head>")
-	print("<body>")
+	print("</head><body>")
 	print('Redirecting...<a href="%s">Click here if you are not redirected</a>' % redirectURL)
-	print("</body>")
-	print("</html>")
+	print("</body></html>")
 
 
 main()
