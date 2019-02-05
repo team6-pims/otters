@@ -4,7 +4,7 @@ SELECT
     , SUM(course_units) units_taken
     , COUNT(*) courses_taken
 FROM cst363.master_view
-GROUP BY 1 WITH ROLLUP
+GROUP BY 1 WITH ROLLUP;
 
 -- 2. Retrieve the most taken classes at the college
 SELECT
@@ -12,7 +12,7 @@ SELECT
     , COUNT(*) students_taken
 FROM cst363.master_view
 GROUP BY 1
-ORDER BY 2 DESC
+ORDER BY 2 DESC;
 
 -- 3. Retrieve most popular course areas
 SELECT
@@ -22,7 +22,7 @@ SELECT
     , COUNT(*) courses_taken
 FROM cst363.master_view
 GROUP BY 1, 2
-ORDER BY 3 DESC, 2 DESC
+ORDER BY 3 DESC, 2 DESC;
 
 -- 4. Retrieve student's most frequented course areas
 SELECT
@@ -32,7 +32,7 @@ SELECT
     , COUNT(*) courses_taken
 FROM cst363.master_view
 GROUP BY 1, 2
-ORDER BY 1, 3 DESC, 2 DESC
+ORDER BY 1, 3 DESC, 2 DESC;
 
 -- 5. Retrieve the most unpopular course areas with a count of how many classes that were never taken
 SELECT
@@ -46,4 +46,4 @@ JOIN cst363.cc_area_description ccad
 	ON c.course_area = ccad.course_area
 WHERE m.course_code IS NULL
 GROUP BY 1, 2
-ORDER BY 3 DESC
+ORDER BY 3 DESC;
