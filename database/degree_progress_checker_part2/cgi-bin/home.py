@@ -57,12 +57,11 @@ def main():
 		if row is None: 
 		# do nothing, need to register before logging in
 			errorMSG(unregErr)
-
+			return
 		# only admins have an userID that starts with "A_00"
 		currentID = row[0]
 		check = currentID[0:4]
 		if check == "A_00":
-			visit_number = row[2] + 1
 			cursorb = cnx.cursor()
 			cursorb.execute(update_sql, (user_id, user_pw))
 			redirectTo(adminURL, user_id)
@@ -78,7 +77,7 @@ def main():
 			currentID = id[0]
 			currentPW = id[1]
 			check = currentID[0:4]
-			if currentID == user_id:
+			if currentID == user_id:  # check if userID is in database
 				if check == "A_00":
 					errorMSG(adminErr)
 					return
@@ -88,12 +87,12 @@ def main():
 				else:
 					errorMSG(duplicateErr)
 					return
-		if row is None:
-			cursorb = cnx.cursor()
-			cursorb.execute(insert_sql, (user_id, user_pw))
-			redirectTo(studentRegURL, user_id)
-			return
-
+		# if loop goes to completion and doesn't end the function, this will run
+		# new user
+		insert = cnx.cursor()
+		insert.execute(insert_sql, (user_id, user_pw))
+		redirectTo(studentURL, user_id)
+		return
 	cnx.commit()
 	cnx.close()
 
