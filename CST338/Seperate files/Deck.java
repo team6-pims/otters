@@ -88,7 +88,7 @@ public class Deck {
    private static void allocateMasterPack() {
       //checks if the masterPack has already been allocated
       if (masterPack == null){
-         masterPack = new Card[52];
+         masterPack = new Card[CARDS_PER_PACK];
          char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'A', };
 
          //inserts unique cards into the deck
