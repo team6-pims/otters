@@ -13,7 +13,7 @@ public class Deck {
 
    //Constructor with selected deck packs
    public Deck(int numPacks) {
-      if (( 1 < numPacks ) && ( MAX_PACKS <= 6 )) {
+      if (( 1 < numPacks ) && ( MAX_PACKS > 6 )) {
          System.out.println("Deck size must be: 1 <= numPacks <= 6");
          System.exit(0);
       }
