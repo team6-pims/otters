@@ -2,31 +2,32 @@ package hw3;
 
 public class Deck {
    //holds up to 6 packs of 52 cards
-   public static final int MAX_CARDS = 312;
+   public static final int MAX_PACKS = 6;
+   private static final int CARDS_PER_PACK = 52;
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard = 0;
    private int numPacks;
 
    //Constructor with selected deck packs
+
+   //Constructor with selected deck packs
    public Deck(int numPacks) {
-      if(numPacks <= 0) {
-         System.out.println("Deck size must be more than one.");
+      if (( 1 <= numPacks ) && ( MAX_PACKS <= 6 )) {
+         System.out.println("Deck size must be: 1 < numPacks < 6");
          System.exit(0);
       }
-      if(numPacks*52 > MAX_CARDS) {
-         System.out.println("Too many decks.");
-         System.exit(0);
-      }
+      
+      this.numPacks = numPacks;
       allocateMasterPack();
-      cards = new Card[MAX_CARDS];
+      cards = new Card[numPacks * CARDS_PER_PACK];
       init(numPacks);
    }
-
    //General constructor
+   // default to creating 1 pack of cards
    public Deck() {
       allocateMasterPack();
-      cards = new Card[MAX_CARDS];
+      cards = new Card[CARDS_PER_PACK];
       init(1);
    }
 
@@ -35,7 +36,7 @@ public class Deck {
       int placement = 0;
       //create the deck
       for(int i = 0; i < numPacks; i++) {
-         for(int j = 0; j < 52; j++) {
+         for(int j = 0; j < CARDS_PER_PACK; j++) {
             cards[placement] = masterPack[j];
             placement++;
          }
@@ -72,7 +73,7 @@ public class Deck {
 
    //returns the specified card at a given position
    public Card inspectCard(int k) {
-      if (k > topCard) {
+      if ( (k > topCard) || ( k < 0 ) ){
          //return exception if the entered number is out of bounds
          Card badCard = new Card();
          badCard.errorFlag = true;
