@@ -117,3 +117,12 @@ public class Deck {
       }
    }
 }
+
+/*
+Card placementCard;
+for (placementCard.Suit singleSuit: placementCard.Suit.values()) {
+   for (char singleValue: value) {
+      placementCard = new Card(singleValue, singleSuit);
+      masterPack[placement] = placementCard;
+      placement++;
+*/
