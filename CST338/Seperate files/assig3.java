@@ -2,7 +2,7 @@ package hw3;
 import hw3.Card;
 import hw3.Hand;
 
-public class assign3 {
+public class assig3 {
 
    public static void main(String[] args) {
       // TODO Auto-generated method stub
@@ -24,17 +24,17 @@ public class assign3 {
       System.out.println("Card2: " + newCard2.toString());
       System.out.println("Card3: " + newCard3.toString());
       
-      //Reset cards
-      Card newCard1 = new Card('j', Card.Suit.CLUBS);
-      Card newCard2 = new Card('Q', Card.Suit.HEARTS);
-      Card newCard3 = new Card('2', Card.Suit.SPADES);
+      //New Cards cards
+      Card newCard11 = new Card('j', Card.Suit.CLUBS);
+      Card newCard22 = new Card('Q', Card.Suit.HEARTS);
+      Card newCard33 = new Card('2', Card.Suit.SPADES);
 
       //Make a hand
       Hand hand = new Hand();
       while (hand.getNumCards() < hand.MAX_CARDS) {
-         hand.takeCard(newCard1);
-         hand.takeCard(newCard2);
-         hand.takeCard(newCard3);
+         hand.takeCard(newCard11);
+         hand.takeCard(newCard22);
+         hand.takeCard(newCard33);
       }
       System.out.println("Hand full.\nShowing hand.");
       System.out.println(hand.toString());
