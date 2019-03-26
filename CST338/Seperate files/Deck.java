@@ -46,7 +46,7 @@ public class Deck {
       Card tempValue;
       int rand = 0;
       //go through each card and randomly replace with card in unshuffled deck
-      for(int i = 0; i < (topCard - 1); i++) {
+      for(int i = 0; i < (topCard); i++) {
          //get a random placement in unshuffled deck
          rand = (int)(Math.random() * (cards.length - i) + i);
          tempValue = cards[i];
