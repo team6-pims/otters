@@ -194,6 +194,108 @@ public class assign3 {
    }
 }
 
+class Card {
+
+   public enum Suit {
+      CLUBS, DIAMONDS, HEARTS, SPADES;
+   }
+
+   public char value;
+   public Suit suit;
+   public boolean errorFlag = false;
+   
+   // Constructors 
+   public Card(char value, Suit suit) {
+      set(value, suit);
+   }
+
+   public Card() {
+      set('A', Suit.SPADES);
+   }
+   
+   public Card (Card card2copy) {
+      set( card2copy.value, card2copy.suit );
+   }
+   
+   // Get functions
+   
+   public char getValue() {
+      return this.value;
+   }
+   
+   public Suit getSuit() {
+      return this.suit;
+   }
+   
+   public boolean getErrorFlag () {
+      return this.errorFlag;
+   }
+   
+   /* toString
+    * Return a string representation of class
+    * or returns [Invaid Card] if errorFlag
+    * is true
+    */
+   public String toString() {
+      if (errorFlag) {
+         return "[Invalid Card]";
+      } else {
+         return value + " of " + suit;
+      }
+   }
+
+   /* set
+    * setter for class variables calls
+    * isValid to check for correctness of
+    * inputs. If all valid, sets variables
+    * if not, then does not set and sets errorFlag
+    * to true
+    */
+   public boolean set(char value, Suit suit) {
+      value = Character.toUpperCase(value);
+
+      if(isValid(value, suit)) {
+         this.value = value;
+         this.suit = suit;
+         return true;
+      } 
+      else {
+         this.errorFlag = true;
+         return false;
+      }
+   }
+
+   
+   /* equals
+    * Check for equality, true if equal
+    * false if not
+    */
+   public boolean equals( Card card ) {
+      return ((card.value == this.value) && (this.suit == card.suit));
+   }
+
+
+   /*
+    * isValid 
+    *   Fcn only needs to validate card value,
+    *   since input to calling functions take
+    *   enum as input, it is automatically
+    *   validated
+    *   
+    *   input is expected to be a capitol character or number as a char
+    *   */
+   private boolean isValid (char value, Suit suit) {
+      char[] acceptableCards = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 
+            'T', 'J', 'Q', 'K', };      
+      for (char card: acceptableCards) {
+         if (card == value) {
+            return true;
+         }
+      }
+      return false;   
+   }
+}
+
 class Hand {
    public static final int MAX_CARDS = 50;
    private Card[] myCards;
@@ -281,8 +383,9 @@ class Hand {
       return numCards;
    }
    
-   // If the passed index is out of bounds or indicates an empty index, it
-   // returns a bad card, otherwise returns the card at the index
+   /* If the passed index is out of bounds or indicates an empty index, it
+    * returns a bad card, otherwise returns the card at the index
+    */
    public Card inspectCard(int k) {
       if ((k >= MAX_CARDS) || (k < 0) || (myCards[k] == null)) {
          Card badCard = new Card();
@@ -296,114 +399,14 @@ class Hand {
    }
 }
 
-class Card {
-
-   public enum Suit {
-      CLUBS, DIAMONDS, HEARTS, SPADES;
-   }
-
-   public char value;
-   public Suit suit;
-   public boolean errorFlag = false;
-   
-   /* Constructors */
-   public Card(char value, Suit suit) {
-      set(value, suit);
-   }
-
-   public Card() {
-      set('A', Suit.SPADES );
-   }
-   
-   public Card (Card card2copy) {
-      set( card2copy.value, card2copy.suit );
-   }
-   
-   // getters
-   
-   public char getValue() {
-      return this.value;
-   }
-   
-   public Suit getSuit() {
-      return this.suit;
-   }
-   
-   public boolean getErrorFlag () {
-      return this.errorFlag;
-   }
-   
-   /* toString
-    * Return a string representation of class
-    * or returns [Invaid Card] if errorFlag
-    * is true*/
-   public String toString() {
-      if ( errorFlag ) {
-         return "[Invalid Card]";
-      } else {
-         return value + " of " + suit;
-      }
-   }
-
-   /*set
-    * setter for class variables calls
-    * isValid to check for correctness of
-    * inputs. If all valid, sets variables
-    * if not, then does not set and sets errorFlag
-    * to true*/
-   public boolean set(char value, Suit suit) {
-
-      value = Character.toUpperCase(value);
-
-      if(isValid(value, suit)) {
-         this.value = value;
-         this.suit = suit;
-         return true;
-      } else {
-         this.errorFlag = true;
-         return false;
-      }
-   }
-
-   
-   /*equals
-    * Check for equality, true if equal
-    * false if not*/
-   public boolean equals( Card card ) {
-      return ( ( card.value == this.value ) && ( this.suit == card.suit  ) );
-   }
-
-
-   /*
-    * isValid 
-    *   Fcn only needs to validate card value,
-    *   since input to calling functions take
-    *   enum as input, it is automatically
-    *   validated
-    *   
-    *   input is expected to be a capitol character or number as a char
-    *   */
-   private boolean isValid (char value, Suit suit) {
-      char[] acceptableCards = {'A', '2', '3', '4', '5', '6', '7', '8', '9', 
-            'T', 'J', 'Q', 'K', };      
-      for (char card: acceptableCards) {
-         if (card == value) {
-            return true;
-         }
-      }
-      return false;   
-   }
-}
-
 class Deck {
-   //holds up to 6 packs of 52 cards
    public static final int MAX_PACKS = 6;
    public static final int CARDS_PER_PACK = 52;
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard;
 
-   //Constructor with selected deck packs
+   // Constructor with selected deck packs
    public Deck(int numPacks) {
       if (( numPacks < 1) && ( numPacks > MAX_PACKS )) {
          System.out.println("Deck size must be: 1 <= numPacks <= 6");
@@ -414,35 +417,36 @@ class Deck {
       cards = new Card[numPacks * CARDS_PER_PACK];
       init(numPacks);
    }
-   //General constructor
-   // default to creating 1 pack of cards
+   
+   // General constructor defaulting to creating 1 pack of cards
    public Deck() {
       allocateMasterPack();
       cards = new Card[CARDS_PER_PACK];
       init(1);
    }
 
-   //Create deck based on how many packs entered.
+   // Create deck based on how many packs entered.
    public void init(int numPacks) {
       int placement = 0;
-      //create the deck
+      
       for(int i = 0; i < numPacks; i++) {
          for(int j = 0; j < CARDS_PER_PACK; j++) {
             cards[placement] = masterPack[j];
             placement++;
          }
       }
-      //assign value to top card
+      // assign value to top card
       topCard = placement - 1;
    }
 
-   //Shuffle the deck
+   /* shuffle() reassigns the pointers in cards[] based on a randomly
+    * generated typcasted int which is the index for another card in
+    * cards[].
+    */
    public void shuffle() {
       Card tempValue;
       int rand = 0;
-      //go through each card and randomly replace with card in unshuffled deck
       for(int i = 0; i < (topCard - 1); i++) {
-         //get a random placement in unshuffled deck
          rand = (int)(Math.random() * (cards.length - i) + i);
          tempValue = cards[i];
          cards[i] = cards[rand];
@@ -450,41 +454,42 @@ class Deck {
       }
    }
 
-   //returns the top card and remove it from the deck.
+   // returns the top card and shortens the deck size.
    public Card dealCard() {
       Card dealCard = cards[topCard];
       topCard--;
       return dealCard;
    }
 
-   //returns the int of the top card
+   // returns the size of the deck
    public int topCard() {
       return this.topCard;
    }
 
-   //returns the specified card at a given position
+   // returns the specified card at a given position
    public Card inspectCard(int k) {
-      if ( (k > topCard) || ( k < 0 ) ){
+      if ((k > topCard) || (k < 0)){
          //return exception if the entered number is out of bounds
          Card badCard = new Card();
          badCard.errorFlag = true;
          return badCard;
       } else {
          //return card if it is within the deck's values
-         Card goodCard = cards[k-1];
+         Card goodCard = cards[k - 1];
          return goodCard;
       }
    }
 
    private static void allocateMasterPack() {
-      //checks if the masterPack has already been allocated
+      // checks if the masterPack has already been allocated
       if (masterPack == null){
          masterPack = new Card[CARDS_PER_PACK];
-         char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'A', };
+         char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', 
+               '3', '2', 'A', };
          Card placementCard;
          int placement = 0;
          
-         //inserts unique cards into the deck
+         // inserts unique cards into the deck
          for (Card.Suit singleSuit: Card.Suit.values()) {
             for (char singleValue: value) {
                placementCard = new Card(singleValue, singleSuit);
