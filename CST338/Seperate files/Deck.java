@@ -38,7 +38,7 @@ public class Deck {
          }
       }
       //assign value to top card
-      topCard = placement;
+      topCard = placement - 1;
    }
 
    //Shuffle the deck
