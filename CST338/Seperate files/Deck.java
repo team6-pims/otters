@@ -3,7 +3,7 @@ package hw3;
 public class Deck {
    //holds up to 6 packs of 52 cards
    public static final int MAX_PACKS = 6;
-   private static final int CARDS_PER_PACK = 52;
+   public static final int CARDS_PER_PACK = 52;
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard = 0;

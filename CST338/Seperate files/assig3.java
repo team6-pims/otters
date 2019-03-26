@@ -5,7 +5,6 @@ import hw3.Hand;
 public class assig3 {
 
    public static void main(String[] args) {
-      // TODO Auto-generated method stub
       
       Card newCard1 = new Card('j', Card.Suit.CLUBS);
       Card newCard2 = new Card('Q', Card.Suit.HEARTS);
@@ -31,7 +30,7 @@ public class assig3 {
 
       //Make a hand
       Hand hand = new Hand();
-      while (hand.getNumCards() < hand.MAX_CARDS) {
+      while (hand.getNumCards() < Hand.MAX_CARDS) {
          hand.takeCard(newCard11);
          hand.takeCard(newCard22);
          hand.takeCard(newCard33);
@@ -40,18 +39,17 @@ public class assig3 {
       System.out.println(hand.toString());
       
       //Play the hand
-      int i;
       Card showCard;
       Card inspectedCard;
       
       System.out.println("Testing inspectCard()");
-      inspectedCard = hand.inspectCard(hand.MAX_CARDS - 1);
+      inspectedCard = hand.inspectCard(Hand.MAX_CARDS - 1);
       System.out.println(inspectedCard.toString());
-      inspectedCard = hand.inspectCard(hand.MAX_CARDS);
+      inspectedCard = hand.inspectCard(Hand.MAX_CARDS);
       System.out.println(inspectedCard.toString());
       
       System.out.println("\nPlaying hand:\n");
-      for (i = 0; i < (hand.MAX_CARDS); i++) {
+      for (int i = 0; i < (Hand.MAX_CARDS); i++) {
          showCard = hand.playCard();
          System.out.println((hand.getNumCards() + 1) + ": " 
          + showCard.toString());
@@ -80,6 +78,7 @@ public class assig3 {
       System.out.println("Shuffing deck of cards");
       myDeck.shuffle();
       System.out.println("Dealing shuffled cards");
+
       for (int i = 0; i < Deck.CARDS_PER_PACK * numPacks; i++) {
          Card dealtCard = myDeck.dealCard();
          System.out.println("Card" + i + ": " + dealtCard.toString());   
@@ -102,6 +101,7 @@ public class assig3 {
       myDeck.shuffle();
       System.out.println("Deck is now shuffled");
       System.out.println("Now dealing shuffled cards");
+
       for (int i = 0; i < Deck.CARDS_PER_PACK * 1; i++) {
          Card dealtCard = myDeck.dealCard();
          System.out.println("Card" + i + ": " + dealtCard.toString());   
