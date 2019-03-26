@@ -114,7 +114,7 @@ public class Assig3 {
       System.out.println("End of dealing shuffled cards");
       
       System.out.println("\n--------Deck & Hand Interaction--------");
-      System.out.println("------Unshuffled Deck------");
+
       // Declare P4 variables
       int numPlayers, numCards;
       
@@ -122,18 +122,16 @@ public class Assig3 {
       final int MAX_PLAYERS = 10;
 
       boolean validInput = false;
-      Scanner userInput = new Scanner(System.in);  // Instantiate scanner object
+      Scanner userInput = new Scanner(System.in);  // Instantiate scanner object for user input
       
       do
       {
-         // Request user input
+         /* Request user input and verify it is within parameters
+            Exit loop if input is good */
          System.out.print("Enter number of players in game (1-10): ");
          numPlayers = userInput.nextInt();
 
-         // Verify input
          if (numPlayers >= MIN_PLAYERS && numPlayers <= MAX_PLAYERS)
-            
-            // Break loop if user input is good
             validInput = true;
 
       } while (!validInput);
@@ -142,58 +140,62 @@ public class Assig3 {
       Deck deck = new Deck();                   // Single deck, not shuffled
       Hand players[] = new Hand[numPlayers];    // Array containing player hands
       
-      // Give each player a hand
+      /*
+       * Give each player a hand and 
+       * Retrieve number of cards in deck 
+       */
       for (int i = 0; i < numPlayers; i++)
          players[i] = new Hand();
       
-      // Get number of cards in deck and store it
       numCards = deck.topCard();                
 
-      // Deal cards to players
+      /*
+       * Deal cards to players by checking top of deck and verifying card is valid.
+       * If valid card, then give it to the player
+       */
       for (int i = 0; i <= numCards; i++)
       {
-         // Get a card from top of deck
          Card tmpCard = deck.dealCard();
 
-         // Check if card is valid
          if (!tmpCard.getErrorFlag())
          {
-            // Give card to player
             players[i % players.length].takeCard(tmpCard);
          }
       }
 
       // Output players' hands
+      System.out.println("------Unshuffled Deck------");
+
       for (int i = 1; i <= players.length; i++)
       {
          System.out.println("Player " + i + " Hand: ");
          System.out.println(players[i-1].toString());
       }
 
-      // Get cards back from players
+      /* Reset player hands, reset and shuffle deck */
       for (int i = 0; i < players.length; i++)
          players[i].resetHand();
       
-      // Reset and shuffle deck
       deck.init(1);
       deck.shuffle();
-      System.out.println("\n------Shuffled Deck------");
 
-      // Deal cards to players
+      /*
+       * Deal cards to players by checking top of deck and verifying card is valid.
+       * If valid card, then give it to the player
+       */
       for (int i = 0; i <= numCards; i++)
       {
-         // Get a card from top of deck
          Card tmpCard = deck.dealCard();
 
-         // Check if card is valid
          if (!tmpCard.getErrorFlag())
          {
-            // Give card to player
             players[i % players.length].takeCard(tmpCard);
          }
       }
 
       // Output players' hands
+      System.out.println("\n------Shuffled Deck------");
+
       for (int i = 1; i <= players.length; i++)
       {
          System.out.println("Player " + i + " Hand: ");
