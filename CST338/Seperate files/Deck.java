@@ -10,7 +10,7 @@ public class Deck {
 
    //Constructor with selected deck packs
    public Deck(int numPacks) {
-      if (( 1 < numPacks ) && ( numPacks > MAX_PACKS )) {
+      if ((numPacks > 1) && (numPacks > MAX_PACKS)) {
          System.out.println("Deck size must be: 1 <= numPacks <= 6");
          System.exit(0);
       }
@@ -43,7 +43,7 @@ public class Deck {
 
    //Shuffle the deck
    public void shuffle() {
-      Card tempValue = new Card();
+      Card tempValue;
       int rand = 0;
       //go through each card and randomly replace with card in unshuffled deck
       for(int i = 0; i < (topCard - 1); i++) {
@@ -57,7 +57,6 @@ public class Deck {
 
    //returns the top card and remove it from the deck.
    public Card dealCard() {
-      
       Card dealCard = cards[topCard];
       topCard--;
       return dealCard;
@@ -70,14 +69,14 @@ public class Deck {
 
    //returns the specified card at a given position
    public Card inspectCard(int k) {
-      if ( (k > topCard) || ( k < 0 ) ){
+      if ((k > topCard) || (k < 0)){
          //return exception if the entered number is out of bounds
          Card badCard = new Card();
          badCard.errorFlag = true;
          return badCard;
       } else {
          //return card if it is within the deck's values
-         Card goodCard = cards[k-1];
+         Card goodCard = cards[k - 1];
          return goodCard;
       }
    }
