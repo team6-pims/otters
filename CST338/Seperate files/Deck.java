@@ -7,18 +7,14 @@ public class Deck {
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard = 0;
-   private int numPacks;
-
-   //Constructor with selected deck packs
 
    //Constructor with selected deck packs
    public Deck(int numPacks) {
-      if (( 1 < numPacks ) && ( MAX_PACKS > 6 )) {
+      if (( 1 < numPacks ) && ( numPacks > MAX_PACKS )) {
          System.out.println("Deck size must be: 1 <= numPacks <= 6");
          System.exit(0);
       }
       
-      this.numPacks = numPacks;
       allocateMasterPack();
       cards = new Card[numPacks * CARDS_PER_PACK];
       init(numPacks);
@@ -42,7 +38,7 @@ public class Deck {
          }
       }
       //assign value to top card
-      topCard = placement + 1;
+      topCard = placement;
    }
 
    //Shuffle the deck
@@ -61,7 +57,8 @@ public class Deck {
 
    //returns the top card and remove it from the deck.
    public Card dealCard() {
-      Card dealCard = cards[topCard-1];
+      
+      Card dealCard = cards[topCard];
       topCard--;
       return dealCard;
    }
@@ -90,39 +87,17 @@ public class Deck {
       if (masterPack == null){
          masterPack = new Card[CARDS_PER_PACK];
          char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'A', };
-
-         //inserts unique cards into the deck
+         Card placementCard;
          int placement = 0;
-         for(int j = 0; j < value.length; j++) {
-            Card placementCard = new Card(value[j], Card.Suit.CLUBS);
-            masterPack[placement] = placementCard;
-            placement++;
-         }
-         for(int j = 0; j < value.length; j++) {
-            Card placementCard = new Card(value[j], Card.Suit.DIAMONDS);
-            masterPack[placement] = placementCard;
-            placement++;
-
-         }
-         for(int j = 0; j < value.length; j++) {
-            Card placementCard = new Card(value[j], Card.Suit.HEARTS);
-            masterPack[placement] = placementCard;
-            placement++;
-         }
-         for(int j = 0; j < value.length; j++) {
-            Card placementCard = new Card(value[j], Card.Suit.SPADES);
-            masterPack[placement] = placementCard;
-            placement++;
+         
+         //inserts unique cards into the deck
+         for (Card.Suit singleSuit: Card.Suit.values()) {
+            for (char singleValue: value) {
+               placementCard = new Card(singleValue, singleSuit);
+               masterPack[placement] = placementCard;
+               placement++;
+            }
          }
       }
    }
 }
-
-/*
-Card placementCard;
-for (placementCard.Suit singleSuit: placementCard.Suit.values()) {
-   for (char singleValue: value) {
-      placementCard = new Card(singleValue, singleSuit);
-      masterPack[placement] = placementCard;
-      placement++;
-*/
