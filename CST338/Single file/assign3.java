@@ -1,3 +1,25 @@
+/* 
+   Team 6 - PIMS
+   Alejandro Caicedo
+   Ivan Alejandre
+   Matthew Chan
+   Randy Son
+
+   CST338 - Software Engineering
+   Week 3 - Deck of Cards
+
+   Summary:
+   This project simulates a deck of cards by utilizing
+   three classes: Card, Hand, Deck. Hand and Deck are
+   extensions of the Card class. With this project,
+   we are able to play with up to 6 packs of cards,
+   and shuffle, deal those cards to players' hands.
+   The public class Assig3 brings it all together
+   by testing each class and their interaction with 
+   each other.
+*/
+
+
 import java.util.*;
 
 public class assign3 {
