@@ -1,3 +1,7 @@
+/**
+ * Assignment 4 - Optical Barcode Readers and Writers
+ */
+
 public class Assig4 {
 
     public static void main(String[] args)
