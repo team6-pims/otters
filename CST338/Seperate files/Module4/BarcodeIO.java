@@ -1,7 +1,7 @@
 /**
  * BarcodeIO
  */
-interface BarcodeIO {
+public interface BarcodeIO {
 
     public boolean scan(BarcodeImage bc);
 

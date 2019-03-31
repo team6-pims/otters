@@ -1,6 +1,4 @@
-package hw4;
-
-public class BarcodeImage implements Cloneable{
+public class BarcodeImage implements Cloneable {
 
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
@@ -23,11 +21,10 @@ public class BarcodeImage implements Cloneable{
 
    public BarcodeImage(String[] strData) {
 
+      imageData = new boolean[MAX_HEIGHT][MAX_WIDTH];
       //potential for strData to be too big
       //if so just initialize to all 0s
       if (!checkSize(strData)) {
-         imageData = new boolean[MAX_HEIGHT][MAX_WIDTH];
-
          for (int i = 0; i < MAX_HEIGHT; i++) {
             for (int j = 0; j < MAX_WIDTH; j++) {
                imageData[i][j] = false;
@@ -36,15 +33,22 @@ public class BarcodeImage implements Cloneable{
          return;
       }
       
-      int rows = strData.length;
-      int cols = strData[0].length();
-      
-      imageData = new boolean[rows][cols];
+      int rowsIndex = strData.length - 1;
+      //int cols = strData[0].length();
 
-      for (int i = (rows - 1); i >= 0 ; i--) {
-         for (int j = 0; j < cols; j++) {
-            imageData[i][j] = char2bool( strData[i].charAt(j) );
-         }   
+      for (int i = MAX_HEIGHT - 1; i >= 0 ; i--) {
+         for (int j = 0; j < MAX_WIDTH; j++) {
+            //imageData[i][j] = char2bool( strData[i].charAt(j) );
+            if (rowsIndex >= 0 && j < strData[rowsIndex].length()) {
+               if (strData[rowsIndex].charAt(j) == DataMatrix.BLACK_CHAR)
+                  setPixel(i, j, true);
+               else
+                  setPixel(i, j, false);
+            } else
+               setPixel(i, j, false);
+
+         }
+         rowsIndex--;
       }
 
    }
@@ -134,13 +138,13 @@ public class BarcodeImage implements Cloneable{
       return false;
    }
 
-   private boolean char2bool (char c) {
-      if (c == '1') {
+   /*private boolean char2bool (char c) {
+      if (c == '1' || c == DataMatrix.BLACK_CHAR) {
          return true;
       } else {
          return false;
       }
-   }
+   }*/
    
    private char bool2char(boolean bool) {
       if (bool) {
