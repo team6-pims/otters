@@ -62,7 +62,29 @@ public class DataMatrix implements BarcodeIO{
    }
    
    private void cleanImage() {
-      
+     //scans the BarcodeImage to determine where the image is
+	  //checks the lower left for a true position in the array
+	  boolean check = false;
+	  int checkWidth = 0;
+	  int checkHeight = 0;
+	  while(check == false)
+	  {
+		  for(int i = 0; i < MAX_WIDTH; i++)
+		  {
+			  for(int j = (MAX_HEIGHT - 1); j >= 0 ; j--)
+			  {
+				  check = image.getPixel(i, j);
+				  checkWidth = i;
+				  checkHeight = MAX_HEIGHT - j;
+				  if(check == true)
+					  break;
+			  }
+			  if(check == true)
+				  break;
+		  }
+	  }
+	  shiftImageLeft(checkWidth);
+	  shiftImageDown(checkHeight);
    }
    
    /* Helper methods */
@@ -70,16 +92,39 @@ public class DataMatrix implements BarcodeIO{
    /*
     * cleanImage helper functions
     */
-   private void moveImageToLowerLeft() {
-      
-   }
    
    private void shiftImageDown(int offset) {
-      
+      boolean value;
+	   if(offset != 0)
+      {
+		   //for each width move the image down
+		   for(int i = 0; i < MAX_WIDTH; i++)
+		   {
+			   for(int j = (MAX_Height - 1); j >= 0; j--)
+			   {
+				   value = image.getPixel(i, (j - offset));
+				   image.setPixel(i, j, value);
+				   image.setPixel(i, (j - offset), false);
+			   }
+		   }
+	   }
    }
    
    private void shiftImageLeft(int offset) {
-      
+      boolean value;
+      if(offset !=0)
+      {
+         //for each height move the image
+    	   for(int i = 0; i < MAX_HEIGHT; i++)
+    	   {
+            for(int j = 0; j < (MAX_WIDTH - offset); j++)
+            {
+               value = image.getPixel((j + offset), i);
+               image.setPixel(j, i, value);
+               image.setPixel((j+offset), i, false);
+            }
+         }
+      }
    }
    
    /*
