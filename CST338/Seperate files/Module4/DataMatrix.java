@@ -132,8 +132,7 @@ public class DataMatrix implements BarcodeIO {
     * After the image is cleaned up, we only need to look
     * at the last row, first column.
     * This time, we go from bottom to top, and count how
-    * many ones and subtract from MAX_WIDTH to
-    * determine signal width.
+    * many ones
     */
    private int computeSignalHeight() {
       int height = 0;
@@ -266,7 +265,7 @@ public class DataMatrix implements BarcodeIO {
 
    private void clearImage()
    {
-      for(int i = 0; i < BarcodeImage.MAX_HEIGHT; i++) {        
+      for (int i = 0; i < BarcodeImage.MAX_HEIGHT; i++) {        
          for (int j = 0; j < BarcodeImage.MAX_WIDTH; j++) {
             image.setPixel(i, j, false);
          }
