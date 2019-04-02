@@ -57,18 +57,41 @@ public class DataMatrix implements BarcodeIO {
    
    public boolean generateImageFromText() {
       int asciiValue;
+      int asteriskASCII = 42;
       int index = 0;
 
       clearImage();
-      actualHeight = 10; // 8 bits plus bottom and top borders
-      actualWidth = text.length() + 2; // + 2 for left and right borders
-
+      actualHeight = 10; // 8 bits plus bottom and top spline
+      actualWidth = text.length() + 2; // + 2 for left and right spline
+      // write top spline row to image
+      
+      for (int i = 0; i < actualWidth; i++) {
+         if (i % 2 == 0) {
+            image.setPixel(0,i,true);
+         }
+         else {
+            image.setPixel(0,i,false);
+         }
+      }
+      
+      // first column should be black chars
+      writeCharToCol(index, asteriskASCII);
+      
+      // fill data
       while (index < text.length()) {
          asciiValue = (int) text.charAt(index);
          writeCharToCol(index + 1, asciiValue); // Offset by 1 to give room for left border
          index++;
       }
 
+      // write border column
+      writeCharToCol(index, asteriskASCII);
+      
+      // Write bottom spline
+      for (int i = 0; i < actualWidth; i++) {
+         image.setPixel(actualHeight, i, true);
+      }
+      
       return true;
    }
 
@@ -106,7 +129,29 @@ public class DataMatrix implements BarcodeIO {
     */
 
    public void displayImagetoConsole() {
-      System.out.println("TODO: displayImageToConsole()");
+      //Assume that image is the data plus spline. To output, need to add border
+      // Print line of dashes.
+      for (int i = 0; i < (actualWidth + 2); i++) {
+         System.out.print("-");
+      }
+      // print vertical border, then data row
+      for (int i = 0; i < actualHeight; i++) {
+         System.out.print("|");
+         for (int j = 0; j < actualWidth; j++) {
+            if (image.getPixel(i,j)) {
+               System.out.print(BLACK_CHAR);
+            } 
+            else {
+               System.out.print(WHITE_CHAR);
+            }
+         }
+         System.out.println("|");
+      }
+      
+      // print out the bottom dash line
+      for (int i = 0; i < (actualWidth + 2); i++) {
+         System.out.print("-");
+      //System.out.println("TODO: displayImageToConsole()");
    }
    
    /**
@@ -124,7 +169,6 @@ public class DataMatrix implements BarcodeIO {
          else
             break;
       }
-
       return BarcodeImage.MAX_WIDTH - zeroes;
    }
    
@@ -244,22 +288,35 @@ public class DataMatrix implements BarcodeIO {
     * to represent our value.
     */
    private boolean writeCharToCol(int col, int code) {
+      // code is asterisk, special column to write
+      if ((col = 0) && (code = 42)) {
+         for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
+            image.setPixel(col,i,true);
+         }
+      }
+      else if ((col = actualWidth) && (code = 42)) {
+         for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
+            if (( i % 2) == 0) {
+               image.setPixel(col,i,true);
+            }
+         }
+      else {
       /* Max height of data is 8, due to 2^8 = 128
          Anything past it is a weird symbol */
-      final int ASTERISK_PER_COLUMN = 8;
-      int maxAsciiValue = 128;
+         final int ASTERISK_PER_COLUMN = 8;
+         int maxAsciiValue = 128;
 
-      if (col > BarcodeImage.MAX_WIDTH)
-         return false;
+         if (col > BarcodeImage.MAX_WIDTH)
+            return false;
       
-      for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
-         if (code >= maxAsciiValue) {
-            code -= maxAsciiValue;
-            image.setPixel(i + 1, col, true); // Offset by one to give space for border
+         for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
+            if (code >= maxAsciiValue) {
+               code -= maxAsciiValue;
+               image.setPixel(i + 1, col, true); // Offset by one to give space for border
+            }
+            maxAsciiValue /= 2;
          }
-         maxAsciiValue /= 2;
       }
-
       return true;
    }
 
