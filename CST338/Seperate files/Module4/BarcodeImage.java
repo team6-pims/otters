@@ -43,7 +43,7 @@ public class BarcodeImage implements Cloneable {
       }
    }
 
-   public BarcodeImage(String[] strData, char parseTrueChar) {
+      public BarcodeImage(String[] strData, char parseTrueChar) {
 
       imageData = new boolean[MAX_HEIGHT][MAX_WIDTH];
       //potential for strData to be too big
@@ -58,23 +58,19 @@ public class BarcodeImage implements Cloneable {
       }
       
       int rowsIndex = strData.length - 1;
-      //int cols = strData[0].length();
+      int cols = strData[0].length();
 
-      for (int i = MAX_HEIGHT - 1; i >= 0 ; i--) {
-         for (int j = 0; j < MAX_WIDTH; j++) {
-            //imageData[i][j] = char2bool( strData[i].charAt(j) );
-            if (rowsIndex >= 0 && j < strData[rowsIndex].length()) {
-               if (strData[rowsIndex].charAt(j) == parseTrueChar)
-                  setPixel(i, j, true);
-               else
-                  setPixel(i, j, false);
-            } else
+      for (int i = rowsIndex; i >= 0 ; i--) {
+         for (int j = 0; j < cols; j++) {
+            if (doesCharEqualParse(strData[i].charAt(j),parseTrueChar) ) {
+               setPixel(i, j, true);
+               
+            } else {
                setPixel(i, j, false);
-
-         }
-         rowsIndex--;
+               
+            }
+         }  
       }
-
    }
 
 
