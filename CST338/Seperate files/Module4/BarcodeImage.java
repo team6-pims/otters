@@ -168,7 +168,7 @@ public class BarcodeImage implements Cloneable {
       } else {
          return false;
       }
-   /
+   }
    
    private char bool2char(boolean bool) {
       if (bool) {
