@@ -288,28 +288,27 @@ public class DataMatrix implements BarcodeIO {
     * we start with values of 128 and move down to 1
     * to represent our value.
     */
-   private boolean writeCharToCol(int col, int code) {
-      int ASTERISK_PER_COLUMN = 8;
+  private boolean writeCharToCol(int col, int code) {
+      final int ASTERISK_PER_COLUMN = 8;
+      int maxAsciiValue = 128;
+      
+      if (col > BarcodeImage.MAX_WIDTH)
+         return false;
+      
       // code is asterisk, special column to write
       if ((col == 0) && (code == 42)) {
-         for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
-            image.setPixel(col,i,true);
+         for (int i = 0; i < actualHeight; i++) 
+            image.setPixel(i,col,true);
+      }
+      else if ((col == (actualWidth) && (code == 42))) {
+         for (int i = 1; i < (actualHeight); i++) {
+            if ((i % 2) == 0) 
+               image.setPixel(i,col,true);
          }
       }
-      else if ((col == actualWidth) && (code == 42)) {
-         for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
-            if (( i % 2) == 0) {
-               image.setPixel(col,i,true);
-            }
-         }
-      } else {
+      else {
       /* Max height of data is 8, due to 2^8 = 128
          Anything past it is a weird symbol */
-         
-         int maxAsciiValue = 128;
-
-         if (col > BarcodeImage.MAX_WIDTH)
-            return false;
       
          for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
             if (code >= maxAsciiValue) {
