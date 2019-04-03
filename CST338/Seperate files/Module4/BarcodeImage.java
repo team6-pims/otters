@@ -162,13 +162,13 @@ public class BarcodeImage implements Cloneable {
       return false;
    }
 
-   /*private boolean char2bool (char c) {
+   private boolean char2bool (char c) {
       if (c == '1' || c == DataMatrix.BLACK_CHAR) {
          return true;
       } else {
          return false;
       }
-   }*/
+   /
    
    private char bool2char(boolean bool) {
       if (bool) {
