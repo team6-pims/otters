@@ -295,7 +295,7 @@ public class DataMatrix implements BarcodeIO {
             image.setPixel(col,i,true);
          }
       }
-      else if ((col = actualWidth) && (code = 42)) {
+      else if ((col == actualWidth) && (code == 42)) {
          for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
             if (( i % 2) == 0) {
                image.setPixel(col,i,true);
