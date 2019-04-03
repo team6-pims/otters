@@ -134,10 +134,11 @@ public class DataMatrix implements BarcodeIO {
       for (int i = 0; i < (actualWidth + 2); i++) {
          System.out.print("-");
       }
+      
       // print vertical border, then data row
-      for (int i = 0; i < actualHeight; i++) {
-         System.out.print("|");
-         for (int j = 0; j < actualWidth; j++) {
+      for (int i = (rowsUpperLimit - actualHeight + 1); i <= rowsUpperLimit; i++) {
+         System.out.print("\n|");
+         for (int j = 0; j <= actualWidth; j++) {
             if (image.getPixel(i,j)) {
                System.out.print(BLACK_CHAR);
             } 
@@ -145,14 +146,15 @@ public class DataMatrix implements BarcodeIO {
                System.out.print(WHITE_CHAR);
             }
          }
-         System.out.println("|");
+         System.out.print("|");
       }
       
       // print out the bottom dash line
-      for (int i = 0; i < (actualWidth + 2); i++) {
+      System.out.print("\n");
+      for (int i = 0; i < (actualWidth+2); i++) {
          System.out.print("-");
       }
-      //System.out.println("TODO: displayImageToConsole()");
+      System.out.println();
    }
    
    /**
