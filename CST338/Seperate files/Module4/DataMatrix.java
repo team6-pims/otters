@@ -66,32 +66,31 @@ public class DataMatrix implements BarcodeIO {
       // write top spline row to image
       
       for (int i = 0; i < actualWidth; i++) {
-         if (i % 2 == 0) {
-            image.setPixel(0,i,true);
-         }
-         else {
-            image.setPixel(0,i,false);
-         }
+         if (i % 2 == 0) 
+            image.setPixel(index,i,true);
+         else 
+            image.setPixel(index,i,false);
       }
       
-      // first column should be black chars
+      // left column should be all black chars
       writeCharToCol(index, asteriskASCII);
       
       // fill data
-      while (index < text.length()) {
+      while (index < (text.length())) {
          asciiValue = (int) text.charAt(index);
          writeCharToCol(index + 1, asciiValue); // Offset by 1 to give room for left border
          index++;
       }
 
-      // write border column
-      writeCharToCol(index, asteriskASCII);
+      // right border column, alternating with black on odd rows
+      writeCharToCol((actualWidth - 1), asteriskASCII);
       
       // Write bottom spline
       for (int i = 0; i < actualWidth; i++) {
-         image.setPixel(actualHeight, i, true);
+         image.setPixel((actualHeight - 1), i, true);
       }
       
+      cleanImage();
       return true;
    }
 
