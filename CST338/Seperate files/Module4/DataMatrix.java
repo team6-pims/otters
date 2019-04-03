@@ -151,6 +151,7 @@ public class DataMatrix implements BarcodeIO {
       // print out the bottom dash line
       for (int i = 0; i < (actualWidth + 2); i++) {
          System.out.print("-");
+      }
       //System.out.println("TODO: displayImageToConsole()");
    }
    
