@@ -302,7 +302,7 @@ public class DataMatrix implements BarcodeIO {
                image.setPixel(col,i,true);
             }
          }
-      else {
+      } else {
       /* Max height of data is 8, due to 2^8 = 128
          Anything past it is a weird symbol */
          
