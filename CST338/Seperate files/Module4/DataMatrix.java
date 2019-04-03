@@ -290,7 +290,7 @@ public class DataMatrix implements BarcodeIO {
     */
    private boolean writeCharToCol(int col, int code) {
       // code is asterisk, special column to write
-      if ((col = 0) && (code = 42)) {
+      if ((col == 0) && (code == 42)) {
          for (int i = 0; i < ASTERISK_PER_COLUMN; i++) {
             image.setPixel(col,i,true);
          }
