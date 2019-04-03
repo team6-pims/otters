@@ -159,7 +159,7 @@ public class BarcodeImage implements Cloneable {
    }
 
    private boolean char2bool (char c) {
-      if (c == '1' || c == DataMatrix.BLACK_CHAR) {
+      if (c == '1') {
          return true;
       } else {
          return false;
@@ -171,6 +171,14 @@ public class BarcodeImage implements Cloneable {
          return '1';
       }
       return '0';
+   }
+   
+   private boolean doesCharEqualParse(char c, char parseChar) {
+      if (c == parseChar) {
+         return true;
+      } else {
+         return false;
+      }
    }
 
 }
