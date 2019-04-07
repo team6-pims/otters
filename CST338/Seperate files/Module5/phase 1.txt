@@ -47,7 +47,7 @@ public class Assig5 {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                      ".gif";
             System.out.println(filename);
-            icon[i] = new ImageIcon(filename);
+            icon[(i * 13) + j] = new ImageIcon(filename);
             filename = "images/";
          }    
       }
