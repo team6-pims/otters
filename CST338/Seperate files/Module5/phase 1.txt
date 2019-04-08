@@ -37,8 +37,8 @@ public class Assig5 {
    }
    
    static void loadCardIcons() {
-      final int MAX_CARD_VALUES = 13;
-      final int MAX_CARD_SUITS = 3;
+      int MAX_CARD_VALUES = 13;
+      int MAX_CARD_SUITS = 3;
       String filename = "images/";
       
       // build suits
