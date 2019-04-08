@@ -46,7 +46,7 @@ public class Assig5 {
          for (int j = 0; j < MAX_CARD_VALUES; j++) {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                      ".gif";
-            System.out.println(filename);
+            //System.out.println(filename);
             icon[(i * 13) + j] = new ImageIcon(filename);
             filename = "images/";
          }    
