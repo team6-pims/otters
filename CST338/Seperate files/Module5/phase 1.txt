@@ -37,8 +37,8 @@ public class Assig5 {
    }
    
    static void loadCardIcons() {
-      int MAX_CARD_VALUES = 13;
-      int MAX_CARD_SUITS = 3;
+      int MAX_CARD_VALUES = 14;
+      int MAX_CARD_SUITS = 4;
       String filename = "images/";
       
       // build suits
@@ -47,7 +47,7 @@ public class Assig5 {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                      ".gif";
             //System.out.println(filename);
-            icon[(i * 13) + j] = new ImageIcon(filename);
+            icon[(i * MAX_CARD_VALUES) + j] = new ImageIcon(filename);
             filename = "images/";
          }    
       }
@@ -76,10 +76,12 @@ public class Assig5 {
       case 9:
          return "9";
       case 10:
+         return "T";
+      case 11:
          return "J";
-      case 11: 
+      case 12: 
          return "Q";
-      case 12:
+      case 13:
          return "K";
       default:
          return String.valueOf(k);
