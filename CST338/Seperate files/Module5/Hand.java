@@ -8,10 +8,9 @@ public class Hand {
    // Constructor selected hand size
    public Hand(int handSize) {
       if (handSize <= 0) {
-         System.out.println("Hand size cannot be equal to or less than zero.");
-         System.exit(0);
+         handSize = 0;
       }
-      myCards = new Card[MAX_CARDS];
+      myCards = new Card[handSize];
    }
    
    // General constructor
@@ -102,25 +101,19 @@ public class Hand {
    }
    
    void sort() {
-      Card.arraySort(myCards,numCards );
+      Card.arraySort(myCards,numCards);
    }
    
-   
-   public Card playCard(int cardIndex)
-   {
-      if ( numCards == 0 ) //error
-      {
-         //Creates a card that does not work
-         return new Card('M', Card.Suit.SPADES);
-      }
+   public Card playCard(int cardIndex) {
+      if (numCards == 0) 
+         return new Card('M', Card.Suit.SPADES);  //error card
+      
       //Decreases numCards.
       Card card = myCards[cardIndex];
       
       numCards--;
       for(int i = cardIndex; i < numCards; i++)
-      {
          myCards[i] = myCards[i+1];
-      }
       
       myCards[numCards] = null;
       
