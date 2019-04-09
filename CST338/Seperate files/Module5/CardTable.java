@@ -6,21 +6,43 @@ public class CardTable extends JFrame{
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
    private int numCardsPerHand;
    private int numPlayers;
-   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
+   public JPanel panelComputerHand, panelHumanHand, panelPlayArea;
 
    public CardTable(String title, int NumCardsPerHand, int NumPlayers)  {
+      super(title);
+      
       if (!(NumCardsPerHand > 0 && NumCardsPerHand < MAX_CARDS_PER_HAND)) 
          numCardsPerHand = MAX_CARDS_PER_HAND;;
 
       if (!(NumPlayers > 0 && NumPlayers < MAX_PLAYERS))
          numPlayers = MAX_PLAYERS;
       
-      super()
       numCardsPerHand = NumCardsPerHand;
       numPlayers = NumPlayers;
+      
+      setLayout(new BorderLayout());
+
+      panelComputerHand = new JPanel();
+      panelComputerHand.setLayout(new GridLayout(1, 7));
+      panelComputerHand.setBorder(new TitledBorder(new LineBorder(Color.black),
+            "Computer's Hand:"));
+      add(panelComputerHand, BorderLayout.NORTH);
+      
+      panelPlayArea = new JPanel();
+      panelPlayArea.setLayout(new GridLayout(2, numPlayers));
+      panelPlayArea.setBorder(new TitledBorder(new LineBorder(Color.black),
+            "Play Area:"));
+      add(panelPlayArea, BorderLayout.CENTER);
+      
+      panelHumanHand = new JPanel();
+      panelHumanHand.setLayout(new GridLayout(1, NumCardsPerHand));
+      panelHumanHand.setBorder(new TitledBorder(new LineBorder(Color.black),
+            "Player's Hand:"));
+      add(panelHumanHand, BorderLayout.SOUTH);
+
    }
    
-   /*Getters*/
+   /**Getters*/
    public int getNumCardsPerHand() {
       return numCardsPerHand;
    }
@@ -29,7 +51,7 @@ public class CardTable extends JFrame{
       return numPlayers;
    }
 
-   /*Setters
+   /**Setters
     * Probably not needed?*/
    public boolean setNumCardsPerHand(int newNum) {
       if (!(numCardsPerHand > 0 && numCardsPerHand < MAX_CARDS_PER_HAND))
