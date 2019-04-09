@@ -176,6 +176,7 @@ public class highCard {
       int unusedCardsPerPack = null;
       int players = 2;
       int maxHandCards = 7;
+      int[] winnings;
       CardGameFramework highCardGame = newCardGameFramework(
          numPacksPerDeck, numJokersPerPack,
          numUnusedCardsPerPack, unusedCardsPerPack,
