@@ -99,7 +99,7 @@ public class Deck {
 
    //returns number of cards in deck
    public int getNumCards() {
-      return topCard + 1;
+      return (topCard + 1);
    }
 
    //returns the top card and remove it from the deck.
