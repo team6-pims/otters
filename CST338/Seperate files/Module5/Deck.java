@@ -94,7 +94,7 @@ public class Deck {
 
    //Sort the deck
    public void sort() {
-      arraySort(cards, topCard + 1);
+      Card.arraySort(cards, (topCard + 1));
    }
 
    //returns number of cards in deck
