@@ -119,7 +119,7 @@ class Card {
 
       while (!arraySorted) {
          arraySorted = true;
-         for (int i = 0; i < (arrayToSort.length - 1); i++) {
+         for (int i = 0; i < (arraySize - 1); i++) {
             if (suitGreaterThan(arrayToSort[i].suit, arrayToSort[i + 1].suit)) {
                // if suit is greater then we 
                // must swap
