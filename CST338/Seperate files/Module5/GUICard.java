@@ -11,10 +11,9 @@ public class GUICard {
       loadCardIcons();
    }
    
-   /*Load Card Icons + Helpers*/
+   /**Load Card Icons + Helpers*/
    public static void loadCardIcons() {
-      
-      if (iconCards != null) 
+      if (iconsLoaded) 
          return;
       
       final int MAX_CARD_VALUES = 13;
@@ -22,19 +21,21 @@ public class GUICard {
       String filename = "images/";
 
       // build suits
-      for (int i = 0; i < MAX_CARD_SUITS; i++) {
-         for (int j = 0; j < MAX_CARD_VALUES; j++) {
+      for (int i = 0; i <= MAX_CARD_SUITS; i++) {
+         for (int j = 0; j <= MAX_CARD_VALUES; j++) {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                   ".gif";
             iconCards[j][i] = new ImageIcon(filename);
+            System.out.println(filename);
             filename = "images/";
          }    
       }
       
       iconBack = new ImageIcon("images/BK.gif");
+      iconsLoaded = true;
    }
    
-   static String turnIntIntoCardValue(int k) {
+   public static String turnIntIntoCardValue(int k) {
       switch(k) {
       case 0:
          return "X";
@@ -69,7 +70,7 @@ public class GUICard {
       }
    }
    
-   private static String turnIntIntoCardSuit(int k) {
+   public static String turnIntIntoCardSuit(int k) {
       String suit = "";
       
       switch(k) {
@@ -86,7 +87,7 @@ public class GUICard {
       }
    }
    
-   /*getIcon and helpers*/
+   /** getIcon and helpers*/
    public static Icon getIcon(Card card) {
       if (card.errorFlag) {
          //return error?
@@ -95,6 +96,7 @@ public class GUICard {
       int cardValueIndex = getIconValueIndex(card.value);
       int suitIndex = getIconSuitIndex(card.suit);
       
+      System.out.println(cardValueIndex + " " + suitIndex);
       //icon does not support clone() AND icon doesnt 
       // have a copy constructor... nope their safe :)
       return iconCards[cardValueIndex][suitIndex];
@@ -122,7 +124,7 @@ public class GUICard {
          return 8;
       case '9':
          return 9;
-      case 't':
+      case 'T':
          return 10;
       case 'J':
          return 11;
@@ -150,7 +152,7 @@ public class GUICard {
       }
    }
    
-   /*get BackCardIcon*/
+   /** get BackCardIcon*/
    public static Icon getBackCardIcon() {
       return iconBack;
    }
