@@ -26,7 +26,6 @@ public class GUICard {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                   ".gif";
             iconCards[j][i] = new ImageIcon(filename);
-            System.out.println(filename);
             filename = "images/";
          }    
       }
@@ -96,7 +95,6 @@ public class GUICard {
       int cardValueIndex = getIconValueIndex(card.value);
       int suitIndex = getIconSuitIndex(card.suit);
       
-      System.out.println(cardValueIndex + " " + suitIndex);
       //icon does not support clone() AND icon doesnt 
       // have a copy constructor... nope their safe :)
       return iconCards[cardValueIndex][suitIndex];
