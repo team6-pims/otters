@@ -19,7 +19,7 @@ public class CardTable extends JFrame{
       if (!(NumPlayers > 0 && NumPlayers < MAX_PLAYERS)) {
          numPlayers = MAX_PLAYERS;
       }
-
+      super()
       numCardsPerHand = NumCardsPerHand;
       numPlayers = NumPlayers;
 
