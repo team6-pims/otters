@@ -3,7 +3,6 @@ import javax.swing.*;
 import Card;
 
 public class GUICard {
-   
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
    private static Icon iconBack;
    static boolean iconsLoaded = false;
@@ -15,9 +14,8 @@ public class GUICard {
    /*Load Card Icons + Helpers*/
    public static void loadCardIcons() {
       
-      if (iconCards != null) {
+      if (iconCards != null) 
          return;
-      }
       
       final int MAX_CARD_VALUES = 13;
       final int MAX_CARD_SUITS = 3;
@@ -28,15 +26,14 @@ public class GUICard {
          for (int j = 0; j < MAX_CARD_VALUES; j++) {
             filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
                   ".gif";
-            
             iconCards[j][i] = new ImageIcon(filename);
             filename = "images/";
          }    
       }
       
       iconBack = new ImageIcon("images/BK.gif");
-      
    }
+   
    static String turnIntIntoCardValue(int k) {
       switch(k) {
       case 0:
@@ -71,9 +68,10 @@ public class GUICard {
          return String.valueOf(k);
       }
    }
+   
    private static String turnIntIntoCardSuit(int k) {
       String suit = "";
-
+      
       switch(k) {
       case 0:
          return suit = "C";
@@ -94,14 +92,15 @@ public class GUICard {
          //return error?
          
       }
-      int cardValIdx = getIconValueIdx(card.value);
-      int suitIdx = getIconSuitIdx(card.suit);
+      int cardValueIndex = getIconValueIndex(card.value);
+      int suitIndex = getIconSuitIndex(card.suit);
       
       //icon does not support clone() AND icon doesnt 
       // have a copy constructor... nope their safe :)
-      return iconCards[cardValIdx][suitIdx];
+      return iconCards[cardValueIndex][suitIndex];
    }
-   private static int getIconValueIdx(char val) {
+   
+   private static int getIconValueIndex(char val) {
       switch (val) {
       case 'X':
          return 0;
@@ -135,7 +134,8 @@ public class GUICard {
          return 13;
       }
    }
-   private static int getIconSuitIdx(Card.Suit suit) {
+   
+   private static int getIconSuitIndex(Card.Suit suit) {
       switch (suit) {
       case CLUBS:
          return 0;
@@ -154,6 +154,4 @@ public class GUICard {
    public static Icon getBackCardIcon() {
       return iconBack;
    }
-    
-   
 }
