@@ -1,4 +1,4 @@
-public class Card {
+class Card {
    public enum Suit {
       CLUBS, DIAMONDS, HEARTS, SPADES;
    }
@@ -21,6 +21,21 @@ public class Card {
       set( cardToCopy.value, cardToCopy.suit );
    }
 
+   public Card (String value, String suit) {
+      if (suit == "C") {
+         set(value.charAt(0), Suit.CLUBS);
+      }
+      else if (suit == "D") {
+         set(value.charAt(0), Suit.DIAMONDS);
+      }
+      else if (suit == "H") {
+         set(value.charAt(0), Suit.HEARTS);
+      }
+      else if (suit == "S") {
+         set(value.charAt(0), Suit.SPADES);
+      }
+   }
+   
    // getters
    public char getValue() {
       return this.value;
