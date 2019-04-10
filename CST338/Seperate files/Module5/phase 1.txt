@@ -1,0 +1,107 @@
+import javax.swing.*;
+import java.awt.*;
+
+public class Assig5 {
+
+   static final int NUM_CARD_IMAGES = 57;
+   static Icon[] icon = new ImageIcon[NUM_CARD_IMAGES];
+
+   public static void main(String[] args) {
+
+      int k;
+      
+      // prepare the image icon array
+      loadCardIcons();
+      
+      // establish main frame in which program will run
+      JFrame frmMyWindow = new JFrame("Card Room");
+      frmMyWindow.setSize(1150, 650);
+      frmMyWindow.setLocationRelativeTo(null);
+      frmMyWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      // set up layout which will control placement of buttons, etc.
+      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);   
+      frmMyWindow.setLayout(layout);
+      
+      // prepare the image label array
+      JLabel[] labels = new JLabel[NUM_CARD_IMAGES];
+      for (k = 0; k < NUM_CARD_IMAGES; k++)
+         labels[k] = new JLabel(icon[k]);
+      
+      // place your 3 controls into frame
+      for (k = 0; k < NUM_CARD_IMAGES; k++)
+         frmMyWindow.add(labels[k]);
+
+      // show everything to the user
+      frmMyWindow.setVisible(true);
+   }
+   
+   static void loadCardIcons() {
+      int MAX_CARD_VALUES = 14;
+      int MAX_CARD_SUITS = 4;
+      String filename = "images/";
+      
+      // build suits
+      for (int i = 0; i < MAX_CARD_SUITS; i++) {
+         for (int j = 0; j < MAX_CARD_VALUES; j++) {
+            filename += turnIntIntoCardValue(j) + turnIntIntoCardSuit(i) +
+                     ".gif";
+            //System.out.println(filename);
+            icon[(i * MAX_CARD_VALUES) + j] = new ImageIcon(filename);
+            filename = "images/";
+         }    
+      }
+   }
+   
+   static String turnIntIntoCardValue(int k) {
+      switch(k) {
+      case 0:
+         return "X";
+      case 1:
+         return "A";
+      case 2:
+         return "2";
+      case 3:
+         return "3";
+      case 4:
+         return "4";
+      case 5:
+         return "5";
+      case 6:
+         return "6";
+      case 7:
+         return "7";
+      case 8:
+         return "8";
+      case 9:
+         return "9";
+      case 10:
+         return "T";
+      case 11:
+         return "J";
+      case 12: 
+         return "Q";
+      case 13:
+         return "K";
+      default:
+         return String.valueOf(k);
+      }
+   }
+   
+   static String turnIntIntoCardSuit(int k) {
+      String suit = "";
+   
+      switch(k) {
+      case 0:
+         return suit = "C";
+      case 1:
+         return suit = "D";
+      case 2:
+         return suit = "H";
+      case 3:
+         return suit = "S";
+      default:
+         return suit;
+      }
+   }
+}
