@@ -143,7 +143,7 @@ class CardGameFramework
           cardIndex < 0 || cardIndex > numCardsPerHand - 1)
       {
          //Creates a card that does not work
-         return new Card('M', Card.Suit.spades);      
+         return new Card('M', Card.Suit.SPADES);      
       }
    
       // return the card played
