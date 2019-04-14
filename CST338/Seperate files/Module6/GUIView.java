@@ -1,23 +1,16 @@
 package hw6;
 
+import java.text.*;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
-/*INCOMPLETE
- * 
- * Still need to figure out how to use CardGameFramework
- *    > Should it be a static in the GUIView class
- *       Or should it be in the Model?
- *       TBD
- * */
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /*The View component is used for 
  * all the UI logic of the application. 
  * For example, the Customer view will 
@@ -25,126 +18,31 @@ import java.awt.event.ActionListener;
  * text boxes, dropdowns, etc. that the 
  * final user interacts with.*/
 public class GUIView {
-   
-   private CardTable cardtable;
-   private static  int NUM_PLAYERS;
-   private static  int NUM_CARDS_PER_HAND;
+   private static CardTable cardTable;
+   private static int NUM_PLAYERS;
+   private static int NUM_CARDS_PER_HAND;
    
    private static int SIZE_ROW = 800;
    private static int SIZE_COL = 600;
-   
-   private static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
-   private static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND];  
-   
-   private static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS];
-   private static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS]; 
+   private static JLabel[] computerLabels;
+   private static JButton[] humanLabels;  
+   private static JLabel[] playedCardLabels;
+   private static JLabel[] playLabelText; 
+   private static JButton quitButton, start;
+   private static JLabel timerLabel, deckIcon, cardsInDeckRemaining, 
+   cardsRemainString;
    
    private static int numPacksPerDeck = 1;
    private static int numJokersPerPack = 2;
    private static int numUnusedCardsPerPack = 0;
    private static Card[] unusedCardsPerPack = null;
-   
-   
-   /*Implement local action listener class*/
-   public class cardPressListener implements ActionListener {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-         int humanLableToHand = 0;
-
-         for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-            if (e.getSource() == humanLabels[i]) {
-
-               Hand playerHand = highCardGame.getHand(0);
-               int playerHandSize = playerHand.getNumCards();
-               //Hand computerHand = highCardGame.getHand(1);
-               //int compHandSize = playerHand.getNumCards();
-
-               //relate what user chose to hand
-               for (int jj = 0; jj < playerHandSize; jj++ ) {
-                  if (GUICard.getIcon(playerHand.inspectCard(jj)) == humanLabels[i].getIcon()) {
-                     humanLableToHand = jj;
-                     break;
-                  }
-               }
-
-               humanLabels[i].setVisible(false);
-               computerLabels[i].setVisible(false);
-
-               Card userCard = new Card(highCardGame.playCard(1, humanLableToHand));
-               Icon userIcon = new ImageIcon();
-               userIcon = GUICard.getIcon(userCard);
-               playedCardLabels[0].setIcon(userIcon);
-
-               Card computerCard = new Card(highCardGame.playCard(0, humanLableToHand ));
-               Icon computerIcon = new ImageIcon();
-               computerIcon  = GUICard.getIcon(computerCard);
-               playedCardLabels[1].setIcon(computerIcon);
-
-               usedCards[usedCardCtr] = i;
-               usedCardCtr++;
-
-               if (Card.cardGreaterThan(userCard, computerCard)) {
-                  playerWinnings[playerWinCounter] = userCard;
-                  playerWinnings[playerWinCounter + 1] = computerCard;
-                  playerWinCounter += 2;
-               }
-               else {
-                  computerWinnings[computerWinCounter] = userCard;
-                  computerWinnings[computerWinCounter + 1] = computerCard;
-                  computerWinCounter += 2;
-               }
-
-               if (playerHandSize == 1) {
-                  cardtable.panelPlayArea.removeAll();
-                  cardtable.panelPlayArea.setLayout(new GridLayout(0,1));
-                  JLabel playerScore = new JLabel(String.valueOf(
-                        playerWinCounter));
-                  JLabel computerScore = new JLabel(String.valueOf(
-                        computerWinCounter));
-                  JLabel winner = new JLabel("Winner is:", JLabel.CENTER);
-                  JLabel winValue;
-                  if (playerWinCounter > computerWinCounter) 
-                     winValue = new JLabel("YOU!", JLabel.CENTER);
-                  else 
-                     winValue = new JLabel("NOT YOU!", JLabel.CENTER);
-
-                  JButton quitButton = new JButton("Quit.");
-                  quitButtonListener quitButtonEar = new quitButtonListener();
-                  quitButton.addActionListener(quitButtonEar);
-                  cardtable.panelPlayArea.add(winner);
-                  cardtable.panelPlayArea.add(winValue);
-                  cardtable.panelPlayArea.add(quitButton);
-                  cardtable.panelComputerHand.add(computerScore);
-                  cardtable.panelHumanHand.add(playerScore);
-                  break;
-               }
-
-               for (JLabel label: playedCardLabels)
-                  cardtable.panelPlayArea.add(label);
-               break;
-
-            }
-         }
-      }
-   };
-
-   /*End local action listener class*/
-   
-   /*Begin local quit button listener*/
-   public class  quitButtonListener implements ActionListener {
-      public void actionPerformed(ActionEvent e) {
-         System.exit(0);
-      }
-   };
-   /*End local quit button listener*/
-   
+    
    public GUIView() {
       NUM_PLAYERS = 2;
       NUM_CARDS_PER_HAND = 7;
       String defaultName = new String();
       defaultName = NUM_PLAYERS + " Person Table";
-      cardtable = new CardTable(defaultName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
+      cardTable = new CardTable(defaultName, NUM_CARDS_PER_HAND, NUM_PLAYERS);
       constructorCommonality();
    }
    
@@ -153,74 +51,165 @@ public class GUIView {
       this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
       String defaultName = new String();
       defaultName = NUM_PLAYERS + " Person Table";
-      cardtable = new CardTable(defaultName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
+      cardTable = new CardTable(defaultName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
       constructorCommonality();
    }
    
    public GUIView(String TableName,  int NUM_PLAYERS, int NUM_CARDS_PER_HAND) {
       this.NUM_PLAYERS = NUM_PLAYERS;
       this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
-      cardtable = new CardTable(TableName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
+      cardTable = new CardTable(TableName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
       constructorCommonality();
    }
    
    private boolean constructorCommonality() {
       try {
-         cardtable.setSize(SIZE_ROW, SIZE_COL);
-         cardtable.setLocationRelativeTo(null);
-         cardtable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         
-         cardPressListener listener = new cardPressListener();
-         
-         // blank cards for computer
-         for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-            computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
-         }
+         computerLabels = new JLabel[NUM_CARDS_PER_HAND];
+         humanLabels = new JButton[NUM_CARDS_PER_HAND];  
+         playedCardLabels  = new JLabel[NUM_PLAYERS];
+         playLabelText  = new JLabel[NUM_PLAYERS]; 
+         cardTable.setSize(SIZE_ROW, SIZE_COL);
+         cardTable.setLocationRelativeTo(null);
+         cardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                   
-         // cards shown for player
-         for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
-            humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
-            humanLabels[i].setBorderPainted(false);
-            humanLabels[i].addActionListener(listener);
-         }
-         
-         // create the played text
-         playLabelText[0] = new JLabel("Computer", JLabel.CENTER);
-         playLabelText[1] = new JLabel("Player", JLabel.CENTER);
-         
-         // ADD LABELS TO PANELS -----------------------------------------
-         for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
-            cardtable.panelComputerHand.add(computerLabels[i]);
-
-         for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
-            cardtable.panelHumanHand.add(humanLabels[i]);
-
-         for (int i = 0; i < NUM_PLAYERS; i++) 
-            playedCardLabels[i] = new JLabel(GUICard.getBackCardIcon());
-
-         for (JLabel label: playedCardLabels) 
-            cardtable.panelPlayArea.add(label);
-
-         for (JLabel label: playLabelText) 
-            cardtable.panelPlayArea.add(label);
-         
+         /* player pushes start to deal their hand and populate computer hand
+          * also starts the timer.*/
+         start = new JButton("Start game.");
+         cardTable.panelTimer.add(start);
          return true;
       } catch (Exception e){
          return false;
       } 
    }
    
+   void addStartListener(ActionListener listenForStart) {
+      start.addActionListener(listenForStart);
+   }
+   
+   void addCardListener(ActionListener listenForCardPress) {
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
+         humanLabels[i].addActionListener(listenForCardPress);
+      }
+   }
+   
+   void addQuitListener(ActionListener listenForQuit) {
+      quitButton.addActionListener(listenForQuit);
+   }
+   
+   public void startGame(Hand playerHand, int deckSize) {
+      
+      // blank cards for computer
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
+         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+      
+      // cards shown for player
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) {
+         humanLabels[i] = new JButton(GUICard.getIcon(
+               playerHand.inspectCard(i)));
+         humanLabels[i].setBorderPainted(false);
+         //humanLabels[i].addActionListener(listenForCardPress);
+      }
+      
+      // create the played text
+      playLabelText[0] = new JLabel("Computer", JLabel.CENTER);
+      playLabelText[1] = new JLabel("Player", JLabel.CENTER);
+  
+      // ADD LABELS TO PANELS -----------------------------------------
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
+         cardTable.panelComputerHand.add(computerLabels[i]);
+      
+      for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
+         cardTable.panelHumanHand.add(humanLabels[i]);
+      
+      // add the timer label to the board
+      timerLabel = new JLabel("00:00", JLabel.CENTER);
+      timerLabel.setBorder(new TitledBorder(new LineBorder(Color.black),
+            "Time Elasped:"));
+      cardTable.panelTimer.add(timerLabel);
+      
+      // set up play area
+      for (int i = 0; i < NUM_PLAYERS; i++) 
+         playedCardLabels[i] = new JLabel(GUICard.getBackCardIcon());
+      
+      for (JLabel label: playedCardLabels) 
+         cardTable.panelPlayArea.add(label);
+      
+      // place deck and counter
+      deckIcon = new JLabel(GUICard.getBackCardIcon());
+      cardTable.panelDeck.add(deckIcon);
+      cardsRemainString = new JLabel("Cards left:");
+      cardTable.panelDeck.add(cardsRemainString);
+      cardsInDeckRemaining = new JLabel(Integer.toString(deckSize), 
+            JLabel.CENTER);
+      
+      cardTable.panelDeck.add(cardsInDeckRemaining);
+      
+      for (JLabel label: playLabelText) 
+         cardTable.panelPlayArea.add(label);
+      
+      // show everything to the user
+      cardTable.setVisible(true);
+      
+      // timer
+      start.setText("Stop Timer");
+      
+   }
+   
+   
+   // ALEJANDRO: How did you shrink the displayed hand in the GUI from last week?
+   // Can you implement that here? When the deck is emptied, and the hand shrinks,
+   // the cards display a bad card, remain visible.
+   public void reDrawPlayerHand(Hand playerHand, int deckSize) {
+      for (int i = 0; i < playerHand.getNumCards(); i++) {
+         cardTable.panelHumanHand.removeAll();
+         humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
+         humanLabels[i].setBorderPainted(false);
+      }   
+      cardsInDeckRemaining.setText(Integer.toString(deckSize));
+   }
+   
    public boolean setVisible(boolean visibility) {
       try {
-         cardtable.setVisible(visibility);
+         cardTable.setVisible(visibility);
          return true;
       } catch (Exception e) {
          return false;
       }
-      
    }
    
+   public void endGame(int playerWins, int computerWins) {
+      cardTable.panelPlayArea.removeAll();
+      
+      cardTable.panelPlayArea.setLayout(new GridLayout(0,1));
+      JLabel playerScore = new JLabel(String.valueOf(
+            playerWins));
+      JLabel computerScore = new JLabel(String.valueOf(
+            computerWins));
+      JLabel winner = new JLabel("Winner is:", JLabel.CENTER);
+      JLabel winValue;
+      if (playerWins > computerWins) 
+         winValue = new JLabel("YOU!", JLabel.CENTER);
+      else 
+         winValue = new JLabel("NOT YOU!", JLabel.CENTER);
+
+      JButton quitButton = new JButton("Quit.");
+      cardTable.panelPlayArea.add(winner);
+      cardTable.panelPlayArea.add(winValue);
+      cardTable.panelPlayArea.add(quitButton);
+      cardTable.panelComputerHand.add(computerScore);
+      cardTable.panelHumanHand.add(playerScore);
+   }
+   
+
    /*Getters*/
+   public String getStartStop() {
+      return start.getText();
+   }
+   
+   public JButton[] getHumanLabels() {
+      return humanLabels;
+   }
+   
    public static int getSizeRow() {
       return SIZE_ROW;
    }
@@ -228,24 +217,6 @@ public class GUIView {
    public static int getSizeCol() {
       return SIZE_COL;
    }
-   
-   /*Getters*/
-   public static boolean setSizeRow(int newRow) {
-      if (newRow < 0) {
-         return false;
-      }
-      SIZE_ROW = newRow;
-      return true;
-   }
-
-   public static boolean setSizeCol(int newCol) {
-      if (newCol < 0) {
-         return false;
-      }
-      SIZE_COL = newCol;
-      return true;
-   }
-   
    
    public static int getNumPacksPerDeck() {
       return numPacksPerDeck;
@@ -263,8 +234,52 @@ public class GUIView {
       return unusedCardsPerPack;
    }
    
+   // setters
+   public boolean setStartStop(String label) {
+      if (!(label == null || label == "")) {
+         start.setText(label);
+         return true;
+      }
+      else
+         return false;
+   }
    
+   public boolean setTimer(int mins, int secs) {
+      DecimalFormat twoPosition = new DecimalFormat("00");
+      String minute = twoPosition.format(mins);
+      String second = twoPosition.format(secs);
+      String time =  minute + ":" + second;
 
+      timerLabel.setText(time);
+      return false;
+   }
+   
+   public boolean setPlayAreaIcon(int playerIndex, Icon icon) {
+      if (playerIndex < NUM_PLAYERS && playerIndex >= 0) {
+         playedCardLabels[playerIndex].setIcon(icon);
+         return true;
+      }
+      else 
+         return false;
+   }
+   
+   public static boolean setSizeRow(int newRow) {
+      if (newRow < 0) {
+         return false;
+      }
+      SIZE_ROW = newRow;
+      return true;
+   }
+
+   
+   public static boolean setSizeCol(int newCol) {      
+      if (newCol < 0) {
+         return false;
+      }
+      SIZE_COL = newCol;
+      return true;
+   }
+   
    public static boolean setNumPacksPerDeck(int newNum) {
       if (newNum < 0) {
          return false;
@@ -281,7 +296,6 @@ public class GUIView {
       return true;
    }
 
-
    public static boolean setNumUnusedCardsPerPack(int newNum) {
       if (newNum < 0) {
          return false;
@@ -289,53 +303,4 @@ public class GUIView {
       numUnusedCardsPerPack = newNum;
       return true;
    }
-   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
