@@ -100,6 +100,10 @@ public class GUIView {
       rightPile.addActionListener(listenForPilePress);
    }
    
+   void addPassListener(ActionListener listenForPassPress) {
+	   passTurn.addActionListener(listenForPassPress);
+   }
+   
    void addQuitListener(ActionListener listenForQuit) {
       quitButton.addActionListener(listenForQuit);
    }
