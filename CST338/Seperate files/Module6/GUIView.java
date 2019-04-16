@@ -137,7 +137,8 @@ public class GUIView {
       cardTable.panelDeck.add(deckIcon);
       cardsRemainString = new JLabel("Cards left:");
       cardTable.panelDeck.add(cardsRemainString);
-      cardsInDeckRemaining = new JLabel(Integer.toString(deckSize), 
+      int startDeckCount = deckSize - (playerHand.getNumCards() * 2);
+      cardsInDeckRemaining = new JLabel(Integer.toString(startDeckCount), 
             JLabel.CENTER);
       
       cardTable.panelDeck.add(cardsInDeckRemaining);
@@ -174,7 +175,7 @@ public class GUIView {
             humanLabels[i].setBorderPainted(false);
          }  
      
-         cardsInDeckRemaining.setText(Integer.toString(deckSize));
+         cardsInDeckRemaining.setText(Integer.toString(deckSize - 2));
       }
    }
    
@@ -203,7 +204,7 @@ public class GUIView {
       else 
          winValue = new JLabel("NOT YOU!", JLabel.CENTER);
 
-      JButton quitButton = new JButton("Quit.");
+      quitButton = new JButton("Quit.");
       cardTable.panelPlayArea.add(winner);
       cardTable.panelPlayArea.add(winValue);
       cardTable.panelPlayArea.add(quitButton);
