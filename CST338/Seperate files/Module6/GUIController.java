@@ -155,13 +155,13 @@ class GUIController {
          System.out.println("curSelec: " + curSelection);
 
          Card playerCard = new Card(theData.playHand(1, curSelection));
-         Card pileCard = theData.getLeftCard();
+         Card pileCard = theData.getRightCard();
          boolean isCardGood = isPlayerChoiceValid(pileCard, playerCard);
          System.out.println(isCardGood);
          
          if (isCardGood) {  // good card
-            theGUI.reDrawPlayCard(playerCard, true);
-            theData.setLeftPile(playerCard);
+            theGUI.reDrawPlayCard(playerCard, false);
+            theData.setRightPile(playerCard);
             adjustHand();
             theGUI.reDrawPlayerHand(playerHand, deckSize);
          }
