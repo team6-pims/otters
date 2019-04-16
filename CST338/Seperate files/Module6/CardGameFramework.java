@@ -18,6 +18,7 @@ class CardGameFramework
                                     // use cards 2-8 of any suit
  private Card leftCard;             // Card data for left pile
  private Card rightCard;            // Card data for right pile
+ private int[] skipCounter;         // Counter for skips per player
  public CardGameFramework( int numPacks, int numJokersPerPack,
      int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
      int numPlayers, int numCardsPerHand)
@@ -56,6 +57,11 @@ class CardGameFramework
     this.numCardsPerHand = numCardsPerHand;
     for (k = 0; k < numUnusedCardsPerPack; k++)
        this.unusedCardsPerPack[k] = unusedCardsPerPack[k];
+    
+    // prepare skip counter
+    this.skipCounter = new int[numPlayers];
+    for(int i = 0; i < numPlayers; i++)
+    	skipCounter[i] = 0;
 
     // prepare deck and shuffle
     newGame();
@@ -180,13 +186,20 @@ class CardGameFramework
     return this.rightCard;
  }
 
-   public void setLeftCard(Card cardFromDeck) {
-      this.leftCard = cardFromDeck;
-   }
+ public void setLeftCard(Card cardFromDeck) {
+    this.leftCard = cardFromDeck;
+ }
 
-   public void setRightCard(Card cardFromDeck) {
-      this.leftCard = cardFromDeck;
-      
-   }
+ public void setRightCard(Card cardFromDeck) {
+    this.leftCard = cardFromDeck;      
+ }
+ 
+ public int getSkipCounter(int player) {
+	 return skipCounter[player];
+ }
+ 
+ public void addSkipCounter(int player) {
+	 skipCounter[player] += 1;
+ }
 }
 
