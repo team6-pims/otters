@@ -10,7 +10,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-
+import javax.swing.SwingConstants;
 /*The View component is used for 
  * all the UI logic of the application. 
  * For example, the Customer view will 
