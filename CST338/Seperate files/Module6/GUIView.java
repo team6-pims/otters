@@ -170,16 +170,30 @@ public class GUIView {
    }
    
    
-   // ALEJANDRO: How did you shrink the displayed hand in the GUI from last week?
-   // Can you implement that here? When the deck is emptied, and the hand shrinks,
-   // the cards display a bad card, remain visible.
    public void reDrawPlayerHand(Hand playerHand, int deckSize) {
-      for (int i = 0; i < playerHand.getNumCards(); i++) {
+      if (deckSize == 0) {
+         cardTable.panelHumanHand.setVisible(false);
          cardTable.panelHumanHand.removeAll();
-         humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
-         humanLabels[i].setBorderPainted(false);
-      }   
-      cardsInDeckRemaining.setText(Integer.toString(deckSize - 2));
+         cardTable.panelComputerHand.removeAll();
+         
+         for (int i = 0; i < playerHand.getNumCards(); i++) {
+            humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
+            humanLabels[i].setBorderPainted(false);
+            cardTable.panelHumanHand.add(humanLabels[i]);
+            cardTable.panelComputerHand.add(computerLabels[i]);
+         }
+         
+         cardsInDeckRemaining.setText(Integer.toString(deckSize));
+         cardTable.panelHumanHand.setVisible(true);
+      }
+      else {
+         for (int i = 0; i < playerHand.getNumCards(); i++) {
+            humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
+            humanLabels[i].setBorderPainted(false);
+         }  
+     
+         cardsInDeckRemaining.setText(Integer.toString(deckSize-2));
+      }
    }
    
    public boolean setVisible(boolean visibility) {
