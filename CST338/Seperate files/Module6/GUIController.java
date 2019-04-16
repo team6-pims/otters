@@ -202,12 +202,11 @@ class GUIController {
     * take a card from the deck.
     */
    public void adjustHand() {
-      theData.buildGame.sortHands();
-      theData.buildGame.sortHands();
+      theData.sortAllHands();
       
       // starts at computer(0), to max players (num players - 1)
       for (int i = 0; i < theData.getNumPlayers(); i++) {
-         theData.buildGame.takeCard(i);
+         theData.playerTakeCard(i);
       }
    }
    
