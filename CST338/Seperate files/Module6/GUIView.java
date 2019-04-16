@@ -80,6 +80,8 @@ public class GUIView {
          start = new JButton("Start game.");
          cardTable.panelTimer.add(start);
          rulesLbl = new JLabel(getRules());
+	 rulesLbl.setHorizontalAlignment(SwingConstants.CENTER);
+         rulesLbl.setVerticalAlignment(SwingConstants.CENTER);
          cardTable.panelPlayArea.add(rulesLbl);
          
          return true;
@@ -181,6 +183,8 @@ public class GUIView {
       cardTable.panelPlayArea.add(passTurn);
       
       dispTextLbl = new JLabel();
+      dispTextLbl.setHorizontalAlignment(SwingConstants.CENTER);
+      dispTextLbl.setVerticalAlignment(SwingConstants.CENTER);
       cardTable.panelPlayArea.add(dispTextLbl);
       cardTable.panelPlayArea.remove(rulesLbl);   
       // show everything to the user
