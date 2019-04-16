@@ -121,8 +121,8 @@ public class GUIView {
       rightPile.addActionListener(listenForPilePress);
    }
    
-   void addPassListener(ActionListener listenForPassPress) {
-	   passTurn.addActionListener(listenForPassPress);
+   void addPassButtonListener(ActionListener listenForPass) {
+      passTurn.addActionListener(listenForPass);
    }
    
    void addQuitListener(ActionListener listenForQuit) {
@@ -387,7 +387,7 @@ public class GUIView {
       return true;
    }
    
-   public static boolean resetCardColors() {
+   public boolean resetCardColors() {
       for (JButton btn: humanLabels) 
          btn.setBackground(null);
       return true;
