@@ -1,5 +1,6 @@
 package hw6;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -39,82 +40,6 @@ class GUIController {
       //this.theGUI.addQuitListener(new quitButtonListener());
    }
    
- /*  class gameListener implements ActionListener {
-      public void actionPerformed(ActionEvent e) {
-         if (e.getSource() == "Stop Timer" || e.getSource() == "Start Timer"
-               || e.getSource() == "Start Game.") {
-            buttonAction();
-         }
-         else if (e.getSource() == "Quit.") {
-            quitGame();
-         }
-         else {
-            JButton[] humanLabels = theGUI.getHumanLabels();
-            int humanLabelToHand = 0;
-            JButton[] playerCardSelection = theGUI.getHumanLabels();
-            
-            for (int i = 0; i < theData.getHandSize(); i++) {
-               if (e.getSource() == humanLabels[i]) {
-                  Hand playerHand = theData.getPlayerHand(1);
-                  int playerHandSize = playerHand.getNumCards();
-
-                  //relate what user chose to hand
-                  for (int jj = 0; jj < playerHandSize; jj++ ) {
-                     if (GUICard.getIcon(playerHand.inspectCard(jj)) 
-                           == playerCardSelection[i].getIcon()) {
-                        humanLabelToHand = jj;
-                        break;
-                     }
-                  }
-
-                  theGUI.setVisible(false);
-                  //humanLabels[i].setVisible(false);
-                  //computerLabels[i].setVisible(false);
-
-                  playRound(humanLabelToHand);
-
-                  //usedCards[usedCardCtr] = i;
-                  //usedCardCtr++;
-
-                  if (theData.getDeckSize() == 0) {
-                     endGame();
-                     break;
-                  }
-
-                 // for (JLabel label: playedCardLabels)
-                   //  cardTable.panelPlayArea.add(label);
-                  break;
-               }
-            }
-         }
-      }
-   }
-   
-   public void buttonAction() {
-      if (theGUI.getStartStop() == "Stop Timer") {
-         timer.stop();
-         theGUI.setStartStop("Start Timer");
-      }
-      else if (theGUI.getStartStop() == "Start Timer") {
-         timer.start();
-         theGUI.setStartStop("Stop Timer");
-      }
-      else {  // initial press - start game
-         timer.start();
-         Hand playerHand = theData.getPlayerHand(1);
-         theData.startGame();
-         theGUI.startGame(playerHand);
-      }
-   }
-   
-   public void quitGame() {
-      System.exit(0);
-   }
-   
-   public void cardAction() {
-      
-   }*/
-   
    /*Implement start game/timer listener class*/
    class startGameListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
@@ -130,10 +55,11 @@ class GUIController {
          else {  // initial press - start game
             timer.start();
             Hand playerHand = theData.getPlayerHand(1);
+
             int deckSize = theData.getDeckSize() - 
                   (theData.getNumPlayers() * theData.getHandSize());
             theData.startGame();
-            theGUI.startGame(playerHand, deckSize);
+            theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), theData.getRightCard());
             theGUI.addCardListener(new cardPressListener());
          }
       }
@@ -147,31 +73,35 @@ class GUIController {
          JButton[] playerCardSelection = theGUI.getHumanLabels();
          
          for (int i = 0; i < theData.getHandSize(); i++) {
+            
+            // Match button data with card index from player's hand
             if (e.getSource() == playerCardSelection[i]) {
-
                Hand playerHand = theData.getPlayerHand(1);
                int playerHandSize = playerHand.getNumCards();
-
+               
                //relate what user chose to hand
                for (int jj = 0; jj < playerHandSize; jj++ ) {
                   if (GUICard.getIcon(playerHand.inspectCard(jj)) 
                         == playerCardSelection[i].getIcon()) {
                      humanLabelToHand = jj;
+                     GUIView.resetCardColors();
+                     System.out.println("You selected " + i);
+                     ((JButton)e.getSource()).setBackground(Color.GREEN);
                      break;
                   }
                }
                //humanLabels[i].setVisible(false);
                //computerLabels[i].setVisible(false);
 
-               playRound(humanLabelToHand, currentDeckSize);
+               //playRound(humanLabelToHand, currentDeckSize);
 
                //usedCards[usedCardCtr] = i;
                //usedCardCtr++;
 
-               if (theData.getHandSize() == 1) {
-                  endGame();
-                  break;
-               }
+               //if (theData.getHandSize() == 1) {
+               //   endGame();
+               //   break;
+               //}
 
               // for (JLabel label: playedCardLabels)
                 //  cardTable.panelPlayArea.add(label);
@@ -185,13 +115,26 @@ class GUIController {
    /*End local action listener class*/
    
    /*Begin local quit button listener*/
-   class  quitButtonListener implements ActionListener {
+   class quitButtonListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          System.exit(0);
       }
    };
    /*End local quit button listener*/
    
+   class leftPileListener implements ActionListener {
+      public void actionPerformed(ActionEvent e) {
+         // Get value of current selected card from player
+         Hand playerHand = theData.getPlayerHand(1);
+
+      }
+   }
+
+   class rightPileListener implements ActionListener {
+      public void actionPerformed(ActionEvent e) {
+         
+      }
+   }
    /* begin timer class */
    class TimerListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
@@ -218,8 +161,8 @@ class GUIController {
       theGUI.setPlayAreaIcon(0, computerIcon);
       
       adjustHand();
-      adjustScore(userCard, computerCard);
-      theGUI.reDrawPlayerHand(theData.getPlayerHand(1), deckSize);
+      //adjustScore(userCard, computerCard);
+      //theGUI.reDrawPlayerHand(theData.getPlayerHand(1), deckSize);
    }
    
    /**After the player has played their card to the play area, the card is
@@ -227,16 +170,16 @@ class GUIController {
     * take a card from the deck.
     */
    public void adjustHand() {
-      theData.highCardGame.sortHands();
-      theData.highCardGame.sortHands();
+      theData.buildGame.sortHands();
+      theData.buildGame.sortHands();
       
       // starts at computer(0), to max players (num players - 1)
       for (int i = 0; i < theData.getNumPlayers(); i++) {
-         theData.highCardGame.takeCard(i);
+         theData.buildGame.takeCard(i);
       }
    }
    
-   public void adjustScore(Card playerCard, Card computerCard) {
+   /*public void adjustScore(Card playerCard, Card computerCard) {
       int currentPlayerWins = theData.getWinCount(1);
       int currentCompWins = theData.getWinCount(0);
       if (Card.cardGreaterThan(playerCard, computerCard)) {
@@ -249,7 +192,7 @@ class GUIController {
          theData.setComputerWinnings(computerCard, currentCompWins + 1);
          theData.setWinCounter(0);
       }
-   }
+   }*/
    
    public void endGame() {
       theGUI.endGame(theData.getWinCount(1), theData.getWinCount(0));

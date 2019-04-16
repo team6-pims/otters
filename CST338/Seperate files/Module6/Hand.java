@@ -105,7 +105,7 @@ class Hand {
    
    public Card playCard(int cardIndex)
    {
-      if (numCards == 0) 
+      if (numCards == 0)
          return new Card('M', Card.Suit.SPADES);  //error card
       
       //Decreases numCards.
@@ -119,4 +119,8 @@ class Hand {
       
       return card;
     }
+   
+   public Card getCardAtIndex(int index) {
+      return myCards[index];
+   }
 }

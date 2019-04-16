@@ -19,26 +19,26 @@ class GUIModel {
    private int numUnusedCardsPerPack;
    private Card[] unusedCardsPerPack;
    private Card[] computerWinnings, playerWinnings;
-   private int[] winCounter;
-   public CardGameFramework highCardGame;
+   private int[] skipCounter;
+   private int playerSelectedCardIndex;
+   public CardGameFramework buildGame;
    
    // default constructor
    public GUIModel() {
       this.NUM_CARDS_PER_HAND = 7;
       this.NUM_PLAYERS = 2;
       this.numPacksPerDeck = 1;
-      this.numJokersPerPack = 2;
+      this.numJokersPerPack = 0;
       this.numUnusedCardsPerPack = 0;
       this.unusedCardsPerPack = null;
-      this.winCounter = new int[NUM_PLAYERS];
+      this.skipCounter = new int[NUM_PLAYERS];
       
-      this.highCardGame = new CardGameFramework( 
+      this.buildGame = new CardGameFramework( 
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
-      
-      this.computerWinnings = new Card[highCardGame.getNumCardsRemainingInDeck()];
-      this.playerWinnings = new Card[highCardGame.getNumCardsRemainingInDeck()];
+
+
    }
 
    // custom constructor
@@ -50,28 +50,69 @@ class GUIModel {
       this.numJokersPerPack = jokersPerPack;
       this.numUnusedCardsPerPack = unusedCards;
       this.unusedCardsPerPack = new Card[unusedCards * packsPerDeck];
-      this.winCounter = new int[NUM_PLAYERS];
+      this.skipCounter = new int[NUM_PLAYERS];
       
-      this.highCardGame = new CardGameFramework( 
+      this.buildGame = new CardGameFramework( 
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
       
-      this.computerWinnings = new Card[highCardGame.getNumCardsRemainingInDeck()];
-      this.playerWinnings = new Card[highCardGame.getNumCardsRemainingInDeck()];
+      this.computerWinnings = new Card[buildGame.getNumCardsRemainingInDeck()];
+      this.playerWinnings = new Card[buildGame.getNumCardsRemainingInDeck()];
    }
    
    // methods
    public void startGame() {
-      highCardGame.deal();
+      buildGame.deal();
    }
    
    public int getDeckSize() {
-      return highCardGame.getNumCardsRemainingInDeck();
+      return buildGame.getNumCardsRemainingInDeck();
    }
    
    public Hand getPlayerHand(int playerIndex) {
-      return highCardGame.getHand(playerIndex);
+      return buildGame.getHand(playerIndex);
+   }
+   
+   // Place 2 new cards onto piles
+   public boolean newPile() {
+      boolean enoughCards = false;
+      
+      if (buildGame.getNumCardsRemainingInDeck() > 1) {
+         enoughCards = true;
+         buildGame.setLeftCard(buildGame.getCardFromDeck());
+         buildGame.setRightCard(buildGame.getCardFromDeck());
+      }
+      return enoughCards;
+   }
+   
+   /* Determines of card is playable or not */
+   public boolean viablePlay(Card pileCard, Card cardToCheck) {
+      boolean isValid = false;
+      int pileCardValue = pileCard.getValue();
+      int cardToCheckValue = cardToCheck.getValue();
+      
+      switch (pileCardValue) {
+      // If Ace, then King or 2 is valid
+      case 1:
+         if (pileCardValue == 13 || pileCardValue == 2) {
+            isValid = true;
+         }
+         break;
+      // If King, then Queen or Ace is valid
+      case 13:
+         if (pileCardValue == 12 || pileCardValue == 1) {
+            isValid = true;
+         }
+         break;
+      // All other cases 
+      default:
+         if (Math.abs(pileCardValue - cardToCheckValue) == 1) {
+            isValid = true;
+         }
+         break;
+      }
+      return isValid;
    }
    
    // getters
@@ -80,16 +121,29 @@ class GUIModel {
    }
    
    public int getWinCount(int player) {
-      return winCounter[player];
+      return skipCounter[player];
    }
    
    public int getNumPlayers() {
       return NUM_PLAYERS;
    }
    
-   public Card getPlayedCard(int playerIndex, int cardIndex) {
-      return highCardGame.playCard(playerIndex, cardIndex);
+   public Card getLeftCard() {
+      return buildGame.getLeftCard();
    }
+   
+   public Card getRightCard() {
+      return buildGame.getRightCard();
+   }
+   
+   public int getPlayerSelection() {
+      return playerSelectedCardIndex;
+   }
+   
+   public Card getPlayedCard(int playerIndex, int cardIndex) {
+      return buildGame.playCard(playerIndex, cardIndex);
+   }
+   
    // setters
    public void setPlayerWinnings(Card card, int index) {
       playerWinnings[index] = card;
@@ -100,6 +154,10 @@ class GUIModel {
    }
    
    public void setWinCounter(int player) {
-      winCounter[player] += 2;
+      skipCounter[player] += 1;
+   }
+   
+   public void setPlayerSelection(int handIndex) {
+      playerSelectedCardIndex = handIndex;
    }
 }

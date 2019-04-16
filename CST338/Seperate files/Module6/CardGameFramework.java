@@ -16,7 +16,8 @@ class CardGameFramework
  private Card[] unusedCardsPerPack;   // an array holding the cards not used
                                     // in the game.  e.g. pinochle does not
                                     // use cards 2-8 of any suit
-
+ private Card leftCard;             // Card data for left pile
+ private Card rightCard;            // Card data for right pile
  public CardGameFramework( int numPacks, int numJokersPerPack,
      int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
      int numPlayers, int numCardsPerHand)
@@ -127,7 +128,11 @@ class CardGameFramework
              break;
           }
     }
-
+    
+    // Initialize starting piles
+    this.setLeftCard(this.getCardFromDeck());
+    this.rightCard = this.getCardFromDeck();
+    
     return enoughCards;
  }
 
@@ -166,4 +171,22 @@ class CardGameFramework
 
     return hand[playerIndex].takeCard(deck.dealCard());
  }
+ 
+ public Card getLeftCard() {
+    return this.leftCard;
+ }
+ 
+ public Card getRightCard() {
+    return this.rightCard;
+ }
+
+   public void setLeftCard(Card cardFromDeck) {
+      this.leftCard = cardFromDeck;
+   }
+
+   public void setRightCard(Card cardFromDeck) {
+      this.leftCard = cardFromDeck;
+      
+   }
 }
+

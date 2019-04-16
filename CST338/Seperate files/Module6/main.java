@@ -1,10 +1,10 @@
 package hw6;
 
-class main {
+public class main {
    
    public static void main(String[] args) {
       GUICard.loadCardIcons();
-      GUIView gui = new GUIView(2, 7);
+      GUIView gui = new GUIView();
       GUIModel data = new GUIModel();
       GUIController control = new GUIController(gui, data);
       

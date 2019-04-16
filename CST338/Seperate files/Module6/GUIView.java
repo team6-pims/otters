@@ -26,9 +26,9 @@ public class GUIView {
    private static int SIZE_COL = 600;
    private static JLabel[] computerLabels;
    private static JButton[] humanLabels;  
-   private static JLabel[] playedCardLabels;
+   private static JButton[] playedCardLabels;
    private static JLabel[] playLabelText; 
-   private static JButton quitButton, start;
+   private static JButton quitButton, start, leftPile, rightPile, passTurn;
    private static JLabel timerLabel, deckIcon, cardsInDeckRemaining, 
    cardsRemainString;
    
@@ -51,14 +51,14 @@ public class GUIView {
       this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
       String defaultName = new String();
       defaultName = NUM_PLAYERS + " Person Table";
-      cardTable = new CardTable(defaultName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
+      cardTable = new CardTable(defaultName, NUM_CARDS_PER_HAND, NUM_PLAYERS );
       constructorCommonality();
    }
    
    public GUIView(String TableName,  int NUM_PLAYERS, int NUM_CARDS_PER_HAND) {
       this.NUM_PLAYERS = NUM_PLAYERS;
       this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
-      cardTable = new CardTable(TableName,NUM_CARDS_PER_HAND, NUM_PLAYERS );
+      cardTable = new CardTable(TableName, NUM_CARDS_PER_HAND, NUM_PLAYERS );
       constructorCommonality();
    }
    
@@ -66,7 +66,7 @@ public class GUIView {
       try {
          computerLabels = new JLabel[NUM_CARDS_PER_HAND];
          humanLabels = new JButton[NUM_CARDS_PER_HAND];  
-         playedCardLabels  = new JLabel[NUM_PLAYERS];
+         playedCardLabels  = new JButton[NUM_PLAYERS];
          playLabelText  = new JLabel[NUM_PLAYERS]; 
          cardTable.setSize(SIZE_ROW, SIZE_COL);
          cardTable.setLocationRelativeTo(null);
@@ -92,11 +92,19 @@ public class GUIView {
       }
    }
    
+   void addLeftPileListener(ActionListener listenForPilePress) {
+      leftPile.addActionListener(listenForPilePress);
+   }
+   
+   void addRightPileListener(ActionListener listenForPilePress) {
+      rightPile.addActionListener(listenForPilePress);
+   }
+   
    void addQuitListener(ActionListener listenForQuit) {
       quitButton.addActionListener(listenForQuit);
    }
    
-   public void startGame(Hand playerHand, int deckSize) {
+   public void startGame(Hand playerHand, int deckSize, Card leftCard, Card rightCard) {
       
       // blank cards for computer
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
@@ -111,8 +119,9 @@ public class GUIView {
       }
       
       // create the played text
-      playLabelText[0] = new JLabel("Computer", JLabel.CENTER);
-      playLabelText[1] = new JLabel("Player", JLabel.CENTER);
+      //playLabelText[0] = new JLabel("Computer", JLabel.CENTER);
+      //playLabelText[1] = new JLabel("Player", JLabel.CENTER);
+      passTurn = new JButton("Pass");
   
       // ADD LABELS TO PANELS -----------------------------------------
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
@@ -127,12 +136,13 @@ public class GUIView {
             "Time Elasped:"));
       cardTable.panelTimer.add(timerLabel);
       
-      // set up play area
-      for (int i = 0; i < NUM_PLAYERS; i++) 
-         playedCardLabels[i] = new JLabel(GUICard.getBackCardIcon());
-      
-      for (JLabel label: playedCardLabels) 
-         cardTable.panelPlayArea.add(label);
+      // Add card piles
+      leftPile = new JButton(GUICard.getIcon(
+            leftCard));
+     rightPile = new JButton(GUICard.getIcon(
+            rightCard));
+     cardTable.panelPlayArea.add(leftPile);
+     cardTable.panelPlayArea.add(rightPile);
       
       // place deck and counter
       deckIcon = new JLabel(GUICard.getBackCardIcon());
@@ -144,8 +154,7 @@ public class GUIView {
       
       cardTable.panelDeck.add(cardsInDeckRemaining);
       
-      for (JLabel label: playLabelText) 
-         cardTable.panelPlayArea.add(label);
+      cardTable.panelPlayArea.add(passTurn);
       
       // show everything to the user
       cardTable.setVisible(true);
@@ -301,6 +310,12 @@ public class GUIView {
          return false;
       }
       numUnusedCardsPerPack = newNum;
+      return true;
+   }
+   
+   public static boolean resetCardColors() {
+      for (JButton btn: humanLabels) 
+         btn.setBackground(null);;
       return true;
    }
 }
