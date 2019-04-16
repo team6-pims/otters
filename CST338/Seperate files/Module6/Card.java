@@ -233,4 +233,17 @@ class Card {
       }
       return (val1int > val2int);
    }
+   
+   private int getIntValue(Card card) {
+      char charValue = card.getValue();
+      int intValue = -1;
+      for (int i = 0; i < valueRanks.length; i++) {
+         if (valueRanks[i] == charValue) {
+            intValue = i;
+            break;
+         }
+      }
+
+      return intValue;
+   }
 }

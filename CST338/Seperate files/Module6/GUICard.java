@@ -101,7 +101,7 @@ class GUICard {
       return iconCards[cardValueIndex][suitIndex];
    }
    
-   private static int getIconValueIndex(char val) {
+   public static int getIconValueIndex(char val) {
       switch (val) {
       case 'X':
          return 0;

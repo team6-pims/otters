@@ -61,6 +61,7 @@ class GUIController {
             theData.startGame();
             theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), theData.getRightCard());
             theGUI.addCardListener(new cardPressListener());
+            theGUI.addLeftPileListener(new leftPileListener());
          }
       }
    }
@@ -86,18 +87,26 @@ class GUIController {
                      humanLabelToHand = jj;
                      GUIView.resetCardColors();
                      System.out.println("You selected " + i);
+                     theData.setPlayerSelection(jj);
                      ((JButton)e.getSource()).setBackground(Color.GREEN);
                      break;
                   }
                }
+               //humanLabels[i].setVisible(false);
+               //computerLabels[i].setVisible(false);
 
                //playRound(humanLabelToHand, currentDeckSize);
+
+               //usedCards[usedCardCtr] = i;
+               //usedCardCtr++;
 
                //if (theData.getHandSize() == 1) {
                //   endGame();
                //   break;
                //}
-               
+
+              // for (JLabel label: playedCardLabels)
+                //  cardTable.panelPlayArea.add(label);
                break;
             }
          }
@@ -119,7 +128,11 @@ class GUIController {
       public void actionPerformed(ActionEvent e) {
          // Get value of current selected card from player
          Hand playerHand = theData.getPlayerHand(1);
-
+         int curSelection = theData.getPlayerSelection();
+         //int curValue = playerHand.getCardAtIndex(curSelection);
+         System.out.println("curSelec: " + curSelection);
+         //System.out.println("curValue: " + curValue);
+         System.out.println("curSuit : " + playerHand.getCardAtIndex(curSelection).getSuit());
       }
    }
 
@@ -138,6 +151,7 @@ class GUIController {
             secs = 0;
          }
          theGUI.setTimer(mins, secs);
+         
       }
    }
    public void playRound(int humanChoice, int deckSize) {
@@ -187,7 +201,6 @@ class GUIController {
    }*/
    
    public void endGame() {
-      timer.stop();
       theGUI.endGame(theData.getWinCount(1), theData.getWinCount(0));
       theGUI.addQuitListener(new quitButtonListener());
    }
