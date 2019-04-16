@@ -90,21 +90,14 @@ class GUIController {
                      break;
                   }
                }
-               //humanLabels[i].setVisible(false);
-               //computerLabels[i].setVisible(false);
 
                //playRound(humanLabelToHand, currentDeckSize);
-
-               //usedCards[usedCardCtr] = i;
-               //usedCardCtr++;
 
                //if (theData.getHandSize() == 1) {
                //   endGame();
                //   break;
                //}
-
-              // for (JLabel label: playedCardLabels)
-                //  cardTable.panelPlayArea.add(label);
+               
                break;
             }
          }
@@ -145,7 +138,6 @@ class GUIController {
             secs = 0;
          }
          theGUI.setTimer(mins, secs);
-         
       }
    }
    public void playRound(int humanChoice, int deckSize) {
@@ -195,6 +187,7 @@ class GUIController {
    }*/
    
    public void endGame() {
+      timer.stop();
       theGUI.endGame(theData.getWinCount(1), theData.getWinCount(0));
       theGUI.addQuitListener(new quitButtonListener());
    }
