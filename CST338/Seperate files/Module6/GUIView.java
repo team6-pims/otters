@@ -37,9 +37,9 @@ public class GUIView {
    private static int numUnusedCardsPerPack = 0;
    private static Card[] unusedCardsPerPack = null;
     
-   private static JLabel dispTextLbl;	
+   private static JLabel dispTextLbl;  
    private static JLabel rulesLbl;
-	
+   
    public GUIView() {
       NUM_PLAYERS = 2;
       NUM_CARDS_PER_HAND = 7;
@@ -80,7 +80,7 @@ public class GUIView {
          start = new JButton("Start game.");
          cardTable.panelTimer.add(start);
          rulesLbl = new JLabel(getRules());
-	 rulesLbl.setHorizontalAlignment(SwingConstants.CENTER);
+    rulesLbl.setHorizontalAlignment(SwingConstants.CENTER);
          rulesLbl.setVerticalAlignment(SwingConstants.CENTER);
          cardTable.panelPlayArea.add(rulesLbl);
          
@@ -92,7 +92,7 @@ public class GUIView {
    
    private String getRules() {
       String retStr = "";
-      retStr += "<html>Welcome to SPEED! <BR><BR> Here are the rules: <BR>";
+      retStr += "<html>Welcome to HALF SPEED! <BR><BR> Here are the rules: <BR>";
       retStr += "<BR>  1) You and the computer take turns playing cards";
       retStr += "<BR>  2) You want to place the cards in ASC or DESC order";
       retStr += "<BR>  3) After you play a card, you get another card from the deck";
@@ -224,7 +224,7 @@ public class GUIView {
       }
       cardTable.panelPlayArea.setVisible(true);
    }
-	
+   
    public void reDrawPlayerHand(Hand playerHand, int deckSize) {
       if (deckSize == 0) {
          cardTable.panelHumanHand.setVisible(false);

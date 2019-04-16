@@ -131,7 +131,7 @@ class CardGameFramework
     
     // Initialize starting piles
     this.setLeftCard(this.getCardFromDeck());
-    this.rightCard = this.getCardFromDeck();
+    this.setRightCard(this.getCardFromDeck());
     
     return enoughCards;
  }
@@ -172,6 +172,20 @@ class CardGameFramework
     return hand[playerIndex].takeCard(deck.dealCard());
  }
  
+ Card getCardAtIndex(int playerIndex, int cardIndex)
+ {
+    // returns bad card if either argument is bad
+    if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
+          cardIndex < 0 || cardIndex > numCardsPerHand - 1)
+    {
+       //Creates a card that does not work
+       return new Card('M', Card.Suit.SPADES);      
+    }
+
+  // return the card played
+  return hand[playerIndex].getCardAtIndex(cardIndex);
+ }
+ 
  public Card getLeftCard() {
     return this.leftCard;
  }
@@ -183,7 +197,7 @@ class CardGameFramework
    public void setLeftCard(Card cardFromDeck) {
       this.leftCard = cardFromDeck;
    }
-
+   
    public void setRightCard(Card cardFromDeck) {
       this.rightCard = cardFromDeck;
    }

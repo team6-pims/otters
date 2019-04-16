@@ -1,4 +1,5 @@
 package hw6;
+
 class Hand {
    public static final int MAX_CARDS = 50;
    private Card[] myCards;
@@ -85,6 +86,10 @@ class Hand {
       return numCards;
    }
    
+   public Card getCardAtIndex(int index) {
+      return myCards[index];
+   }
+   
    // If the passed index is out of bounds or indicates an empty index, it
    // returns a bad card, otherwise returns the card at the index
    public Card inspectCard(int k) {
@@ -120,7 +125,5 @@ class Hand {
       return card;
     }
    
-   public Card getCardAtIndex(int index) {
-      return myCards[index];
-   }
+
 }

@@ -21,7 +21,11 @@ class GUIModel {
    private Card[] computerWinnings, playerWinnings;
    private int[] skipCounter;
    private int playerSelectedCardIndex;
+   private boolean playerSkipped;
+   private boolean computerSkipped;
    public CardGameFramework buildGame;
+   private boolean computerPass = false;
+   private boolean playerPass = false;
    
    // default constructor
    public GUIModel() {
@@ -71,20 +75,13 @@ class GUIModel {
       return buildGame.getHand(playerIndex);
    }
    
-   // Place 2 new cards onto piles
-   public boolean newPile() {
-      boolean enoughCards = false;
-      
-      if (buildGame.getNumCardsRemainingInDeck() > 1) {
-         enoughCards = true;
-         buildGame.setLeftCard(buildGame.getCardFromDeck());
-         buildGame.setRightCard(buildGame.getCardFromDeck());
-      }
-      return enoughCards;
-   }
    
    public Card playHand(int playerIndex, int cardIndex) {
       return buildGame.playCard(playerIndex, cardIndex);
+   }
+   
+   public Card getCardAtIndex(int playerIndex, int cardIndex) {
+      return buildGame.getCardAtIndex(playerIndex, cardIndex);
    }
    
    // sort all the hands
@@ -126,6 +123,13 @@ class GUIModel {
       return buildGame.playCard(playerIndex, cardIndex);
    }
    
+   public boolean getComputerPassStatus() {
+      return computerPass;
+   }
+   
+   public boolean getPlayerPassStatus() {
+      return playerPass;
+   }
    // setters
    public void setLeftPile(Card card) {
       buildGame.setLeftCard(card);
@@ -135,7 +139,30 @@ class GUIModel {
       buildGame.setRightCard(card);
    }
    
+   public void incrementSkipCounter(int player) {
+      skipCounter[player]++;
+      System.out.println("Player " + player + " skip counter: " + skipCounter[player]);
+   }
+   
    public void setPlayerSelection(int handIndex) {
       playerSelectedCardIndex = handIndex;
+   }
+   
+   public boolean setComputerPassStatus(boolean pass) {
+      computerPass = pass;
+      return true;
+   }
+   
+   public boolean setPlayerPassStatus(boolean pass) {
+      playerPass = pass;
+      return true;
+   }
+   
+   public Card getCardFromDeck() {
+      return buildGame.getCardFromDeck();
+   }
+   
+   public int getNumCardsRemainingInDeck() {
+      return buildGame.getNumCardsRemainingInDeck();
    }
 }
