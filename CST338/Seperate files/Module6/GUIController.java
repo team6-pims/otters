@@ -130,15 +130,16 @@ class GUIController {
          Hand playerHand = theData.getPlayerHand(1);
          int curSelection = theData.getPlayerSelection();
          //int curValue = playerHand.getCardAtIndex(curSelection);
-         System.out.println("curSelec: " + curSelection);
+         //System.out.println("curSelec: " + curSelection);
          //System.out.println("curValue: " + curValue);
-         System.out.println("curSuit : " + playerHand.getCardAtIndex(curSelection).getSuit());
+         //System.out.println("curSuit : " + playerHand.getCardAtIndex(curSelection).getSuit());
+         theGUI.updateDisplayLabelText("yay, you picked left pile");
       }
    }
 
    class rightPileListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
-         
+         theGUI.updateDisplayLabelText("yay, you picked right pile");
       }
    }
    /* begin timer class */
