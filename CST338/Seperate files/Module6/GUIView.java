@@ -76,10 +76,26 @@ public class GUIView {
           * also starts the timer.*/
          start = new JButton("Start game.");
          cardTable.panelTimer.add(start);
+         JLabel rules = new JLabel(getRules());
+         cardTable.panelPlayArea.add(rules);
+         
          return true;
       } catch (Exception e){
          return false;
       } 
+   }
+   
+   private String getRules() {
+      String retStr = "";
+      retStr += "<html>Welcome to SPEED! <BR><BR> Here are the rules: <BR>";
+      retStr += "<BR>  1) You and the computer take turns playing cards";
+      retStr += "<BR>  2) You want to place the cards in ASC or DESC order";
+      retStr += "<BR>  3) After you play a card, you get another card from the deck";
+      retStr += "<BR>  4) If you cant play, tap the I CANNOT PLAY button";
+      retStr += "<BR>  5) whoever has the least I CANNOT PLAY presses at the end wins";
+      retStr += "<BR>  <BR> Can you tackle the computer?</html>";
+      
+      return retStr;
    }
    
    void addStartListener(ActionListener listenForStart) {
