@@ -116,8 +116,8 @@ class GUIModel {
    }
    
    // getters
-   public int getHandSize() {
-      return NUM_CARDS_PER_HAND;
+   public int getHandSize(int player) {
+      return highCardGame.getHand(player).getNumCards();
    }
    
    public int getWinCount(int player) {
