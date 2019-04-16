@@ -86,33 +86,8 @@ class GUIModel {
       return enoughCards;
    }
    
-   /* Determines of card is playable or not */
-   public boolean viablePlay(Card pileCard, Card cardToCheck) {
-      boolean isValid = false;
-      int pileCardValue = pileCard.getValue();
-      int cardToCheckValue = cardToCheck.getValue();
-      
-      switch (pileCardValue) {
-      // If Ace, then King or 2 is valid
-      case 1:
-         if (pileCardValue == 13 || pileCardValue == 2) {
-            isValid = true;
-         }
-         break;
-      // If King, then Queen or Ace is valid
-      case 13:
-         if (pileCardValue == 12 || pileCardValue == 1) {
-            isValid = true;
-         }
-         break;
-      // All other cases 
-      default:
-         if (Math.abs(pileCardValue - cardToCheckValue) == 1) {
-            isValid = true;
-         }
-         break;
-      }
-      return isValid;
+   public Card playHand(int playerIndex, int cardIndex) {
+      return buildGame.playCard(playerIndex, cardIndex);
    }
    
    // getters
