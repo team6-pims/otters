@@ -90,6 +90,16 @@ class GUIModel {
       return buildGame.playCard(playerIndex, cardIndex);
    }
    
+   // sort all the hands
+   public void sortAllHands() {
+      buildGame.sortHands();
+   }
+   
+   // take a card for that player
+   public void playerTakeCard(int playerIndex) {
+      buildGame.takeCard(playerIndex);
+   }
+   
    // getters
    public int getHandSize() {
       return NUM_CARDS_PER_HAND;
