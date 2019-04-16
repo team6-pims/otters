@@ -157,6 +157,7 @@ public class GUIView {
       if (deckSize == 0) {
          cardTable.panelHumanHand.setVisible(false);
          cardTable.panelHumanHand.removeAll();
+<<<<<<< HEAD
          cardTable.panelComputerHand.removeAll();
          
          for (int i = 0; i < playerHand.getNumCards(); i++) {
@@ -177,6 +178,12 @@ public class GUIView {
      
          cardsInDeckRemaining.setText(Integer.toString(deckSize - 2));
       }
+=======
+         humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
+         humanLabels[i].setBorderPainted(false);
+      }   
+      cardsInDeckRemaining.setText(Integer.toString(deckSize - 2));
+>>>>>>> GUIView with Ivan's recent changes
    }
    
    public boolean setVisible(boolean visibility) {
@@ -315,4 +322,13 @@ public class GUIView {
       numUnusedCardsPerPack = newNum;
       return true;
    }
+<<<<<<< HEAD
+=======
+   
+   public static boolean resetCardColors() {
+      for (JButton btn: humanLabels) 
+         btn.setBackground(null);
+      return true;
+   }
+>>>>>>> GUIView with Ivan's recent changes
 }
