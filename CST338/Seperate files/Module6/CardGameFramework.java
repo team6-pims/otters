@@ -185,8 +185,6 @@ class CardGameFramework
    }
 
    public void setRightCard(Card cardFromDeck) {
-      this.leftCard = cardFromDeck;
-      
+      this.rightCard = cardFromDeck;
    }
 }
-
