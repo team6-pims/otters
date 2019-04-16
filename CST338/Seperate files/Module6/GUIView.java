@@ -37,6 +37,8 @@ public class GUIView {
    private static int numUnusedCardsPerPack = 0;
    private static Card[] unusedCardsPerPack = null;
     
+   private static JLabel dispTextLbl;	
+	
    public GUIView() {
       NUM_PLAYERS = 2;
       NUM_CARDS_PER_HAND = 7;
@@ -177,6 +179,9 @@ public class GUIView {
       
       cardTable.panelPlayArea.add(passTurn);
       
+      dispTextLbl = new JLabel();
+      cardTable.panelPlayArea.add(dispTextLbl);
+	   
       // show everything to the user
       cardTable.setVisible(true);
       
@@ -185,6 +190,14 @@ public class GUIView {
       
    }
    
+  public static boolean updateDisplayLabelText(String htmlString) {
+      try {
+         dispTextLbl.setText(htmlString);
+         return true;
+      } catch (Exception e) {
+         return false;
+      }
+   }
    
    public void reDrawPlayerHand(Hand playerHand, int deckSize) {
       if (deckSize == 0) {
