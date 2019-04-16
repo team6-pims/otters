@@ -195,7 +195,7 @@ public class GUIView {
       
    }
    
-  public static boolean updateDisplayLabelText(String htmlString) {
+  public boolean updateDisplayLabelText(String htmlString) {
       try {
          dispTextLbl.setText(htmlString);
          return true;
