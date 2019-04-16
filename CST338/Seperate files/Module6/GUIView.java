@@ -387,7 +387,7 @@ public class GUIView {
       return true;
    }
    
-   public boolean resetCardColors() {
+   public static boolean resetCardColors() {
       for (JButton btn: humanLabels) 
          btn.setBackground(null);
       return true;
