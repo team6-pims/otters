@@ -3,7 +3,6 @@ package hw6;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 
 import javax.swing.*;
 
@@ -69,8 +68,6 @@ class GUIController {
    /*Implement local action listener class*/
    class cardPressListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
-         int humanLabelToHand = 0;
-         int currentDeckSize = theData.getDeckSize();
          JButton[] playerCardSelection = theGUI.getHumanLabels();
          
          for (int i = 0; i < theData.getHandSize(); i++) {
@@ -84,7 +81,6 @@ class GUIController {
                for (int jj = 0; jj < playerHandSize; jj++ ) {
                   if (GUICard.getIcon(playerHand.inspectCard(jj)) 
                         == playerCardSelection[i].getIcon()) {
-                     humanLabelToHand = jj;
                      GUIView.resetCardColors();
                      System.out.println("You selected " + i);
                      theData.setPlayerSelection(jj);
@@ -92,21 +88,13 @@ class GUIController {
                      break;
                   }
                }
-               //humanLabels[i].setVisible(false);
-               //computerLabels[i].setVisible(false);
-
                //playRound(humanLabelToHand, currentDeckSize);
-
-               //usedCards[usedCardCtr] = i;
-               //usedCardCtr++;
 
                //if (theData.getHandSize() == 1) {
                //   endGame();
                //   break;
                //}
 
-              // for (JLabel label: playedCardLabels)
-                //  cardTable.panelPlayArea.add(label);
                break;
             }
          }
@@ -123,6 +111,15 @@ class GUIController {
       }
    };
    /*End local quit button listener*/
+   
+   class passButtonListener implements ActionListener {
+      public void actionPerformed(ActionEvent e) {
+         // button is always pushed by player, so we increment their counter
+         theData.incrementSkipCounter(1);
+         
+         // call computer round stuff here
+      }
+   }
    
    class leftPileListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
@@ -141,6 +138,7 @@ class GUIController {
             theGUI.reDrawPlayCard(playerCard, true);
             theData.setLeftPile(playerCard);
             adjustHand();
+            GUIView.resetCardColors();
             theGUI.reDrawPlayerHand(playerHand, deckSize);
          }
       }
@@ -163,6 +161,7 @@ class GUIController {
             theGUI.reDrawPlayCard(playerCard, false);
             theData.setRightPile(playerCard);
             adjustHand();
+            GUIView.resetCardColors();
             theGUI.reDrawPlayerHand(playerHand, deckSize);
          }
       }
@@ -241,24 +240,8 @@ class GUIController {
       return isValid;
    }
    
-   /*public void adjustScore(Card playerCard, Card computerCard) {
-      int currentPlayerWins = theData.getWinCount(1);
-      int currentCompWins = theData.getWinCount(0);
-      if (Card.cardGreaterThan(playerCard, computerCard)) {
-         theData.setPlayerWinnings(playerCard, currentPlayerWins);
-         theData.setPlayerWinnings(computerCard, currentPlayerWins + 1);
-         theData.setWinCounter(1);
-      }
-      else {
-         theData.setComputerWinnings(playerCard, currentCompWins);
-         theData.setComputerWinnings(computerCard, currentCompWins + 1);
-         theData.setWinCounter(0);
-      }
-   }*/
-   
    public void endGame() {
       theGUI.endGame(theData.getWinCount(1), theData.getWinCount(0));
       theGUI.addQuitListener(new quitButtonListener());
    }
-   
 }
