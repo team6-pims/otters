@@ -137,7 +137,7 @@ class GUIController {
          if (isCardGood) {  // good card
             theGUI.reDrawPlayCard(playerCard, true);
             theData.setLeftPile(playerCard);
-            adjustHand();
+            adjustHand(1);
             GUIView.resetCardColors();
             theGUI.reDrawPlayerHand(playerHand, deckSize);
          }
@@ -160,7 +160,7 @@ class GUIController {
          if (isCardGood) {  // good card
             theGUI.reDrawPlayCard(playerCard, false);
             theData.setRightPile(playerCard);
-            adjustHand();
+            adjustHand(1);
             GUIView.resetCardColors();
             theGUI.reDrawPlayerHand(playerHand, deckSize);
          }
