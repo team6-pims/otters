@@ -120,16 +120,12 @@ class GUIModel {
    }
    
    // setters
-   public void setPlayerWinnings(Card card, int index) {
-      playerWinnings[index] = card;
+   public void setLeftPile(Card card) {
+      buildGame.setLeftCard(card);
    }
    
-   public void setComputerWinnings(Card card, int index) {
-      computerWinnings[index] = card;
-   }
-   
-   public void setWinCounter(int player) {
-      skipCounter[player] += 1;
+   public void setRightPile(Card card ) {
+      buildGame.setRightCard(card);
    }
    
    public void setPlayerSelection(int handIndex) {
