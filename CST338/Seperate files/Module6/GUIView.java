@@ -38,6 +38,7 @@ public class GUIView {
    private static Card[] unusedCardsPerPack = null;
     
    private static JLabel dispTextLbl;	
+   private static JLabel rulesLbl;
 	
    public GUIView() {
       NUM_PLAYERS = 2;
@@ -78,8 +79,8 @@ public class GUIView {
           * also starts the timer.*/
          start = new JButton("Start game.");
          cardTable.panelTimer.add(start);
-         JLabel rules = new JLabel(getRules());
-         cardTable.panelPlayArea.add(rules);
+         rulesLbl = new JLabel(getRules());
+         cardTable.panelPlayArea.add(rulesLbl);
          
          return true;
       } catch (Exception e){
@@ -181,7 +182,7 @@ public class GUIView {
       
       dispTextLbl = new JLabel();
       cardTable.panelPlayArea.add(dispTextLbl);
-	   
+      cardTable.panelPlayArea.remove(rulesLbl);   
       // show everything to the user
       cardTable.setVisible(true);
       
