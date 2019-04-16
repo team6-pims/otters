@@ -56,9 +56,6 @@ class GUIModel {
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
-      
-      this.computerWinnings = new Card[buildGame.getNumCardsRemainingInDeck()];
-      this.playerWinnings = new Card[buildGame.getNumCardsRemainingInDeck()];
    }
    
    // methods
