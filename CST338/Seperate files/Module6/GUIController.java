@@ -124,7 +124,7 @@ class GUIController {
    };
    /*End local quit button listener*/
    
-      class leftPileListener implements ActionListener {
+   class leftPileListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          // Get value of current selected card from player
          Hand playerHand = theData.getPlayerHand(1);
@@ -134,7 +134,7 @@ class GUIController {
 
          Card playerCard = new Card(theData.playHand(1, curSelection));
          Card pileCard = theData.getLeftCard();
-         boolean isCardGood = isPlayerChoiceValid(playerCard, pileCard);
+         boolean isCardGood = isPlayerChoiceValid(pileCard, playerCard);
          System.out.println(isCardGood);
          
          if (isCardGood) {  // good card
@@ -156,7 +156,7 @@ class GUIController {
 
          Card playerCard = new Card(theData.playHand(1, curSelection));
          Card pileCard = theData.getLeftCard();
-         boolean isCardGood = isPlayerChoiceValid(playerCard, pileCard);
+         boolean isCardGood = isPlayerChoiceValid(pileCard, playerCard);
          System.out.println(isCardGood);
          
          if (isCardGood) {  // good card
