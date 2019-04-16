@@ -204,6 +204,27 @@ public class GUIView {
       }
    }
    
+   public void reDrawPlayCard(Card playedCard, boolean isLeftPile) {
+      cardTable.panelPlayArea.setVisible(false);
+      cardTable.panelPlayArea.removeAll();
+      
+      if (isLeftPile) {
+         leftPile.setIcon(GUICard.getIcon(playedCard));
+         
+         cardTable.panelPlayArea.add(leftPile);
+         cardTable.panelPlayArea.add(rightPile);
+         cardTable.panelPlayArea.add(passTurn);
+      }
+      else {
+         rightPile.setIcon(GUICard.getIcon(playedCard));
+         
+         cardTable.panelPlayArea.add(leftPile);
+         cardTable.panelPlayArea.add(rightPile);
+         cardTable.panelPlayArea.add(passTurn);
+      }
+      cardTable.panelPlayArea.setVisible(true);
+   }
+	
    public void reDrawPlayerHand(Hand playerHand, int deckSize) {
       if (deckSize == 0) {
          cardTable.panelHumanHand.setVisible(false);
