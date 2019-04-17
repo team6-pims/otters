@@ -5,6 +5,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
@@ -30,7 +31,8 @@ public class GUIView {
    private static JLabel[] playLabelText; 
    private static JButton quitButton, start, leftPile, rightPile, passTurn;
    private static JLabel timerLabel, deckIcon, cardsInDeckRemaining, 
-   cardsRemainString;
+   cardsRemainString, playerSkip, computerSkip;
+   private static JPanel skipCounterArea;
    
    private static int numPacksPerDeck = 1;
    private static int numJokersPerPack = 2;
@@ -148,6 +150,8 @@ public class GUIView {
       //playLabelText[1] = new JLabel("Player", JLabel.CENTER);
       passTurn = new JButton("Pass");
   
+      cardTable.panelPlayArea.remove(rulesLbl); 
+      
       // ADD LABELS TO PANELS -----------------------------------------
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
          cardTable.panelComputerHand.add(computerLabels[i]);
@@ -164,10 +168,10 @@ public class GUIView {
       // Add card piles
       leftPile = new JButton(GUICard.getIcon(
             leftCard));
-     rightPile = new JButton(GUICard.getIcon(
+      rightPile = new JButton(GUICard.getIcon(
             rightCard));
-     cardTable.panelPlayArea.add(leftPile);
-     cardTable.panelPlayArea.add(rightPile);
+      cardTable.panelPlayArea.add(leftPile);
+      cardTable.panelPlayArea.add(rightPile);
       
       // place deck and counter
       deckIcon = new JLabel(GUICard.getBackCardIcon());
@@ -182,11 +186,24 @@ public class GUIView {
       
       cardTable.panelPlayArea.add(passTurn);
       
+      skipCounterArea = new JPanel();
+      skipCounterArea.setLayout(new GridLayout(3,1));
+      
       dispTextLbl = new JLabel();
       dispTextLbl.setHorizontalAlignment(SwingConstants.CENTER);
       dispTextLbl.setVerticalAlignment(SwingConstants.CENTER);
-      cardTable.panelPlayArea.add(dispTextLbl);
-      cardTable.panelPlayArea.remove(rulesLbl);   
+      skipCounterArea.add(dispTextLbl);
+      
+      playerSkip = new JLabel();
+      playerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), "Player skips:"));
+      skipCounterArea.add(playerSkip);
+      
+      computerSkip = new JLabel();
+      computerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), "Computer skips:"));
+      skipCounterArea.add(computerSkip);
+      
+      cardTable.panelPlayArea.add(skipCounterArea);
+        
       // show everything to the user
       cardTable.setVisible(true);
       
@@ -214,6 +231,7 @@ public class GUIView {
          cardTable.panelPlayArea.add(leftPile);
          cardTable.panelPlayArea.add(rightPile);
          cardTable.panelPlayArea.add(passTurn);
+         cardTable.panelPlayArea.add(skipCounterArea);
       }
       else {
          rightPile.setIcon(GUICard.getIcon(playedCard));
@@ -221,6 +239,7 @@ public class GUIView {
          cardTable.panelPlayArea.add(leftPile);
          cardTable.panelPlayArea.add(rightPile);
          cardTable.panelPlayArea.add(passTurn);
+         cardTable.panelPlayArea.add(skipCounterArea);
       }
       cardTable.panelPlayArea.setVisible(true);
    }
@@ -320,6 +339,11 @@ public class GUIView {
    }
    
    // setters
+   public void setSkipCounter(int[] skipCounter) {
+      computerSkip.setText(Integer.toString(skipCounter[0]));
+      playerSkip.setText(Integer.toString(skipCounter[1]));
+   }
+   
    public void setDeckCounter(int deckSize) {
       cardsInDeckRemaining.setText(Integer.toString(deckSize));
    }
