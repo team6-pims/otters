@@ -3,9 +3,7 @@ package hw6;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 
 /**Controllers act as an interface between Model 
  * and View components to process all the business 
@@ -34,15 +32,10 @@ class GUIController {
       timer = new Timer(1000, timerEar);
 
       this.theGUI.addStartListener(new startGameListener());
-      
-      
-      //this.theGUI.addQuitListener(new quitButtonListener());
    }
    
-   /*Implement start game/timer listener class*/
    class startGameListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
-         // since the same button starts the game, need logic to sense a 'stop'???
          if (theGUI.getStartStop() == "Stop Timer") {
             timer.stop();
             theGUI.setStartStop("Start Timer");
@@ -58,7 +51,8 @@ class GUIController {
             int deckSize = theData.getDeckSize() - 
                   (theData.getNumPlayers() * theData.getHandSize(0));
             theData.startGame();
-            theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), theData.getRightCard());
+            theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), 
+                  theData.getRightCard());
             theGUI.setSkipCounter(theData.getSkipCounter());
             theGUI.addCardListener(new cardPressListener());
             theGUI.addLeftPileListener(new leftPileListener());
@@ -68,7 +62,6 @@ class GUIController {
       }
    }
    
-   /*Implement local action listener class*/
    class cardPressListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          JButton[] playerCardSelection = theGUI.getHumanLabels();
@@ -105,20 +98,15 @@ class GUIController {
       }
    };
 
-   /*End local action listener class*/
-   
-   /*Begin local quit button listener*/
    class quitButtonListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          System.exit(0);
       }
    };
-   /*End local quit button listener*/
    
    class passButtonListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          // button is always pushed by player, so we increment their counter
-         System.out.println("You skip!");
          theData.incrementSkipCounter(1);
          theData.setPlayerPassStatus(true);
          theGUI.setSkipCounter(theData.getSkipCounter());
@@ -134,18 +122,15 @@ class GUIController {
          Hand playerHand = theData.getPlayerHand(1);
          Hand computerHand = theData.getPlayerHand(0);
          int deckSize = theData.getDeckSize();
-         int curSelection = theData.getPlayerSelection();
-         //System.out.println("curSelec: " + curSelection);
+         int curSelection = theData.getPlayerSelection();;
          
          // First check player card before taking it
          Card playerCard = theData.getCardAtIndex(1, curSelection);
          Card pileCard = theData.getLeftCard();
          boolean isCardGood = isPlayerChoiceValid(pileCard, playerCard);
-         //System.out.println("Match: " + isCardGood);
          
          if (isCardGood) {  // good card
             playerCard = theData.playHand(1, curSelection);
-            System.out.println("You place " + playerCard.toString() + " on left pile!");
             theGUI.reDrawPlayCard(playerCard, true);
             theData.setLeftPile(playerCard);
             adjustHand(1);
@@ -165,17 +150,14 @@ class GUIController {
          Hand computerHand = theData.getPlayerHand(0);
          int deckSize = theData.getDeckSize();
          int curSelection = theData.getPlayerSelection();
-         //System.out.println("curSelec: " + curSelection);
          
          // First check player card before taking it
          Card playerCard = theData.getCardAtIndex(1, curSelection);
          Card pileCard = theData.getRightCard();
          boolean isCardGood = isPlayerChoiceValid(pileCard, playerCard);
-         //System.out.println("Match: " + isCardGood);
          
          if (isCardGood) {  // good card
             playerCard = theData.playHand(1, curSelection);
-            System.out.println("You place " + playerCard.toString() + " on right pile!");
             theGUI.reDrawPlayCard(playerCard, false);
             theData.setRightPile(playerCard);
             adjustHand(1);
@@ -186,7 +168,6 @@ class GUIController {
       }
    }
    
-   /* begin timer class */
    class TimerListener implements ActionListener {
       public void actionPerformed(ActionEvent e) {
          if (e.getSource() == timer)
@@ -210,6 +191,13 @@ class GUIController {
       theData.sortAllHands();
    }
    
+   /**Checks the value of the cards, disregarding suit, and returns a bool
+    * based on that comparison
+    * 
+    * @param pileCard: card on deck
+    * @param cardToCheck: card to be played
+    * @return: true if it's a good card to play on the card compared
+    */
    public boolean isPlayerChoiceValid(Card pileCard, Card cardToCheck) {
       boolean isValid = false;
       int pileCardValue = GUICard.getIconValueIndex(pileCard.getValue());
@@ -238,8 +226,10 @@ class GUIController {
       return isValid;
    }
    
-   // Computer's simple card logic
-   // Returns true when computer passes
+   /**Helper function that dictates how the computer plays.
+    * 
+    * @return: true if the computer does NOT play a card
+    */
    public boolean computerPlay() {
       Card computerCard;
       Card pileCard;
@@ -247,19 +237,19 @@ class GUIController {
       String displayText = "";
       
       for(int i = 0; i < theData.getHandSize(0); i++) {
-         computerCard = theData.getCardAtIndex(0, i);   // checks each card in hand
+         computerCard = theData.getCardAtIndex(0, i);   // checks each card
    
          // left pileCard check. if good, play. if not, continue
          pileCard = theData.getLeftCard();
          isCardGood = isPlayerChoiceValid(pileCard, computerCard);
          if (isCardGood) {
             computerCard = theData.playHand(0, i);
-            //System.out.println("Computer places " + computerCard.toString() + " on left pile!");
-            displayText = "<html>Computer places " + computerCard.toString() + " on left pile!</html>";
+            displayText = "<html>Computer places " + computerCard.toString()
+                           + " on left pile!</html>";
             theGUI.reDrawPlayCard(computerCard, true);
             theData.setLeftPile(computerCard);
             adjustHand(0);
-            theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+            theGUI.setDeckCounter(theData.getDeckSize());
             theGUI.updateDisplayLabelText(displayText);
             return false;
          }
@@ -269,12 +259,12 @@ class GUIController {
          isCardGood = isPlayerChoiceValid(pileCard, computerCard);
          if (isCardGood) {
             computerCard = theData.playHand(0, i);
-            System.out.println("Computer places " + computerCard.toString() + " on right pile!");
-            displayText = "<html>Computer places " + computerCard.toString() + " on right pile!</html>";
+            displayText = "<html>Computer places " + computerCard.toString() 
+                           + " on right pile!</html>";
             theGUI.reDrawPlayCard(computerCard, false);
             theData.setRightPile(computerCard);
             adjustHand(0);
-            theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+            theGUI.setDeckCounter(theData.getDeckSize());
             theGUI.updateDisplayLabelText(displayText);
             return false;
          }
@@ -287,6 +277,10 @@ class GUIController {
       return true;
    }
    
+   /**Parent function which calls computerPlay. It also determines the end
+    * of the game.
+    * 
+    */
    public void computerTurn() {
       boolean isDeckEmpty = false;
       String displayText = "";
@@ -300,24 +294,24 @@ class GUIController {
          // end the game
          isDeckEmpty = newPile(); // false if cannot add cards
          if (!isDeckEmpty) {
-            System.out.println("Ending game!");
             endGame();
          }
-         //System.out.println("Grabbing two cards from deck!");
          displayText = "<html>Grabbing two cards from deck!</html>";
          theGUI.updateDisplayLabelText(displayText);
-         theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+         theGUI.setDeckCounter(theData.getDeckSize());
       }
-      
       theData.setComputerPassStatus(false);
       theData.setPlayerPassStatus(false);
-      
    }
    
+   /**Checks the deck and deals cards to the piles if no player can play a card
+    * 
+    * @return: true if there are cards in the deck, false if not.
+    */
    public boolean newPile() {
       boolean enoughCards = false;
       
-      if (theData.getNumCardsRemainingInDeck() > 1) {
+      if (theData.getDeckSize() > 1) {
          enoughCards = true;
          
          // Draw two new cards
@@ -333,7 +327,9 @@ class GUIController {
       return enoughCards;
    }
    
-   
+   /**Ends the game. Tells the GUI to redraw the board to this end.
+    * 
+    */
    public void endGame() {
       theGUI.endGame(theData.getWinCount(1), theData.getWinCount(0));
       theGUI.addQuitListener(new quitButtonListener());
