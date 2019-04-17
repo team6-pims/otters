@@ -280,23 +280,17 @@ class GUIController {
          }
       }
       // if no good cards, computer skips.
-      System.out.println("Computer skips!");
+      displayText = "Computer skips!";
       theData.incrementSkipCounter(0);
       theGUI.setSkipCounter(theData.getSkipCounter());
+      theGUI.updateDisplayLabelText(displayText);
       return true;
    }
    
    public void computerTurn() {
       boolean isDeckEmpty = false;
       String displayText = "";
-      /*if (theData.getComputerPassStatus() && theData.getPlayerPassStatus()) {
-         System.out.println("Grabbing two cards from deck!");
-         isDeckEmpty = newPile();
-         
-         theData.setComputerPassStatus(false);
-         theData.setPlayerPassStatus(false);
-      }*/
-      
+
       // computer's turn to play a card
       theData.setComputerPassStatus(computerPlay());
 
@@ -311,12 +305,13 @@ class GUIController {
          }
          //System.out.println("Grabbing two cards from deck!");
          displayText = "<html>Grabbing two cards from deck!</html>";
-         //theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+         theGUI.updateDisplayLabelText(displayText);
+         theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
       }
       
       theData.setComputerPassStatus(false);
       theData.setPlayerPassStatus(false);
-      theGUI.updateDisplayLabelText(displayText);
+      
    }
    
    public boolean newPile() {
