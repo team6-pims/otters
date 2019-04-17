@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -26,9 +28,7 @@ public class GUIView {
    private static int SIZE_ROW = 800;
    private static int SIZE_COL = 600;
    private static JLabel[] computerLabels;
-   private static JButton[] humanLabels;  
-   private static JButton[] playedCardLabels;
-   private static JLabel[] playLabelText; 
+   private static JButton[] humanLabels, playedCardLabels;  
    private static JButton quitButton, start, leftPile, rightPile, passTurn;
    private static JLabel timerLabel, deckIcon, cardsInDeckRemaining, 
    cardsRemainString, playerSkip, computerSkip;
@@ -52,8 +52,8 @@ public class GUIView {
    }
    
    public GUIView(int NUM_PLAYERS, int NUM_CARDS_PER_HAND) {
-      this.NUM_PLAYERS = NUM_PLAYERS;
-      this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
+      GUIView.NUM_PLAYERS = NUM_PLAYERS;
+      GUIView.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
       String defaultName = new String();
       defaultName = NUM_PLAYERS + " Person Table";
       cardTable = new CardTable(defaultName, NUM_CARDS_PER_HAND, NUM_PLAYERS );
@@ -61,8 +61,8 @@ public class GUIView {
    }
    
    public GUIView(String TableName,  int NUM_PLAYERS, int NUM_CARDS_PER_HAND) {
-      this.NUM_PLAYERS = NUM_PLAYERS;
-      this.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
+      GUIView.NUM_PLAYERS = NUM_PLAYERS;
+      GUIView.NUM_CARDS_PER_HAND = NUM_CARDS_PER_HAND;
       cardTable = new CardTable(TableName, NUM_CARDS_PER_HAND, NUM_PLAYERS );
       constructorCommonality();
    }
@@ -72,34 +72,37 @@ public class GUIView {
          computerLabels = new JLabel[NUM_CARDS_PER_HAND];
          humanLabels = new JButton[NUM_CARDS_PER_HAND];  
          playedCardLabels  = new JButton[NUM_PLAYERS];
-         playLabelText  = new JLabel[NUM_PLAYERS]; 
+
          cardTable.setSize(SIZE_ROW, SIZE_COL);
          cardTable.setLocationRelativeTo(null);
          cardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                   
          /* player pushes start to deal their hand and populate computer hand
-          * also starts the timer.*/
+          * also starts the timer. handled by controller*/
          start = new JButton("Start game.");
          cardTable.panelTimer.add(start);
          rulesLbl = new JLabel(getRules());
-    rulesLbl.setHorizontalAlignment(SwingConstants.CENTER);
+         rulesLbl.setHorizontalAlignment(SwingConstants.CENTER);
          rulesLbl.setVerticalAlignment(SwingConstants.CENTER);
          cardTable.panelPlayArea.add(rulesLbl);
          
          return true;
-      } catch (Exception e){
+      } catch (Exception e) {
          return false;
       } 
    }
    
    private String getRules() {
       String retStr = "";
-      retStr += "<html>Welcome to HALF SPEED! <BR><BR> Here are the rules: <BR>";
+      retStr += "<html>Welcome to HALF SPEED! <BR><BR> Here are the rules: "
+            + "<BR>";
       retStr += "<BR>  1) You and the computer take turns playing cards";
       retStr += "<BR>  2) You want to place the cards in ASC or DESC order";
-      retStr += "<BR>  3) After you play a card, you get another card from the deck";
+      retStr += "<BR>  3) After you play a card, you get another card from the"
+            + " deck";
       retStr += "<BR>  4) If you cant play, tap the I CANNOT PLAY button";
-      retStr += "<BR>  5) whoever has the least I CANNOT PLAY presses at the end wins";
+      retStr += "<BR>  5) whoever has the least I CANNOT PLAY presses at the "
+            + "end wins";
       retStr += "<BR>  <BR> Can you tackle the computer?</html>";
       
       return retStr;
@@ -131,7 +134,15 @@ public class GUIView {
       quitButton.addActionListener(listenForQuit);
    }
    
-   public void startGame(Hand playerHand, int deckSize, Card leftCard, Card rightCard) {
+   /**Redraws the board from the initial construction to the game format.
+    * 
+    * @param playerHand: to determine how many cards to draw per player
+    * @param deckSize: cards in deck, for counter
+    * @param leftCard: starting left card, for icon
+    * @param rightCard: starting right card, for icon
+    */
+   public void startGame(Hand playerHand, int deckSize, Card leftCard, 
+         Card rightCard) {
       
       // blank cards for computer
       for (int i = 0; i < NUM_CARDS_PER_HAND; i++) 
@@ -142,12 +153,8 @@ public class GUIView {
          humanLabels[i] = new JButton(GUICard.getIcon(
                playerHand.inspectCard(i)));
          humanLabels[i].setBorderPainted(false);
-         //humanLabels[i].addActionListener(listenForCardPress);
       }
       
-      // create the played text
-      //playLabelText[0] = new JLabel("Computer", JLabel.CENTER);
-      //playLabelText[1] = new JLabel("Player", JLabel.CENTER);
       passTurn = new JButton("Pass");
   
       cardTable.panelPlayArea.remove(rulesLbl); 
@@ -195,11 +202,13 @@ public class GUIView {
       skipCounterArea.add(dispTextLbl);
       
       playerSkip = new JLabel();
-      playerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), "Player skips:"));
+      playerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), 
+            "Player skips:"));
       skipCounterArea.add(playerSkip);
       
       computerSkip = new JLabel();
-      computerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), "Computer skips:"));
+      computerSkip.setBorder(new TitledBorder(new LineBorder(Color.black), 
+            "Computer skips:"));
       skipCounterArea.add(computerSkip);
       
       cardTable.panelPlayArea.add(skipCounterArea);
@@ -209,9 +218,14 @@ public class GUIView {
       
       // timer
       start.setText("Stop Timer");
-      
    }
    
+   /**Updates a label on the game board which tells the player what the
+    * computer's previous action was.
+    * 
+    * @param htmlString: String to be written
+    * @return: true if successful
+    */
    public boolean updateDisplayLabelText(String htmlString) {
       try {
          dispTextLbl.setText(htmlString);
@@ -221,6 +235,12 @@ public class GUIView {
       }
    }
    
+   /**Redraws the played area card.
+    * 
+    * @param playedCard: card to be drawn.
+    * @param isLeftPile: boolean, true if the card to be drawn goes on the left
+    *           pile. false if it goes on the right
+    */
    public void reDrawPlayCard(Card playedCard, boolean isLeftPile) {
       cardTable.panelPlayArea.setVisible(false);
       cardTable.panelPlayArea.removeAll();
@@ -244,6 +264,13 @@ public class GUIView {
       cardTable.panelPlayArea.setVisible(true);
    }
    
+   /**Redraws the hands after a round of play.
+    * 
+    * @param playerHand: for current hand size. drawn card limit
+    * @param computerHand: for current hand size. can differ from player
+    *                towards the end.
+    * @param deckSize: updates the deck card count.
+    */
    public void reDrawHands(Hand playerHand, Hand computerHand, int deckSize) {
       if (deckSize == 0) {
          cardTable.panelHumanHand.setVisible(false);
@@ -273,6 +300,11 @@ public class GUIView {
       }
    }
    
+   /**Hides the table. Overloads default.
+    * 
+    * @param visibility: true to display, false to hide.
+    * @return
+    */
    public boolean setVisible(boolean visibility) {
       try {
          cardTable.setVisible(visibility);
@@ -282,8 +314,22 @@ public class GUIView {
       }
    }
    
+   /**Redraws the game board for the end game. Displays final skip counts for
+    * the player and computer. Displays winner.
+    * 
+    * @param playerSkips: int, total player skips
+    * @param computerSkips: int, total computer skips
+    */
    public void endGame(int playerSkips, int computerSkips) {
+      cardTable.setVisible(false);
+      skipCounterArea.removeAll();
+      cardTable.panelPlayArea.remove(skipCounterArea);
+      cardTable.panelPlayArea.remove(passTurn);
+      cardTable.panelPlayArea.remove(rightPile);
+      cardTable.panelPlayArea.remove(leftPile);
       cardTable.panelPlayArea.removeAll();
+      cardTable.panelHumanHand.removeAll();
+      cardTable.panelComputerHand.removeAll();
       
       cardTable.panelPlayArea.setLayout(new GridLayout(0,1));
       JLabel playerScore = new JLabel(String.valueOf(
@@ -303,6 +349,7 @@ public class GUIView {
       cardTable.panelPlayArea.add(quitButton);
       cardTable.panelComputerHand.add(computerScore);
       cardTable.panelHumanHand.add(playerScore);
+      cardTable.setVisible(true);
    }
    
    /*Getters*/
@@ -384,7 +431,6 @@ public class GUIView {
       return true;
    }
 
-   
    public static boolean setSizeCol(int newCol) {      
       if (newCol < 0) {
          return false;
