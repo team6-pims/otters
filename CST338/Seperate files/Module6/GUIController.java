@@ -56,7 +56,7 @@ class GUIController {
             Hand playerHand = theData.getPlayerHand(1);
 
             int deckSize = theData.getDeckSize() - 
-                  (theData.getNumPlayers() * theData.getHandSize());
+                  (theData.getNumPlayers() * theData.getHandSize(0));
             theData.startGame();
             theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), theData.getRightCard());
             theGUI.addCardListener(new cardPressListener());
@@ -72,7 +72,7 @@ class GUIController {
       public void actionPerformed(ActionEvent e) {
          JButton[] playerCardSelection = theGUI.getHumanLabels();
          
-         for (int i = 0; i < theData.getHandSize(); i++) {
+         for (int i = 0; i < theData.getHandSize(1); i++) {
             
             // Match button data with card index from player's hand
             if (e.getSource() == playerCardSelection[i]) {
@@ -130,6 +130,7 @@ class GUIController {
       public void actionPerformed(ActionEvent e) {
          // Get value of current selected card from player
          Hand playerHand = theData.getPlayerHand(1);
+         Hand computerHand = theData.getPlayerHand(0);
          int deckSize = theData.getDeckSize();
          int curSelection = theData.getPlayerSelection();
          //System.out.println("curSelec: " + curSelection);
@@ -147,7 +148,7 @@ class GUIController {
             theData.setLeftPile(playerCard);
             adjustHand(1);
             GUIView.resetCardColors();
-            theGUI.reDrawPlayerHand(playerHand, deckSize);
+            theGUI.reDrawHands(playerHand, computerHand, deckSize);
             
             // Now that we've went, now it's computer's turn
             computerTurn();
@@ -159,6 +160,7 @@ class GUIController {
       public void actionPerformed(ActionEvent e) {
          // Get value of current selected card from player
          Hand playerHand = theData.getPlayerHand(1);
+         Hand computerHand = theData.getPlayerHand(0);
          int deckSize = theData.getDeckSize();
          int curSelection = theData.getPlayerSelection();
          //System.out.println("curSelec: " + curSelection);
@@ -176,7 +178,7 @@ class GUIController {
             theData.setRightPile(playerCard);
             adjustHand(1);
             GUIView.resetCardColors();
-            theGUI.reDrawPlayerHand(playerHand, deckSize);
+            theGUI.reDrawHands(playerHand, computerHand, deckSize);
             computerTurn();
          }
       }
@@ -211,8 +213,6 @@ class GUIController {
       int pileCardValue = GUICard.getIconValueIndex(pileCard.getValue());
       int cardToCheckValue = GUICard.getIconValueIndex(cardToCheck.getValue());
       
-      //System.out.println("Pile card: " + pileCardValue);
-      //System.out.println("Plyr card: " + cardToCheckValue);
       switch (pileCardValue) {
       // If Ace, then King or 2 is valid
       case 1:
@@ -239,13 +239,13 @@ class GUIController {
    // Computer's simple card logic
    // Returns true when computer passes
    public boolean computerPlay() {
-      Card computerCard = theData.getCardAtIndex(0, 0);
-      Card pileCard = theData.getLeftCard();
+      Card computerCard;
+      Card pileCard;
       boolean isCardGood = false;
-      for(int i = 0; i < theData.getHandSize(); i++) {
+      for(int i = 0; i < theData.getHandSize(0); i++) {
          computerCard = theData.getCardAtIndex(0, i);   // checks each card in hand
    
-         // left pileCard check
+         // left pileCard check. if good, play. if not, continue
          pileCard = theData.getLeftCard();
          isCardGood = isPlayerChoiceValid(pileCard, computerCard);
          if (isCardGood) {
@@ -254,6 +254,7 @@ class GUIController {
             theGUI.reDrawPlayCard(computerCard, true);
             theData.setLeftPile(computerCard);
             adjustHand(0);
+            theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
             return false;
          }
    
@@ -266,42 +267,42 @@ class GUIController {
             theGUI.reDrawPlayCard(computerCard, false);
             theData.setRightPile(computerCard);
             adjustHand(0);
+            theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
             return false;
          }
       }
+      // if no good cards, computer skips.
       System.out.println("Computer skips!");
       theData.incrementSkipCounter(0);
       return true;
    }
    
    public void computerTurn() {
+      boolean isDeckEmpty = false;
       
-      boolean passNotEmpty = true;
-      
-      if (theData.getComputerPassStatus() && theData.getPlayerPassStatus()) {
+      /*if (theData.getComputerPassStatus() && theData.getPlayerPassStatus()) {
          System.out.println("Grabbing two cards from deck!");
-         passNotEmpty = newPile();
+         isDeckEmpty = newPile();
          
-         if (!passNotEmpty) {
-            System.out.println("Ending game!");
-            endGame();
-         }
          theData.setComputerPassStatus(false);
          theData.setPlayerPassStatus(false);
-         
-      }
+      }*/
       
       // computer's turn to play a card
       theData.setComputerPassStatus(computerPlay());
 
       // check passes after computer's turn to update piles
       if (theData.getComputerPassStatus() && theData.getPlayerPassStatus()) {
-         System.out.println("Grabbing two cards from deck!");
-         passNotEmpty = newPile(); // false if cannot add cards
-         if (!passNotEmpty) {
+         // if both players pass, and the deck is empty, no more possible moves
+         // end the game
+         isDeckEmpty = newPile(); // false if cannot add cards
+         if (!isDeckEmpty) {
             System.out.println("Ending game!");
             endGame();
          }
+         System.out.println("Grabbing two cards from deck!");
+         
+         //theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
       }
       
       theData.setComputerPassStatus(false);
@@ -324,7 +325,6 @@ class GUIController {
          theData.setRightPile(rightCard);
          theGUI.reDrawPlayCard(leftCard, true);
          theGUI.reDrawPlayCard(rightCard, false);
-
       }
       return enoughCards;
    }
