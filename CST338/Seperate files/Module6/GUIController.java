@@ -59,6 +59,7 @@ class GUIController {
                   (theData.getNumPlayers() * theData.getHandSize(0));
             theData.startGame();
             theGUI.startGame(playerHand, deckSize, theData.getLeftCard(), theData.getRightCard());
+            theGUI.setSkipCounter(theData.getSkipCounter());
             theGUI.addCardListener(new cardPressListener());
             theGUI.addLeftPileListener(new leftPileListener());
             theGUI.addRightPileListener(new rightPileListener());
@@ -120,6 +121,7 @@ class GUIController {
          System.out.println("You skip!");
          theData.incrementSkipCounter(1);
          theData.setPlayerPassStatus(true);
+         theGUI.setSkipCounter(theData.getSkipCounter());
          
          // call computer round stuff here
          computerTurn();
@@ -242,6 +244,8 @@ class GUIController {
       Card computerCard;
       Card pileCard;
       boolean isCardGood = false;
+      String displayText = "";
+      
       for(int i = 0; i < theData.getHandSize(0); i++) {
          computerCard = theData.getCardAtIndex(0, i);   // checks each card in hand
    
@@ -250,11 +254,13 @@ class GUIController {
          isCardGood = isPlayerChoiceValid(pileCard, computerCard);
          if (isCardGood) {
             computerCard = theData.playHand(0, i);
-            System.out.println("Computer places " + computerCard.toString() + " on left pile!");
+            //System.out.println("Computer places " + computerCard.toString() + " on left pile!");
+            displayText = "<html>Computer places " + computerCard.toString() + " on left pile!</html>";
             theGUI.reDrawPlayCard(computerCard, true);
             theData.setLeftPile(computerCard);
             adjustHand(0);
             theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+            theGUI.updateDisplayLabelText(displayText);
             return false;
          }
    
@@ -264,22 +270,25 @@ class GUIController {
          if (isCardGood) {
             computerCard = theData.playHand(0, i);
             System.out.println("Computer places " + computerCard.toString() + " on right pile!");
+            displayText = "<html>Computer places " + computerCard.toString() + " on right pile!</html>";
             theGUI.reDrawPlayCard(computerCard, false);
             theData.setRightPile(computerCard);
             adjustHand(0);
             theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
+            theGUI.updateDisplayLabelText(displayText);
             return false;
          }
       }
       // if no good cards, computer skips.
       System.out.println("Computer skips!");
       theData.incrementSkipCounter(0);
+      theGUI.setSkipCounter(theData.getSkipCounter());
       return true;
    }
    
    public void computerTurn() {
       boolean isDeckEmpty = false;
-      
+      String displayText = "";
       /*if (theData.getComputerPassStatus() && theData.getPlayerPassStatus()) {
          System.out.println("Grabbing two cards from deck!");
          isDeckEmpty = newPile();
@@ -300,15 +309,15 @@ class GUIController {
             System.out.println("Ending game!");
             endGame();
          }
-         System.out.println("Grabbing two cards from deck!");
-         
+         //System.out.println("Grabbing two cards from deck!");
+         displayText = "<html>Grabbing two cards from deck!</html>";
          //theGUI.setDeckCounter(theData.getNumCardsRemainingInDeck());
       }
       
       theData.setComputerPassStatus(false);
       theData.setPlayerPassStatus(false);
+      theGUI.updateDisplayLabelText(displayText);
    }
-   
    
    public boolean newPile() {
       boolean enoughCards = false;
