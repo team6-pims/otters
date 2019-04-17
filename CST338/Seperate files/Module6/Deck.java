@@ -1,7 +1,7 @@
 package hw6;
 
 class Deck {
-   //holds up to 6 packs of 52 cards
+   //holds up to 6 packs of 52 cards and 4 jokers
    public static final int MAX_PACKS = 6;
    public static final int CARDS_PER_PACK = 52;
    private static Card[] masterPack;
