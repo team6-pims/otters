@@ -1,9 +1,9 @@
 package hw6;
 
 class Deck {
-   //holds up to 6 packs of 52 cards and 4 jokers
+   //holds up to 6 packs of 52 cards
    public static final int MAX_PACKS = 6;
-   public static final int CARDS_PER_PACK = 56;
+   public static final int CARDS_PER_PACK = 52;
    private static Card[] masterPack;
    private Card[] cards;
    private int topCard = 0;
@@ -138,7 +138,7 @@ class Deck {
       //checks if the masterPack has already been allocated
       if (masterPack == null){
          masterPack = new Card[CARDS_PER_PACK];
-         char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'A', 'X'};
+         char[] value = {'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'A'};
          Card placementCard;
          int placement = 0;
          
