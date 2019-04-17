@@ -21,7 +21,6 @@ class Hand {
    // resets the numCards count, essentially resetting the hand
    void resetHand() {
       if (numCards == 0) {
-         System.out.println("Empty hand.");
          return;
       }
       else {
