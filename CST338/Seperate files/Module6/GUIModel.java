@@ -18,11 +18,8 @@ class GUIModel {
    private int numJokersPerPack;
    private int numUnusedCardsPerPack;
    private Card[] unusedCardsPerPack;
-   private Card[] computerWinnings, playerWinnings;
    private int[] skipCounter;
    private int playerSelectedCardIndex;
-   private boolean playerSkipped;
-   private boolean computerSkipped;
    public CardGameFramework buildGame;
    private boolean computerPass = false;
    private boolean playerPass = false;
@@ -41,8 +38,6 @@ class GUIModel {
             numPacksPerDeck, numJokersPerPack,  
             numUnusedCardsPerPack, unusedCardsPerPack, 
             NUM_PLAYERS, NUM_CARDS_PER_HAND);
-
-
    }
 
    // custom constructor
@@ -63,8 +58,51 @@ class GUIModel {
    }
    
    // methods
+   /**Fills the game data. 
+    * 
+    */
    public void startGame() {
       buildGame.deal();
+   }
+   
+   /**Plays a card from that player's hand.
+    * 
+    * @param playerIndex: int, which player
+    * @param cardIndex: int, card in hand
+    * @return: Card object corresponding to selected card
+    */
+   public Card playHand(int playerIndex, int cardIndex) {
+      return buildGame.playCard(playerIndex, cardIndex);
+   }
+   
+   /**Similar to playHand, except it doesn't take the card from the player
+    * 
+    * @param playerIndex: int, player ID
+    * @param cardIndex: int, card ID
+    * @return: Card object corresponding to selected card
+    */
+   public Card getCardAtIndex(int playerIndex, int cardIndex) {
+      return buildGame.getCardAtIndex(playerIndex, cardIndex);
+   }
+   
+   /**Sorts all the hands.
+    * 
+    */
+   public void sortAllHands() {
+      buildGame.sortHands();
+   }
+   
+   /**Gives a card from the deck to the player
+    * 
+    * @param playerIndex: int, player ID
+    */
+   public void playerTakeCard(int playerIndex) {
+      buildGame.takeCard(playerIndex);
+   }
+   
+   // getters
+   public int[] getSkipCounter() {
+      return skipCounter;
    }
    
    public int getDeckSize() {
@@ -73,30 +111,6 @@ class GUIModel {
    
    public Hand getPlayerHand(int playerIndex) {
       return buildGame.getHand(playerIndex);
-   }
-   
-   
-   public Card playHand(int playerIndex, int cardIndex) {
-      return buildGame.playCard(playerIndex, cardIndex);
-   }
-   
-   public Card getCardAtIndex(int playerIndex, int cardIndex) {
-      return buildGame.getCardAtIndex(playerIndex, cardIndex);
-   }
-   
-   // sort all the hands
-   public void sortAllHands() {
-      buildGame.sortHands();
-   }
-   
-   // take a card for that player
-   public void playerTakeCard(int playerIndex) {
-      buildGame.takeCard(playerIndex);
-   }
-   
-   // getters
-   public int[] getSkipCounter() {
-      return skipCounter;
    }
    
    public int getHandSize(int playerIndex) {
@@ -135,6 +149,7 @@ class GUIModel {
    public boolean getPlayerPassStatus() {
       return playerPass;
    }
+   
    // setters
    public void setLeftPile(Card card) {
       buildGame.setLeftCard(card);
@@ -146,7 +161,6 @@ class GUIModel {
    
    public void incrementSkipCounter(int player) {
       skipCounter[player]++;
-      System.out.println("Player " + player + " skip counter: " + skipCounter[player]);
    }
    
    public void setPlayerSelection(int handIndex) {
@@ -165,9 +179,5 @@ class GUIModel {
    
    public Card getCardFromDeck() {
       return buildGame.getCardFromDeck();
-   }
-   
-   public int getNumCardsRemainingInDeck() {
-      return buildGame.getNumCardsRemainingInDeck();
    }
 }
