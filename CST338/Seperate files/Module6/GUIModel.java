@@ -95,6 +95,10 @@ class GUIModel {
    }
    
    // getters
+   public int[] getSkipCounter() {
+      return skipCounter;
+   }
+   
    public int getHandSize(int playerIndex) {
       Hand hand = buildGame.getHand(playerIndex);
       return hand.getNumCards();
