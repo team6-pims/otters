@@ -178,7 +178,7 @@ public class GUIView {
       cardTable.panelDeck.add(deckIcon);
       cardsRemainString = new JLabel("Cards left:");
       cardTable.panelDeck.add(cardsRemainString);
-      int startDeckCount = deckSize - (playerHand.getNumCards() * 2);
+      int startDeckCount = deckSize - 2 - (playerHand.getNumCards() * 2);
       cardsInDeckRemaining = new JLabel(Integer.toString(startDeckCount), 
             JLabel.CENTER);
       
