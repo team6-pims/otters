@@ -195,7 +195,7 @@ public class GUIView {
       
    }
    
-  public boolean updateDisplayLabelText(String htmlString) {
+   public boolean updateDisplayLabelText(String htmlString) {
       try {
          dispTextLbl.setText(htmlString);
          return true;
@@ -225,7 +225,7 @@ public class GUIView {
       cardTable.panelPlayArea.setVisible(true);
    }
    
-   public void reDrawPlayerHand(Hand playerHand, int deckSize) {
+   public void reDrawHands(Hand playerHand, Hand computerHand, int deckSize) {
       if (deckSize == 0) {
          cardTable.panelHumanHand.setVisible(false);
          cardTable.panelHumanHand.removeAll();
@@ -235,6 +235,9 @@ public class GUIView {
             humanLabels[i].setIcon(GUICard.getIcon(playerHand.inspectCard(i)));
             humanLabels[i].setBorderPainted(false);
             cardTable.panelHumanHand.add(humanLabels[i]);
+         }
+         
+         for (int i = 0; i < computerHand.getNumCards(); i++) {
             cardTable.panelComputerHand.add(computerLabels[i]);
          }
          
@@ -260,22 +263,22 @@ public class GUIView {
       }
    }
    
-   public void endGame(int playerWins, int computerWins) {
+   public void endGame(int playerSkips, int computerSkips) {
       cardTable.panelPlayArea.removeAll();
       
       cardTable.panelPlayArea.setLayout(new GridLayout(0,1));
       JLabel playerScore = new JLabel(String.valueOf(
-            playerWins));
+            playerSkips));
       JLabel computerScore = new JLabel(String.valueOf(
-            computerWins));
+            computerSkips));
       JLabel winner = new JLabel("Winner is:", JLabel.CENTER);
       JLabel winValue;
-      if (playerWins > computerWins) 
+      if (playerSkips < computerSkips) 
          winValue = new JLabel("YOU!", JLabel.CENTER);
       else 
          winValue = new JLabel("NOT YOU!", JLabel.CENTER);
 
-      JButton quitButton = new JButton("Quit.");
+      quitButton = new JButton("Quit.");
       cardTable.panelPlayArea.add(winner);
       cardTable.panelPlayArea.add(winValue);
       cardTable.panelPlayArea.add(quitButton);
@@ -283,7 +286,6 @@ public class GUIView {
       cardTable.panelHumanHand.add(playerScore);
    }
    
-
    /*Getters*/
    public String getStartStop() {
       return start.getText();
@@ -318,6 +320,10 @@ public class GUIView {
    }
    
    // setters
+   public void setDeckCounter(int deckSize) {
+      cardsInDeckRemaining.setText(Integer.toString(deckSize));
+   }
+   
    public boolean setStartStop(String label) {
       if (!(label == null || label == "")) {
          start.setText(label);
